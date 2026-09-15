@@ -1,5 +1,6 @@
 import React from 'react';
 import RambutAnakLakiLaki from './RambutAnakLakiLaki';
+import RambutPerempuanPendek from './RambutPerempuanPendek';
 
 /**
  * High-Precision Vector SVG Avatar Component (.jsx)
@@ -16,6 +17,10 @@ export default function AvatarCanvas({
   const activeEquipped = { ...(equipped || {}) };
   if (previewItem) {
     activeEquipped[previewItem.category] = previewItem.id;
+    if (previewItem.category === 'accessories') {
+      activeEquipped.accessory = previewItem.id;
+      activeEquipped.hairstyle = previewItem.id;
+    }
   }
 
   const skinTone = activeEquipped.skinTone || '#f9bfa7';
@@ -205,10 +210,10 @@ export default function AvatarCanvas({
         <path d="M 112 90 Q 120 95 128 90 Q 120 96 112 90 Z" fill="#f43f5e" />
 
         {/* --- HAIRSTYLE / HEAD COVERING --- */}
-        {renderHair(activeEquipped.hairstyle || activeEquipped.accessory, hairColor)}
+        {renderHair(activeEquipped.accessories || activeEquipped.accessory || activeEquipped.hairstyle, hairColor)}
 
         {/* --- HEAD ACCESSORIES (CAP, GLASSES, CROWN) --- */}
-        {renderHeadAccessory(activeEquipped.accessory)}
+        {renderHeadAccessory(activeEquipped.accessories || activeEquipped.accessory)}
       </svg>
 
       {/* Preview Tag */}
@@ -480,37 +485,7 @@ function renderHair(style, color) {
 
     case 'hair-perempuan-pendek':
     case 'girl-short':
-      return (
-        <g id="hair-perempuan-pendek">
-          {/* Back Bob Volume */}
-          <path
-            d="M 68 84 C 64 30 84 10 120 8 C 156 10 176 30 172 84 L 164 88 C 168 40 152 14 120 12 C 88 14 72 40 76 88 Z"
-            fill="url(#hairGradient)"
-          />
-          {/* Front Bob Wings Framing Cheeks */}
-          <path
-            d="M 76 60 C 74 32 90 14 120 12 C 150 14 166 32 164 60
-               C 168 76 166 94 156 94
-               C 152 82 154 62 148 50
-               C 134 40 106 40 92 50
-               C 86 62 88 82 84 94
-               C 74 94 72 76 76 60 Z"
-            fill="url(#hairGradient)"
-            stroke={adjustColor(color, -25)}
-            strokeWidth="1.2"
-            strokeLinejoin="round"
-          />
-          {/* Cute Front Bangs across forehead */}
-          <path
-            d="M 84 46 Q 102 36 120 46 Q 138 36 156 46 Q 138 40 120 36 Q 102 40 84 46 Z"
-            fill="url(#hairGradient)"
-            stroke={adjustColor(color, -20)}
-            strokeWidth="0.8"
-          />
-          {/* Specular Highlight */}
-          <ellipse cx="120" cy="20" rx="30" ry="5" fill="#ffffff" opacity="0.2" />
-        </g>
-      );
+      return <RambutPerempuanPendek asGroup color={color} />;
 
     case 'hair-perempuan-panjang':
     case 'girl-long':

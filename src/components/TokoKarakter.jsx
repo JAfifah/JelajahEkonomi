@@ -39,7 +39,8 @@ export default function TokoKarakter({ student, updateStudentData }) {
     soundFx.playClick();
     const updatedEquipped = {
       ...student.equipped,
-      [item.category]: item.id
+      [item.category]: item.id,
+      ...(item.category === 'accessories' ? { accessory: item.id, hairstyle: item.id } : {})
     };
     updateStudentData({
       ...student,
@@ -71,7 +72,8 @@ export default function TokoKarakter({ student, updateStudentData }) {
     const newInventory = [...student.inventory, buyingItem.id];
     const newEquipped = {
       ...student.equipped,
-      [buyingItem.category]: buyingItem.id
+      [buyingItem.category]: buyingItem.id,
+      ...(buyingItem.category === 'accessories' ? { accessory: buyingItem.id, hairstyle: buyingItem.id } : {})
     };
 
     updateStudentData({

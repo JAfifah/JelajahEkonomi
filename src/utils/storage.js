@@ -12,17 +12,19 @@ export const INITIAL_STUDENT_DATA = {
   lastLogin: new Date().toISOString(),
   equipped: {
     skinTone: '#f5c396',
-    hairstyle: 'none',
+    hairstyle: 'hair-rambut-laki',
     hairColor: '#2b2b2b',
     top: 'top-kaos-ips',
     bottom: 'bottom-jeans-biru',
     shoes: 'shoes-sneakers-putih',
-    accessory: null
+    accessory: 'hair-rambut-laki',
+    accessories: 'hair-rambut-laki'
   },
   inventory: [
     'top-kaos-ips',
     'bottom-jeans-biru',
-    'shoes-sneakers-putih'
+    'shoes-sneakers-putih',
+    'hair-rambut-laki'
   ],
   stats: {
     quizzesCompleted: 5,
@@ -49,14 +51,26 @@ export function loadStudentData() {
       return INITIAL_STUDENT_DATA;
     }
     const parsed = JSON.parse(dataStr);
-    const equipped = { ...INITIAL_STUDENT_DATA.equipped, ...(parsed.equipped || {}) };
-    if (equipped.accessory === 'acc-topi-kebutuhan' || equipped.accessory === 'hair-rambut-laki' || equipped.hairstyle === 'short-casual') {
-      equipped.accessory = null;
-      equipped.hairstyle = 'none';
+    
+    // Pastikan item yang dimiliki mencakup item default jika belum ada
+    const inventorySet = new Set([...INITIAL_STUDENT_DATA.inventory, ...(parsed.inventory || [])]);
+    
+    const equipped = { 
+      ...INITIAL_STUDENT_DATA.equipped, 
+      ...(parsed.equipped || {}) 
+    };
+
+    // Jika belum ada aksesori/rambut yang dipasang, gunakan default Rambut Anak Laki-Laki
+    if (!equipped.accessories && !equipped.accessory && (equipped.hairstyle === 'none' || !equipped.hairstyle)) {
+      equipped.accessories = 'hair-rambut-laki';
+      equipped.accessory = 'hair-rambut-laki';
+      equipped.hairstyle = 'hair-rambut-laki';
     }
+
     return {
       ...INITIAL_STUDENT_DATA,
       ...parsed,
+      inventory: Array.from(inventorySet),
       equipped,
       stats: { ...INITIAL_STUDENT_DATA.stats, ...(parsed.stats || {}) }
     };

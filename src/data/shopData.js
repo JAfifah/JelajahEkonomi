@@ -207,10 +207,10 @@ export const AVATAR_SHOP_ITEMS = [
     name: 'Rambut Anak Laki-Laki',
     category: 'accessories',
     priorityCategory: 'Primer',
-    priceCoins: 50,
-    pricePoints: 25,
+    priceCoins: 0,
+    pricePoints: 0,
     description: 'Potongan rambut pendek kasual rapi untuk anak laki-laki.',
-    unlockedByDefault: false,
+    unlockedByDefault: true,
     styleProps: {
       type: 'hair',
       id: 'hair-rambut-laki'

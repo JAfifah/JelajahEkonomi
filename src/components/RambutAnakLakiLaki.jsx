@@ -61,20 +61,7 @@ export default function RambutAnakLakiLaki({
         fill={`url(#${gradientId})`}
       />
 
-      {/* 2. LAYER SHADOW DI BAWAH PONI (Bayangan Halus pada Dahi) */}
-      <path
-        d="M 77 42 
-           C 82 46 86 44 91 48
-           C 97 43 102 46 108 48
-           C 114 42 120 46 126 49
-           C 132 43 138 47 144 48
-           C 150 42 155 46 160 48
-           C 164 42 165 52 165 56
-           Q 120 54 75 56
-           Z"
-        fill="#000000"
-        opacity="0.12"
-      />
+
 
       {/* 3. LAYER UTAMA RAMBUT PENDEK RAPI (Modern Layered Boy Cut) */}
       {/* 
