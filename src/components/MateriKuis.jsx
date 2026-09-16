@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MATERI_KEGIATAN_EKONOMI } from '../data/materiData';
 import { QUIZ_LEVELS } from '../data/kuisData';
+import { MISSIONS_DATA } from '../data/missionData';
+import { toggleTaskCompletion } from '../utils/storage';
 import { soundFx } from '../utils/audio';
 import confetti from 'canvas-confetti';
 import { 
@@ -19,11 +21,39 @@ import {
   Sparkles,
   Coins,
   Check,
-  BrainCircuit
+  BrainCircuit,
+  Flag,
+  ChevronRight,
+  X,
+  Compass,
+  Trees,
+  Ship,
+  Store,
+  Landmark,
+  Award
 } from 'lucide-react';
 
-export default function MateriKuis({ student, updateStudentData }) {
-  const [subTab, setSubTab] = useState('materi'); // 'materi' | 'kuis'
+export default function MateriKuis({ 
+  student, 
+  updateStudentData, 
+  subTab: controlledSubTab, 
+  setSubTab: setControlledSubTab,
+  setActiveTab,
+  initialSelectedMission,
+  onClearInitialMission
+}) {
+  const [localSubTab, setLocalSubTab] = useState('materi');
+  const activeSubTab = controlledSubTab || localSubTab;
+
+  const handleSubTabChange = (newSubTab) => {
+    soundFx.playClick();
+    if (setControlledSubTab) {
+      setControlledSubTab(newSubTab);
+    } else {
+      setLocalSubTab(newSubTab);
+    }
+  };
+
   const [selectedMateriIndex, setSelectedMateriIndex] = useState(0);
   const [speaking, setSpeaking] = useState(false);
 
@@ -33,7 +63,39 @@ export default function MateriKuis({ student, updateStudentData }) {
 
   // Quiz player state
   const [selectedLevelId, setSelectedLevelId] = useState('level-1');
-  const [activeQuizState, setActiveQuizState] = useState(null); // null when selecting level
+  const [activeQuizState, setActiveQuizState] = useState(null);
+
+  // Mission tab state
+  const [selectedMissionModal, setSelectedMissionModal] = useState(null);
+
+  useEffect(() => {
+    if (initialSelectedMission) {
+      setSelectedMissionModal(initialSelectedMission);
+      if (onClearInitialMission) {
+        onClearInitialMission();
+      }
+    }
+  }, [initialSelectedMission, onClearInitialMission]);
+  const completedSet = new Set(student?.completedTasks || []);
+
+  const handleToggleTask = (e, taskObj) => {
+    e.stopPropagation();
+    soundFx.playClick();
+    if (!student || !updateStudentData) return;
+    
+    const isNowDone = !completedSet.has(taskObj.id);
+    const updatedStudent = toggleTaskCompletion(student, taskObj);
+    updateStudentData(updatedStudent);
+
+    if (isNowDone) {
+      soundFx.playScanSuccess();
+      confetti({
+        particleCount: 40,
+        spread: 50,
+        origin: { y: 0.7 }
+      });
+    }
+  };
 
   const currentMateri = MATERI_KEGIATAN_EKONOMI[selectedMateriIndex];
 
@@ -131,12 +193,10 @@ export default function MateriKuis({ student, updateStudentData }) {
     soundFx.playClick();
     const nextIdx = activeQuizState.currentQuestionIndex + 1;
     if (nextIdx >= activeQuizState.level.questions.length) {
-      // Finish Quiz
       const finalScore = activeQuizState.score;
       const rewardCoins = activeQuizState.level.rewardCoins;
       const rewardXp = activeQuizState.level.rewardXp;
 
-      // Reward player
       const newXp = student.xp + rewardXp;
       let newLevel = student.level;
       let newXpToNext = student.xpToNextLevel;
@@ -149,7 +209,6 @@ export default function MateriKuis({ student, updateStudentData }) {
         soundFx.playCoin();
       }
 
-      // Trigger Confetti
       confetti({
         particleCount: 80,
         spread: 70,
@@ -184,10 +243,22 @@ export default function MateriKuis({ student, updateStudentData }) {
     }
   };
 
+  const getIconComponent = (iconName) => {
+    switch (iconName) {
+      case 'Compass': return Compass;
+      case 'Trees': return Trees;
+      case 'Ship': return Ship;
+      case 'Store': return Store;
+      case 'Landmark': return Landmark;
+      case 'Award': return Award;
+      default: return Sparkles;
+    }
+  };
+
   return (
     <div className="space-y-6 pb-12 animate-fade-in">
       
-      {/* Top Header & Sub-Tab Switcher */}
+      {/* Top Header & 3 Sub-Tab Switcher */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white border border-slate-200 p-4 sm:p-6 rounded-3xl shadow-sm">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-bold border border-blue-200 mb-1">
@@ -195,19 +266,19 @@ export default function MateriKuis({ student, updateStudentData }) {
             <span>Pusat Pembelajaran & Evaluasi IPS</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
-            Modul & Kuis Kegiatan Ekonomi
+            Course Hub IPS
           </h2>
           <p className="text-xs sm:text-sm text-slate-600">
-            Pahami materi dasar IPS SMP dan uji kemampuanmu untuk memenangkan Koin Edukasi!
+            Pelajari materi, selesaikan kuis, dan jalankan 7 Misi Pulau Kegiatan Ekonomi!
           </p>
         </div>
 
-        {/* Sub Tab Switcher */}
-        <div className="flex bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
+        {/* 3 Sub Tab Switcher */}
+        <div className="flex bg-slate-100 p-1.5 rounded-2xl border border-slate-200 overflow-x-auto no-scrollbar">
           <button
-            onClick={() => { soundFx.playClick(); setSubTab('materi'); }}
-            className={`px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 transition-all ${
-              subTab === 'materi'
+            onClick={() => handleSubTabChange('materi')}
+            className={`px-4 sm:px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 transition-all whitespace-nowrap ${
+              activeSubTab === 'materi'
                 ? 'bg-blue-600 text-white shadow-md'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
@@ -217,9 +288,9 @@ export default function MateriKuis({ student, updateStudentData }) {
           </button>
 
           <button
-            onClick={() => { soundFx.playClick(); setSubTab('kuis'); }}
-            className={`px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 transition-all ${
-              subTab === 'kuis'
+            onClick={() => handleSubTabChange('kuis')}
+            className={`px-4 sm:px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 transition-all whitespace-nowrap ${
+              activeSubTab === 'kuis'
                 ? 'bg-amber-500 text-white shadow-md'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
@@ -227,13 +298,25 @@ export default function MateriKuis({ student, updateStudentData }) {
             <BrainCircuit className="w-4 h-4" />
             <span>Kuis Adaptif</span>
           </button>
+
+          <button
+            onClick={() => handleSubTabChange('misi')}
+            className={`px-4 sm:px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 transition-all whitespace-nowrap ${
+              activeSubTab === 'misi'
+                ? 'bg-emerald-600 text-white shadow-md'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <Flag className="w-4 h-4" />
+            <span>Misi Ekonomi</span>
+          </button>
         </div>
       </div>
 
       {/* ========================================================================= */}
       {/* SUB-TAB 1: MATERI IPS MODUL INTERAKTIF */}
       {/* ========================================================================= */}
-      {subTab === 'materi' && (
+      {activeSubTab === 'materi' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* Left Column: Module Pillar Selector */}
@@ -246,7 +329,7 @@ export default function MateriKuis({ student, updateStudentData }) {
               const isSelected = selectedMateriIndex === idx;
               let IconComponent = Factory;
               if (materi.id === 'distribusi') IconComponent = Truck;
-              if (materi.id === 'konsumsi') IconComponent = ShoppingCart;
+              if (materi.id === 'pola-konsumen-pasar') IconComponent = ShoppingCart;
 
               return (
                 <div
@@ -285,7 +368,6 @@ export default function MateriKuis({ student, updateStudentData }) {
                 <p className="text-sm text-slate-600 mt-1">{currentMateri.subtitle}</p>
               </div>
 
-              {/* Text-to-Speech Button */}
               <button
                 onClick={() => handleToggleSpeech(currentMateri.summary)}
                 className={`p-3 rounded-2xl border text-xs font-bold flex items-center gap-2 transition-all ${
@@ -328,7 +410,7 @@ export default function MateriKuis({ student, updateStudentData }) {
                   </div>
                 )}
 
-                {/* Type Cards (e.g. Produksi Barang vs Jasa) */}
+                {/* Type Cards */}
                 {sec.typeCards && (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {sec.typeCards.map((tc, tcIdx) => (
@@ -468,10 +550,8 @@ export default function MateriKuis({ student, updateStudentData }) {
       {/* ========================================================================= */}
       {/* SUB-TAB 2: KUIS ADAPTIF EVALUASI */}
       {/* ========================================================================= */}
-      {subTab === 'kuis' && (
+      {activeSubTab === 'kuis' && (
         <div className="space-y-8">
-          
-          {/* If no quiz active, show Level Selector */}
           {!activeQuizState && (
             <div className="space-y-6">
               <div className="text-center max-w-xl mx-auto space-y-2">
@@ -508,7 +588,6 @@ export default function MateriKuis({ student, updateStudentData }) {
                       </div>
 
                       <div className="space-y-4 pt-4 border-t border-slate-100">
-                        {/* Rewards */}
                         <div className="flex items-center justify-between text-xs font-bold">
                           <span className="text-slate-500">Imbalan Kuis:</span>
                           <div className="flex items-center gap-3">
@@ -521,7 +600,6 @@ export default function MateriKuis({ student, updateStudentData }) {
                           </div>
                         </div>
 
-                        {/* Action Button */}
                         <button
                           onClick={() => isUnlocked && startQuiz(level)}
                           disabled={!isUnlocked}
@@ -548,11 +626,8 @@ export default function MateriKuis({ student, updateStudentData }) {
             </div>
           )}
 
-          {/* ACTIVE QUIZ PLAYER INTERFACE */}
           {activeQuizState && (
             <div className="max-w-3xl mx-auto bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 space-y-6 shadow-md">
-              
-              {/* QUIZ FINISHED RESULTS SCREEN */}
               {activeQuizState.isFinished ? (
                 <div className="text-center space-y-6 py-6 animate-fade-in">
                   <div className="w-20 h-20 rounded-full bg-amber-100 border-2 border-amber-400 flex items-center justify-center mx-auto text-amber-600">
@@ -566,7 +641,6 @@ export default function MateriKuis({ student, updateStudentData }) {
                     </p>
                   </div>
 
-                  {/* Score & Rewards Box */}
                   <div className="bg-amber-50 border border-amber-200 p-6 rounded-2xl max-w-md mx-auto grid grid-cols-2 gap-4">
                     <div>
                       <p className="text-xs text-slate-600 font-semibold">Skor Akhir</p>
@@ -589,9 +663,7 @@ export default function MateriKuis({ student, updateStudentData }) {
                   </button>
                 </div>
               ) : (
-                /* QUIZ ACTIVE QUESTION SCREEN */
                 <>
-                  {/* Progress Top Bar */}
                   <div className="flex items-center justify-between text-xs font-bold text-slate-500">
                     <span>
                       Soal {activeQuizState.currentQuestionIndex + 1} dari {activeQuizState.level.questions.length}
@@ -601,7 +673,6 @@ export default function MateriKuis({ student, updateStudentData }) {
                     </span>
                   </div>
 
-                  {/* Progress Bar */}
                   <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
                     <div 
                       className="bg-indigo-600 h-full transition-all duration-300"
@@ -609,7 +680,6 @@ export default function MateriKuis({ student, updateStudentData }) {
                     />
                   </div>
 
-                  {/* Question Text */}
                   <div className="space-y-2 pt-2">
                     <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-indigo-100 text-indigo-700 border border-indigo-200">
                       Kategori: {activeQuizState.level.questions[activeQuizState.currentQuestionIndex].category}
@@ -619,7 +689,6 @@ export default function MateriKuis({ student, updateStudentData }) {
                     </h4>
                   </div>
 
-                  {/* Options */}
                   <div className="space-y-3">
                     {activeQuizState.level.questions[activeQuizState.currentQuestionIndex].options.map((optionText, oIdx) => {
                       const isSelected = activeQuizState.selectedOption === oIdx;
@@ -658,7 +727,6 @@ export default function MateriKuis({ student, updateStudentData }) {
                     })}
                   </div>
 
-                  {/* Explanation Box */}
                   {activeQuizState.showExplanation && (
                     <div className="bg-amber-50 border border-amber-200 p-4 rounded-2xl space-y-2 animate-fade-in">
                       <p className="text-xs font-bold text-amber-800">💡 Penjelasan Jawaban Pembelajaran:</p>
@@ -668,7 +736,6 @@ export default function MateriKuis({ student, updateStudentData }) {
                     </div>
                   )}
 
-                  {/* Bottom Action Controls */}
                   <div className="pt-4 flex justify-end">
                     {!activeQuizState.showExplanation ? (
                       <button
@@ -696,10 +763,205 @@ export default function MateriKuis({ student, updateStudentData }) {
                   </div>
                 </>
               )}
-
             </div>
           )}
+        </div>
+      )}
 
+      {/* ========================================================================= */}
+      {/* SUB-TAB 3: MISI EKONOMI 7 PULAU */}
+      {/* ========================================================================= */}
+      {activeSubTab === 'misi' && (
+        <div className="space-y-6 animate-fade-in">
+          <div className="flex items-center justify-between px-1">
+            <h3 className="text-xl font-black text-slate-900 flex items-center gap-2">
+              <Compass className="w-6 h-6 text-emerald-600" />
+              <span>Daftar 7 Misi Pulau Kegiatan Ekonomi</span>
+            </h3>
+            <span className="text-xs font-extrabold px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">
+              {completedSet.size} / 28 Tugas Selesai
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {MISSIONS_DATA.map((mission) => {
+              const IconComp = getIconComponent(mission.icon);
+              const missionTasks = mission.tasks || [];
+              const doneCount = missionTasks.filter(t => completedSet.has(t.id)).length;
+              const isAllDone = doneCount === missionTasks.length;
+
+              return (
+                <div 
+                  key={mission.id}
+                  className={`bg-white border-2 border-slate-200 rounded-3xl p-5 flex flex-col justify-between shadow-lg space-y-4 ${mission.cardBorderHover} transition-all duration-200 hover:shadow-xl hover:-translate-y-1`}
+                >
+                  <div className="space-y-3">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-9 h-9 rounded-xl bg-sky-100 flex items-center justify-center shrink-0 border border-sky-200 text-sky-600">
+                          <IconComp className="w-5 h-5 text-sky-600" />
+                        </div>
+                        <div>
+                          <span className="text-xs font-black uppercase text-slate-800 block leading-tight">
+                            {mission.locationName}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2 pt-1">
+                      {missionTasks.map((task) => {
+                        const isTaskDone = completedSet.has(task.id);
+                        return (
+                          <div 
+                            key={task.id}
+                            onClick={(e) => handleToggleTask(e, task)}
+                            className="flex items-center gap-2 text-xs font-bold text-slate-700 cursor-pointer group/item select-none hover:text-emerald-700 transition-colors"
+                            title="Klik untuk menyelesaikan tugas"
+                          >
+                            <div className={`w-4 h-4 rounded flex items-center justify-center text-[10px] shrink-0 transition-all ${
+                              isTaskDone 
+                                ? 'bg-emerald-500 border border-emerald-600 text-white font-black scale-105' 
+                                : 'bg-emerald-50 border border-emerald-400 text-emerald-600 group-hover/item:border-emerald-600'
+                            }`}>
+                              ✓
+                            </div>
+                            <span className={`line-clamp-1 ${isTaskDone ? 'line-through opacity-70 text-slate-500' : ''}`}>
+                              {task.text}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => setSelectedMissionModal(mission)}
+                    className="w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-sm shadow-md transition-colors flex items-center justify-center gap-2"
+                  >
+                    <span>Mulai Misi</span>
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* INTERACTIVE MISSION DETAIL MODAL */}
+      {/* ========================================================================= */}
+      {selectedMissionModal && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
+          <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 max-w-xl w-full space-y-6 shadow-2xl relative max-h-[90vh] overflow-y-auto no-scrollbar">
+            
+            <button
+              onClick={() => setSelectedMissionModal(null)}
+              className="absolute top-5 right-5 p-2 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-800 transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="space-y-2">
+              <span className="text-xs font-extrabold px-3 py-1 rounded-full bg-sky-100 text-sky-800 border border-sky-200 uppercase">
+                {selectedMissionModal.locationName}
+              </span>
+              <h3 className="text-2xl sm:text-3xl font-black text-slate-900">
+                {selectedMissionModal.title}
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                {selectedMissionModal.description}
+              </p>
+            </div>
+
+            <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+              <div className="flex justify-between items-center text-xs font-bold text-slate-700">
+                <span>Kemajuan Tugas Misi Ini</span>
+                <span className="text-emerald-700">
+                  {selectedMissionModal.tasks.filter(t => completedSet.has(t.id)).length} dari {selectedMissionModal.tasks.length} Selesai
+                </span>
+              </div>
+              <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                <div 
+                  className="bg-emerald-500 h-full transition-all duration-300 rounded-full"
+                  style={{
+                    width: `${(selectedMissionModal.tasks.filter(t => completedSet.has(t.id)).length / selectedMissionModal.tasks.length) * 100}%`
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <h4 className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
+                Daftar Tugas Misi:
+              </h4>
+
+              <div className="space-y-2.5">
+                {selectedMissionModal.tasks.map((task) => {
+                  const isDone = completedSet.has(task.id);
+                  return (
+                    <div 
+                      key={task.id}
+                      onClick={(e) => handleToggleTask(e, task)}
+                      className={`p-4 rounded-2xl border cursor-pointer transition-all flex items-start justify-between gap-3 ${
+                        isDone 
+                          ? 'bg-emerald-50/60 border-emerald-300' 
+                          : 'bg-white border-slate-200 hover:border-sky-300'
+                      }`}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className={`w-5 h-5 rounded flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 ${
+                          isDone 
+                            ? 'bg-emerald-500 text-white border border-emerald-600' 
+                            : 'bg-emerald-100 text-emerald-700 border border-emerald-300'
+                        }`}>
+                          ✓
+                        </div>
+                        <div>
+                          <h5 className={`font-extrabold text-sm text-slate-900 ${isDone ? 'line-through text-slate-500' : ''}`}>
+                            {task.text}
+                          </h5>
+                          <p className="text-xs text-slate-600 mt-0.5">{task.detail}</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-1 font-extrabold text-xs text-amber-600 shrink-0 bg-amber-50 px-2 py-1 rounded-lg border border-amber-200">
+                        <Coins className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+                        <span>+{task.rewardCoins}</span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="pt-2 flex justify-end">
+              <button
+                onClick={() => {
+                  const targetMateriId = selectedMissionModal.materiId;
+                  const currentTargetTab = selectedMissionModal.targetTab;
+                  setSelectedMissionModal(null);
+                  if (currentTargetTab === 'materi') {
+                    handleSubTabChange('materi');
+                    if (targetMateriId) {
+                      const idx = MATERI_KEGIATAN_EKONOMI.findIndex(m => m.id === targetMateriId);
+                      if (idx !== -1) {
+                        setSelectedMateriIndex(idx);
+                      }
+                    }
+                  } else if (setActiveTab) {
+                    setActiveTab(currentTargetTab);
+                  }
+                }}
+                className="py-3 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-sm flex items-center gap-2 shadow-lg transition-colors"
+              >
+                <span>Buka Modul Pembelajaran Misi Ini</span>
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+
+          </div>
         </div>
       )}
 

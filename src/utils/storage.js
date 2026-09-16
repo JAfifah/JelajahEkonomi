@@ -38,7 +38,17 @@ export const INITIAL_STUDENT_DATA = {
     { id: 'b3', title: 'Manajer Keuangan', icon: '💰', desc: 'Kumpulkan 200 Koin Edukasi', unlocked: true },
     { id: 'b4', title: 'Master Produksi', icon: '🏭', desc: 'Jawab sempurna kuis bab Produksi', unlocked: true },
     { id: 'b5', title: 'Pahlawan Distribusi', icon: '🚚', desc: 'Selesaikan 5 misi foto Distribusi', unlocked: false },
-    { id: 'b6', title: 'Konsumen Bijak', icon: '🛒', desc: 'Beli item sesuai skala prioritas utama', unlocked: false }
+    { id: 'b6', title: 'Konsumen Bijak', icon: '🛒', desc: 'Beli item sesuai skala prioritas utama', unlocked: false },
+    { id: 'b7', title: 'Master Ekonomi IPS', icon: '👑', desc: 'Selesaikan seluruh tugas di 7 pulau ekonomi', unlocked: false }
+  ],
+  completedTasks: [
+    'wants-t1', 'wants-t2', 
+    'res-t1', 'res-t2', 
+    'trade-t1', 'trade-t2',
+    'mkt-t1', 'mkt-t2',
+    'fst-t1',
+    'inv-t1',
+    'ent-t1'
   ],
   geminiApiKey: ''
 };
@@ -72,6 +82,7 @@ export function loadStudentData() {
       ...parsed,
       inventory: Array.from(inventorySet),
       equipped,
+      completedTasks: parsed.completedTasks || INITIAL_STUDENT_DATA.completedTasks,
       stats: { ...INITIAL_STUDENT_DATA.stats, ...(parsed.stats || {}) }
     };
   } catch (e) {
@@ -92,3 +103,51 @@ export function resetStudentData() {
   saveStudentData(INITIAL_STUDENT_DATA);
   return INITIAL_STUDENT_DATA;
 }
+
+export function toggleTaskCompletion(student, taskObj) {
+  const currentCompleted = student.completedTasks || [];
+  const isAlreadyDone = currentCompleted.includes(taskObj.id);
+
+  let updatedCompleted;
+  let newCoins = student.coins;
+  let newXp = student.xp;
+  let newPoints = student.points;
+
+  if (isAlreadyDone) {
+    // Uncheck task
+    updatedCompleted = currentCompleted.filter(id => id !== taskObj.id);
+  } else {
+    // Check task & reward
+    updatedCompleted = [...currentCompleted, taskObj.id];
+    newCoins += taskObj.rewardCoins || 25;
+    newXp += taskObj.rewardXp || 20;
+    newPoints += taskObj.rewardXp || 20;
+  }
+
+  // Check Master Badge
+  let newLevel = student.level;
+  let newXpToNext = student.xpToNextLevel;
+  if (newXp >= newXpToNext) {
+    newLevel += 1;
+    newXpToNext += 100;
+  }
+
+  const updatedBadges = (student.badges || []).map(b => {
+    if (b.id === 'b7' && updatedCompleted.length >= 28) {
+      return { ...b, unlocked: true };
+    }
+    return b;
+  });
+
+  return {
+    ...student,
+    coins: newCoins,
+    xp: newXp,
+    points: newPoints,
+    level: newLevel,
+    xpToNextLevel: newXpToNext,
+    completedTasks: updatedCompleted,
+    badges: updatedBadges
+  };
+}
+

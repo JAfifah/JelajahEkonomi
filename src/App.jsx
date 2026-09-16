@@ -12,12 +12,20 @@ import { loadStudentData, saveStudentData } from './utils/storage';
 export default function App() {
   const [student, setStudent] = useState(() => loadStudentData());
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [courseHubSubTab, setCourseHubSubTab] = useState('materi');
+  const [selectedMission, setSelectedMission] = useState(null);
   const [isApiKeyModalOpen, setIsApiKeyModalOpen] = useState(false);
 
   // Sync updates to LocalStorage
   const handleUpdateStudentData = (updatedData) => {
     setStudent(updatedData);
     saveStudentData(updatedData);
+  };
+
+  const handleNavigateToCourseHub = (subTab = 'misi', mission = null) => {
+    setCourseHubSubTab(subTab);
+    setSelectedMission(mission);
+    setActiveTab('materi');
   };
 
   return (
@@ -43,7 +51,9 @@ export default function App() {
           {activeTab === 'dashboard' && (
             <Dashboard 
               student={student} 
+              updateStudentData={handleUpdateStudentData}
               setActiveTab={setActiveTab} 
+              onNavigateToCourseHub={handleNavigateToCourseHub}
             />
           )}
 
@@ -51,6 +61,11 @@ export default function App() {
             <MateriKuis 
               student={student} 
               updateStudentData={handleUpdateStudentData} 
+              subTab={courseHubSubTab}
+              setSubTab={setCourseHubSubTab}
+              setActiveTab={setActiveTab}
+              initialSelectedMission={selectedMission}
+              onClearInitialMission={() => setSelectedMission(null)}
             />
           )}
 

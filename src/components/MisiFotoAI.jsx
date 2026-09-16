@@ -30,28 +30,34 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
 
   const missions = [
     {
-      id: 'produksi',
-      title: 'Misi 1: Cari Benda Hasil Produksi',
-      desc: 'Foto produk hasil olahan atau penciptaan benda baru (misal: meja kayu, roti, kerajinan).',
+      id: 'sumber-daya-alam',
+      title: 'Misi 1: Foto Objek Sumber Daya Alam',
+      desc: 'Pindai objek kekayaan alam lokal di sekitarmu (tanah, tanaman pangan, air, atau batuan alam).',
       badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
     },
     {
       id: 'distribusi',
-      title: 'Misi 2: Cari Sarana Distribusi',
-      desc: 'Foto sarana atau aktivitas penyaluran barang (misal: mobil/kurir pengirim, warung, toko).',
+      title: 'Misi 2: Foto Logistik / Warung Sekitar',
+      desc: 'Pindai sarana atau aktivitas penyaluran barang (kurir paket, truk angkut, warung klontong, minimarket).',
       badgeColor: 'bg-blue-500/20 text-blue-300 border-blue-500/30'
     },
     {
+      id: 'kayu-mebel',
+      title: 'Misi 3: Scan Produk Olahan Kayu',
+      desc: 'Pindai barang olahan kayu hasil hutan (meja belajar, kursi, pensil kayu, bingkai, atau furnitur).',
+      badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/30'
+    },
+    {
       id: 'konsumsi',
-      title: 'Misi 3: Cari Aktivitas/Benda Konsumsi',
-      desc: 'Foto barang yang sedang dipakai/dikonsumsi (misal: hidangan makanan, buku, sepatu sekolah).',
+      title: 'Misi 4: Aktivitas / Benda Konsumsi',
+      desc: 'Foto barang yang sedang kamu pakai atau konsumsi (makanan, minuman, buku IPS, sepatu sekolah).',
       badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/30'
     },
     {
       id: 'bebas',
       title: 'Scan Bebas Detektif Ekonomi',
-      desc: 'Pindai objek apa saja di sekitarmu untuk dikategorikan oleh Google Gemini AI!',
-      badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/30'
+      desc: 'Pindai objek apa saja di sekitarmu untuk dikategorikan oleh Google Gemini AI Engine!',
+      badgeColor: 'bg-slate-500/20 text-slate-300 border-slate-500/30'
     }
   ];
 

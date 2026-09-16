@@ -1,217 +1,342 @@
 export const MATERI_KEGIATAN_EKONOMI = [
   {
-    id: 'produksi',
-    title: '1. Kegiatan Produksi',
-    subtitle: 'Menciptakan & Menambah Nilai Guna Barang / Jasa',
-    badgeColor: 'bg-emerald-500',
-    accentGradient: 'from-emerald-500 to-teal-700',
-    bgLight: 'bg-emerald-50 hover:bg-emerald-100/50',
-    icon: 'Factory',
-    summary: 'Produksi adalah setiap kegiatan manusia yang menghasilkan barang/jasa atau menambah nilai guna suatu benda untuk memenuhi kebutuhan hidup.',
+    id: 'kebutuhan-kelangkaan',
+    title: '1. Kebutuhan & Kelangkaan (Pulau Keinginan)',
+    subtitle: 'Pengenalan Kebutuhan Manusia dan Kelangkaan Sumber Daya',
+    badgeColor: 'bg-orange-500',
+    accentGradient: 'from-amber-500 to-orange-600',
+    bgLight: 'bg-orange-50 hover:bg-orange-100/50',
+    icon: 'Compass',
+    summary: 'Kelangkaan terjadi karena kebutuhan manusia tidak terbatas sementara alat pemuas kebutuhan (sumber daya dan uang) bersifat terbatas.',
     sections: [
       {
-        heading: '💡 Pengertian & Konsep Produksi',
-        content: `Dalam ilmu IPS Ekonomi, **Produksi** tidak hanya diartikan sebagai proses membuat barang dari tidak ada menjadi ada (seperti membuat meja dari kayu). Produksi juga mencakup kegiatan **menambah nilai guna** barang yang sudah ada sehingga lebih bermanfaat (seperti mengubah kain menjadi baju seragam).`,
+        heading: '💡 Identifikasi Batasan Alat Pemuas Kebutuhan',
+        content: `Dalam ilmu IPS Ekonomi, alat pemuas kebutuhan dapat berupa **barang** (fisik) dan **jasa** (layanan). Alat pemuas kebutuhan ini bersifat **terbatas** karena jumlah sumber daya alam, modal, serta kemampuan produksi manusia terbatas. Di sisi lain, kebutuhan manusia terus meningkat seiring perkembangan waktu.`,
         keyPoints: [
-          '**Produsen**: Orang atau badan/lembaga yang melakukan kegiatan produksi.',
-          '**Nilai Guna Bentuk (Form Utility)**: Perubahan bentuk barang membuat nilai gunanya naik (contoh: kayu jadi almari).',
-          '**Nilai Guna Tempat (Place Utility)**: Pasir di sungai bernilai tinggi jika dipindahkan ke lokasi pembangunan gedung.',
-          '**Nilai Guna Waktu (Time Utility)**: Payung bernilai tinggi saat musim hujan.'
+          '**Kelangkaan (Scarcity)**: Kondisi ketidakseimbangan antara kebutuhan manusia yang tak terbatas dan sumber daya yang terbatas.',
+          '**Keterbatasan Sumber Daya**: Barang tambang, air bersih, lahan, serta pendapatan uang saku bersifat terbatas.',
+          '**Pilihan Ekonomi**: Mengingat sumber daya terbatas, setiap individu harus mengambil keputusan terbaik.'
         ]
       },
       {
-        heading: '📦 Jenis Hasil Produksi',
-        content: 'Berdasarkan wujudnya, hasil produksi dibedakan menjadi dua kategori utama:',
+        heading: '📊 Kebutuhan Primer, Sekunder, dan Tersier',
+        content: 'Berdasarkan intensitas atau tingkat kepentingannya, kebutuhan manusia dibedakan menjadi 3 jenjang:',
         typeCards: [
           {
-            title: 'Produksi Barang',
-            desc: 'Menghasilkan benda berwujud fisik yang dapat disentuh dan disimpan.',
-            examples: 'Sepatu sekolah, makanan kemasan, meja belajar, laptop, buku IPS.'
+            title: '1. Kebutuhan Primer (Pokok)',
+            desc: 'Kebutuhan mutlak yang harus dipenuhi agar manusia dapat bertahan hidup.',
+            examples: 'Pangan (makan/minum), Sandang (pakaian), Papan (tempat tinggal), dan Pendidikan dasar.'
           },
           {
-            title: 'Produksi Jasa',
-            desc: 'Menghasilkan pelayanan atau aktivitas non-fisik yang memberi manfaat.',
-            examples: 'Jasa pengajaran guru, layanan dokter, pangkas rambut, bengkel motor, transportasi online.'
+            title: '2. Kebutuhan Sekunder (Pelengkap)',
+            desc: 'Kebutuhan yang dipenuhi setelah kebutuhan primer terpenuhi untuk melengkapi kenyamanan hidup.',
+            examples: 'Sepatu sekolah cadangan, sepeda, peralatan olahraga, lemari pakaian, buku bacaan.'
+          },
+          {
+            title: '3. Kebutuhan Tersier (Mewah)',
+            desc: 'Kebutuhan akan barang-barang mewah untuk meningkatkan status sosial atau prestise.',
+            examples: 'Mobil mewah, perhiasan mahal, liburan ke luar negeri, aksesoris kolektor.'
           }
         ]
       },
       {
-        heading: '🎯 Tujuan Kegiatan Produksi',
-        bullets: [
-          'Memenuhi kebutuhan konsumen akan barang dan jasa.',
-          'Mengganti barang yang rusak atau habis dipakai.',
-          'Mendapatkan keuntungan (laba) bagi produsen.',
-          'Menjaga keberlangsungan usaha dan membuka lapangan kerja bagi masyarakat.'
-        ]
-      },
-      {
-        heading: '⚡ 4 Faktor Produksi (Sumber Daya Produksi)',
-        content: 'Untuk menjalankan proses produksi, produsen membutuhkan 4 faktor penting:',
-        factors: [
-          {
-            name: '1. Faktor Alam (Land/Natural)',
-            type: 'Asli',
-            desc: 'Segala kekayaan alam yang disediakan bumi untuk bahan baku produksi (tanah, air, barang tambang, iklim).'
-          },
-          {
-            name: '2. Faktor Tenaga Kerja (Labor)',
-            type: 'Asli',
-            desc: 'Kemampuan manusia (jasmani & rohani) dalam mengolah barang. Dibedakan menjadi: Terdidik (Dokter, Guru), Terlatih (Sopir, Montir), dan Tidak Terdidik (Kuli angkut).'
-          },
-          {
-            name: '3. Faktor Modal (Capital)',
-            type: 'Turunan',
-            desc: 'Segala sarana dan alat yang digunakan untuk mempermudah produksi (mesin, pabrik, uang modal, peralatan).'
-          },
-          {
-            name: '4. Faktor Kewirausahaan / Keahlian (Entrepreneurship)',
-            type: 'Turunan',
-            desc: 'Kemampuan mengorganisasi dan mengelola 3 faktor produksi lainnya agar berjalan efisien dan menguntungkan.'
-          }
+        heading: '⚖️ Menyusun Skala Prioritas Kebutuhan Pribadi',
+        content: `Agar uang saku yang terbatas dapat memenuhi kebutuhan terpenting, seorang siswa harus menyusun **Skala Prioritas Kebutuhan**:`,
+        priorities: [
+          { label: 'Prioritas I (Sangat Mendesak & Penting)', desc: 'Makanan pokok kantin, buku IPS, alat tulis sekolah.' },
+          { label: 'Prioritas II (Penting tapi Kurang Mendesak)', desc: 'Sepatu cadangan, dompet pensil baru.' },
+          { label: 'Prioritas III (Kurang Penting / Keinginan)', desc: 'Game konsol mahal, aksesoris avatar kemewahan.' }
         ]
       }
     ],
     quickCheck: {
-      question: 'Manakah di bawah ini yang merupakan contoh perubahan Nilai Guna Bentuk (Form Utility)?',
+      question: 'Manakah di bawah ini yang merupakan Kebutuhan Primer bagi seorang pelajar SMP?',
       options: [
-        'Menggunakan jas hujan saat cuaca mendung',
-        'Mengolah kedelai menjadi tempe yang bergizi',
-        'Mengirim beras dari desa ke pasar kota'
+        'Membeli mainan video game terbaru',
+        'Membeli buku paket sekolah dan alat tulis',
+        'Membeli perhiasan emas'
       ],
       correctAnswer: 1,
-      explanation: 'Mengubah kedelai menjadi tempe mengubah bentuk bahan mentah menjadi makanan jadi bernilai guna tinggi (Form Utility).'
+      explanation: 'Buku pelajaran dan alat tulis adalah Kebutuhan Primer untuk mendukung aktivitas pendidikan dasar.'
+    }
+  },
+  {
+    id: 'faktor-alam',
+    title: '2. Faktor Alam & Produksi (Pulau Sumber Daya)',
+    subtitle: 'Eksplorasi Kekayaan Alam Asli untuk Kegiatan Produksi',
+    badgeColor: 'bg-emerald-500',
+    accentGradient: 'from-emerald-500 to-teal-700',
+    bgLight: 'bg-emerald-50 hover:bg-emerald-100/50',
+    icon: 'Trees',
+    summary: 'Faktor alam adalah seluruh kekayaan bumi yang disediakan alam secara langsung untuk diolah menjadi barang pemuas kebutuhan.',
+    sections: [
+      {
+        heading: '🌿 5 Faktor Alam Lokal untuk Produksi',
+        content: `Indonesia kaya akan sumber daya alam yang melimpah. Faktor produksi alam (Land/Natural Resources) meliputi:`,
+        bullets: [
+          '**Tanah**: Lahan untuk pertanian, perkebunan, mendirikan pabrik, dan bangunan.',
+          '**Air**: Untuk irigasi sawah, sumber daya pembangkit listrik (PLTA), serta konsumsi pabrik.',
+          '**Udara & Iklim**: Menentukan masa tanam tanaman pangan dan mendukung energi angin.',
+          '**Tumbuhan & Hewan**: Bahan baku industri makanan, tekstil (kapas/wol), dan obat-obatan.',
+          '**Barang Tambang**: Bahan mentah industri manufaktur dan energi dasar.'
+        ]
+      },
+      {
+        heading: '⛏️ Pemanfaatan Bahan Tambang & Energi',
+        content: `Bahan tambang dibedakan menjadi tambang energi (batu bara, minyak bumi, gas alam) dan tambang logam (biji besi, tembaga, emas, nikel). Bahan energi menggerakkan mesin-mesin industri modern.`,
+        keyPoints: [
+          '**Minyak Bumi & Gas**: Bahan bakar transportasi logistik dan daya pabrik.',
+          '**Nikel & Tembaga**: Bahan utama baterai kendaraan listrik dan perangkat elektronik.',
+          '**Batu Bara**: Sumber energi utama pembangkit listrik tenaga uap (PLTU).'
+        ]
+      },
+      {
+        heading: '🐾 Peran Makhluk Hidup dalam Produksi',
+        content: 'Tumbuhan menyediakan kapas untuk benang kain, kayu untuk konstruksi mebel, dan padi untuk pangan. Hewan menyediakan daging, susu, kulit untuk sepatu, serta wol untuk pakaian.'
+      }
+    ],
+    quickCheck: {
+      question: 'Tanah, air, dan barang tambang tergolong ke dalam faktor produksi...',
+      options: [
+        'Faktor Modal Turunan',
+        'Faktor Alam (Asli)',
+        'Faktor Kewirausahaan'
+      ],
+      correctAnswer: 1,
+      explanation: 'Faktor Alam adalah kekayaan langsung dari bumi yang belum diolah manusia (Faktor Produksi Asli).'
     }
   },
   {
     id: 'distribusi',
-    title: '2. Kegiatan Distribusi',
+    title: '3. Perdagangan & Distribusi (Pelabuhan Perdagangan)',
     subtitle: 'Menyalurkan Produk dari Produsen ke Konsumen',
     badgeColor: 'bg-blue-500',
     accentGradient: 'from-blue-500 to-indigo-700',
     bgLight: 'bg-blue-50 hover:bg-blue-100/50',
     icon: 'Truck',
-    summary: 'Distribusi adalah seluruh kegiatan menyalurkan barang atau jasa dari produsen sampai ke tangan konsumen dengan tepat waktu dan lokasi.',
+    summary: 'Distribusi adalah kegiatan menyalurkan barang dan jasa dari pabrik/produsen hingga ke tangan pembeli tepat waktu dan lokasi.',
     sections: [
-      {
-        heading: '🚚 Pengertian & Pentingnya Distribusi',
-        content: `Tanpa distribusi, barang yang diproduksi di pabrik tidak akan bisa dinikmati oleh konsumen yang berada di lokasi berjauhan. Orang atau lembaga yang melakukan kegiatan distribusi disebut **Distributor**.`
-      },
-      {
-        heading: '🎯 Tujuan Distribusi',
-        bullets: [
-          'Menyampaikan barang dan jasa ke tangan konsumen tepat waktu.',
-          'Menjaga kontinuitas/kelangsungan kegiatan produksi pabrik.',
-          'Memeratakan penyebaran barang di seluruh wilayah Indonesia.',
-          'Menjaga stabilitas harga barang di pasar.'
-        ]
-      },
       {
         heading: '🛤️ 3 Saluran Distribusi Utama',
         channels: [
           {
             name: '1. Distribusi Langsung',
             badge: 'Produsen ➔ Konsumen',
-            desc: 'Produsen menjual produknya secara langsung tanpa perantara.',
-            example: 'Petani menjual sayur segar langsung di pinggir sawah, atau pembuat kue menjual hasil buatannya di toko sendiri.'
+            desc: 'Produsen menjual barang langsung kepada konsumen tanpa perantara.',
+            example: 'Petani menjual buah hasil panen langsung di pinggir jalan sawah.'
           },
           {
             name: '2. Distribusi Semi-Langsung',
-            badge: 'Produsen ➔ Perantara Milik Sendiri ➔ Konsumen',
-            desc: 'Menyelenggarakan penyaluran melalui outlet/toko resmi milik produsen sendiri.',
-            example: 'Pabrik sepatu merek lokal menjual barang melalui toko cabang resmi di mall.'
+            badge: 'Produsen ➔ Outlet Resmi ➔ Konsumen',
+            desc: 'Penyaluran produk melalui perantara toko/cabang resmi milik produsen sendiri.',
+            example: 'Pabrik sepatu merek lokal menjual melalui toko cabang resmi di mall.'
           },
           {
             name: '3. Distribusi Tidak Langsung',
-            badge: 'Produsen ➔ Agen / Grosir ➔ Pengecer ➔ Konsumen',
-            desc: 'Melalui rantai perantara pedagang besar (grosir) dan pedagang eceran (warung/supermarket).',
-            example: 'Pabrik mie instan menyalurkan produk ke agen besar, lalu ke agen daerah, warung klontong, baru dibeli siswa.'
+            badge: 'Produsen ➔ Grosir ➔ Pengecer ➔ Konsumen',
+            desc: 'Melalui perantara pedagang besar (grosir), agen, dan warung eceran.',
+            example: 'Pabrik mie instan ➔ Agen besar ➔ Warung tetangga ➔ Pembeli.'
           }
         ]
       },
       {
         heading: '👥 Lembaga Perantara Distribusi',
         keyPoints: [
-          '**Agen**: Perantara yang bertindak atas nama produsen untuk menjual produk.',
-          '**Grosir (Pedagang Besar)**: Membeli barang dalam jumlah sangat besar dari produsen lalu menjualnya ke pengecer.',
-          '**Pengecer (Retailer)**: Membeli barang dari grosir dan menjualnya dalam satuan kecil langsung ke konsumen akhir (contoh: minimarket, warung).'
+          '**Grosir (Pedagang Besar)**: Membeli barang dalam jumlah besar dari pabrik dan menjualnya kembali ke toko eceran.',
+          '**Agen**: Perantara yang bertindak atas nama produsen untuk menyalurkan barang ke daerah tertentu.',
+          '**Pengecer (Retailer)**: Membeli barang dari grosir dan menjualnya dalam satuan kecil langsung ke masyarakat (contoh: warung, minimarket).'
         ]
       }
     ],
     quickCheck: {
-      question: 'Budi membeli pensil di warung tetangga dekat rumah. Warung tetangga berperan sebagai saluran distribusi...',
+      question: 'Siswa membeli alat tulis di warung dekat sekolah. Warung tersebut berperan sebagai...',
       options: [
-        'Distribusi Langsung',
-        'Distribusi Tidak Langsung melalui Pengecer',
-        'Distribusi Semi-Langsung'
+        'Grosir / Pedagang Besar',
+        'Pengecer (Retailer)',
+        'Agen Tunggal Produsen'
       ],
       correctAnswer: 1,
-      explanation: 'Warung klontong tetangga adalah Pengecer (Retailer) dalam rantai distribusi tidak langsung dari pabrik pensil.'
+      explanation: 'Warung menjual dalam satuan eceran kecil langsung kepada konsumen akhir (Pengecer).'
     }
   },
   {
-    id: 'konsumsi',
-    title: '3. Kegiatan Konsumsi',
-    subtitle: 'Menggunakan & Menghabiskan Nilai Guna Barang',
-    badgeColor: 'bg-purple-500',
-    accentGradient: 'from-purple-500 to-pink-700',
-    bgLight: 'bg-purple-50 hover:bg-purple-100/50',
-    icon: 'ShoppingCart',
-    summary: 'Konsumsi adalah kegiatan mengurangi atau menghabiskan nilai guna suatu barang/jasa secara bertahap atau langsung untuk memenuhi kebutuhan.',
+    id: 'pola-konsumen-pasar',
+    title: '4. Pola Konsumen & Pasar (Misi Pasar)',
+    subtitle: 'Analisis Kebutuhan Pasar Konsumen & Nilai Guna Barang',
+    badgeColor: 'bg-yellow-500',
+    accentGradient: 'from-amber-500 to-yellow-600',
+    bgLight: 'bg-amber-50 hover:bg-amber-100/50',
+    icon: 'Store',
+    summary: 'Pasar adalah tempat bertemunya permintaan pembeli dan penawaran penjual. Konsumen membeli barang berdasarkan Nilai Guna (Utility).',
     sections: [
       {
-        heading: '🛒 Pengertian & Karakteristik Konsumsi',
-        content: `Orang atau kelompok yang menggunakan barang/jasa disebut **Konsumen**. Konsumsi tidak hanya berarti memakan makanan, tetapi juga memakai baju, naik angkutan umum, menggunakan listrik, dan menonton bioskop.`
-      },
-      {
-        heading: '🎯 Tujuan Konsumsi',
+        heading: '🛒 3 Kebutuhan Utama Pasar Konsumen',
+        content: `Konsumen di pasar memiliki 3 ekspektasi utama saat membeli barang atau jasa:`,
         bullets: [
-          'Memenuhi kebutuhan jasmani (makan, minum, pakaian, olahraga).',
-          'Memenuhi kebutuhan rohani (rekreasi, hiburan, menuntut ilmu).',
-          'Mencapai kepuasan optimal dan taraf hidup yang layak.'
+          '**Harga Terjangkau & Sesuai Kualitas**: Konsumen mencari nilai harga (value for money) terbaik.',
+          '**Kualitas & Keamanan Produk**: Barang harus berfungsi baik, tahan lama, dan aman digunakan.',
+          '**Kemudahan Akses & Pelayanan**: Kemudahan menemukan tempat penjual atau transaksi online cepat.'
         ]
       },
       {
-        heading: '⚖️ Faktor yang Memengaruhi Konsumsi',
-        content: 'Tingkat konsumsi setiap siswa atau keluarga berbeda-beda disebabkan oleh faktor internal dan eksternal:',
+        heading: '💎 4 Konsep Nilai Guna Barang (Utility)',
+        keyPoints: [
+          '**Form Utility (Nilai Guna Bentuk)**: Perubahan bentuk menambah kegunaan (kayu jadi meja jahit).',
+          '**Place Utility (Nilai Guna Tempat)**: Barang lebih berguna di lokasi tepat (pasir di lokasi pembangunan).',
+          '**Time Utility (Nilai Guna Waktu)**: Barang lebih berguna pada waktu tepat (payung saat hujan).',
+          '**Ownership Utility (Nilai Guna Kepemilikan)**: Barang berguna setelah dimiliki secara sah (buku cetak setelah dibeli).'
+        ]
+      },
+      {
+        heading: '⚖️ Faktor Internal & Eksternal Konsumsi',
         factorsList: [
           {
-            category: 'Faktor Internal (Dari Dalam Diri)',
+            category: 'Faktor Internal (Diri Sendiri)',
             items: [
-              '**Besarnya Pendapatan / Uang Saku**: Makin besar uang saku, cenderung makin tinggi konsumsinya.',
-              '**Selera & Kepribadian**: Siswa yang hobi membaca akan lebih banyak mengonsumsi buku.',
-              '**Umur & Jenis Kelamin**: Kebutuhan pakaian & porsi makan remaja berkembang cepat.',
-              '**Tingkat Pendidikan**: Kebutuhan siswa SMP berbeda dengan anak TK.'
+              '**Pendapatan / Uang Saku**: Makin besar uang saku, tingkat konsumsi cenderung meningkat.',
+              '**Selera & Kepribadian**: Hobi musik mendorong pembelian alat musik.',
+              '**Usia & Gender**: Kebutuhan siswa SMP berbeda dengan anak balita.'
             ]
           },
           {
-            category: 'Faktor Eksternal (Dari Lingkungan Luar)',
+            category: 'Faktor Eksternal (Lingkungan)',
             items: [
-              '**Lingkungan Tempat Tinggal**: Masyarakat pesisir butuh pakaian tipis, masyarakat pegunungan butuh jaket tebal.',
-              '**Kemajuan Teknologi & Adat Istiadat**: Tren HP pintar dan tradisi perayaan daerah.',
-              '**Harga Barang & Jasa di Pasar**: Jika harga naik, konsumsi cenderung disesuaikan.'
+              '**Harga Barang di Pasar**: Kenaikan harga memengaruhi jumlah yang dibeli.',
+              '**Lingkungan & Iklim**: Masyarakat pegunungan butuh jaket tebal.',
+              '**Tradisi & Kebudayaan**: Hari raya meningkatkan konsumsi bahan kue.'
             ]
           }
-        ]
-      },
-      {
-        heading: '📊 Skala Prioritas Kebutuhan (Penting untuk Siswa!)',
-        content: `Karena uang dan sumber daya terbatas sedangkan keinginan manusia tidak terbatas, siswa harus menyusun **Skala Prioritas**:`,
-        priorities: [
-          { label: 'Prioritas I (Sangat Penting & Mendesak)', desc: 'Kebutuhan Primer: Makanan pokok, buku sekolah, alat tulis.' },
-          { label: 'Prioritas II (Penting tapi Kurang Mendesak)', desc: 'Kebutuhan Sekunder: Sepatu cadangan, dompet pensil bagus.' },
-          { label: 'Prioritas III (Kurang Penting / Keinginan)', desc: 'Kebutuhan Tersier: Mainan mahal, aksesori mewah.' }
         ]
       }
     ],
     quickCheck: {
-      question: 'Membuat urutan daftar belanja dari yang paling mendesak hingga yang bisa ditunda disebut...',
+      question: 'Kayu glondongan diolah menjadi meja belajar hingga nilainya meningkat. Ini contoh nilai guna...',
       options: [
-        'Skala Prioritas Kebutuhan',
-        'Faktor Produksi Modal',
-        'Saluran Distribusi Semi Langsung'
+        'Time Utility',
+        'Form Utility (Bentuk)',
+        'Place Utility'
       ],
-      correctAnswer: 0,
-      explanation: 'Skala Prioritas Kebutuhan membantu kita mengelola uang dengan bijak sesuai tingkat urgenitas kebutuhan!'
+      correctAnswer: 1,
+      explanation: 'Form Utility adalah kenaikan manfaat barang akibat perubahan bentuk fisik dari bahan mentah.'
+    }
+  },
+  {
+    id: 'konservasi-bahan-baku',
+    title: '5. Konservasi & Bahan Baku (Hutan Sumberdaya)',
+    subtitle: 'Rantai Pasok Hasil Hutan & Keseimbangan Lingkungan',
+    badgeColor: 'bg-teal-600',
+    accentGradient: 'from-emerald-600 to-teal-700',
+    bgLight: 'bg-teal-50 hover:bg-teal-100/50',
+    icon: 'Trees',
+    summary: 'Hutan menghasilkan kayu jati, rotan, dan getah sebagai bahan baku mebel & industri, namun penggunaannya harus menjaga keseimbangan alam.',
+    sections: [
+      {
+        heading: '🌲 Hasil Hutan Sebagai Bahan Baku Industri',
+        content: `Hutan Indonesia menghasilkan bahan baku berkualitas tinggi:`,
+        bullets: [
+          '**Kayu Jati & Mahoni**: Untuk industri mebel, furnitur rumah, dan konstruksi gedung.',
+          '**Rotan**: Untuk kerajinan aneka anyaman dan kursi estetik.',
+          '**Getah Karet (Lateks)**: Untuk ban kendaraan dan bahan olahan karet.'
+        ]
+      },
+      {
+        heading: '🪵 Rantai Pasok Kayu Menjadi Mebel',
+        content: `Perjalanan kayu dari hutan hingga menjadi meja belajar siswa:`,
+        priorities: [
+          { label: 'Langkah 1: Penebangan Terkontrol', desc: 'Pohon jati ditebang sesuai izin Sistem Verifikasi Legalitas Kayu (SVLK).' },
+          { label: 'Langkah 2: Pengolahan di Penggergajian (Sawmill)', desc: 'Batang pohon dipotong menjadi papan kayu standar.' },
+          { label: 'Langkah 3: Pengrajin & Industri Mebel', desc: 'Papan dirakit, diampelas, dan diwarnai menjadi meja & kursi.' },
+          { label: 'Langkah 4: Toko Furnitur & Distribusi', desc: 'Mebel dijual ke konsumen untuk memenuhi kebutuhan rumah tangga.' }
+        ]
+      },
+      {
+        heading: '♻️ Keseimbangan Lingkungan & Produksi Sustainable',
+        content: 'Produksi industri kayu wajib menerapkan sistem **Tebang Pilih** dan **Reboisasi** (penanaman kembali) agar hutan tidak gundul dan bencana banjir terhindari.'
+      }
+    ],
+    quickCheck: {
+      question: 'Sistem menanam kembali pohon yang telah ditebang di hutan dinamakan...',
+      options: [
+        'Form Utility',
+        'Reboisasi',
+        'Distribusi Semi Langsung'
+      ],
+      correctAnswer: 1,
+      explanation: 'Reboisasi adalah upaya konservasi lingkungan dengan menanam kembali pohon di lahan hutan.'
+    }
+  },
+  {
+    id: 'modal-keuangan',
+    title: '6. Pengelolaan Modal & Keuangan (Bank Investasi)',
+    subtitle: 'Faktor Modal Produksi & Perencanaan Anggaran Siswa',
+    badgeColor: 'bg-indigo-600',
+    accentGradient: 'from-indigo-600 to-purple-600',
+    bgLight: 'bg-indigo-50 hover:bg-indigo-100/50',
+    icon: 'Landmark',
+    summary: 'Modal adalah sarana pendukung produksi (mesin, pabrik, uang). Siswa diajak mengelola uang saku & tabungan secara bijaksana.',
+    sections: [
+      {
+        heading: '🏭 Faktor Modal Produksi (Capital)',
+        content: `Modal tergolong Faktor Produksi Turunan yang berfungsi memperlancar proses pembuatan barang.`,
+        keyPoints: [
+          '**Modal Konkret (Nyata)**: Mesin cetak, gedung pabrik, truk angkut, dan peralatan kerja.',
+          '**Modal Abstrak (Tak Berwujud)**: Kepercayaan, hak paten, nama baik merek (goodwill).',
+          '**Modal Sendiri vs Modal Pinjaman**: Sumber dana yang berasal dari tabungan pribadi atau pinjaman bank.'
+        ]
+      },
+      {
+        heading: '💰 Tabungan & Pengelolaan Koin Edukasi',
+        content: `Dalam game dan kehidupan nyata, menyisihkan sebagian koin/pendapatan untuk **menabung** memberi keamanan finansial di masa depan.`
+      }
+    ],
+    quickCheck: {
+      question: 'Mesin jahit, gedung pabrik, dan alat pertukangan tergolong ke dalam faktor...',
+      options: [
+        'Faktor Alam Asli',
+        'Faktor Modal Produksi',
+        'Faktor Konsumsi Akhir'
+      ],
+      correctAnswer: 1,
+      explanation: 'Peralatan dan gedung pabrik adalah sarana pendukung untuk memperlancar produksi (Faktor Modal).'
+    }
+  },
+  {
+    id: 'kewirausahaan-jasa',
+    title: '7. Keahlian & Jenis Produksi (Pulau Kewirausahaan)',
+    subtitle: 'Faktor Kewirausahaan, Produksi Barang & Jasa',
+    badgeColor: 'bg-purple-600',
+    accentGradient: 'from-purple-600 to-pink-600',
+    bgLight: 'bg-purple-50 hover:bg-purple-100/50',
+    icon: 'Award',
+    summary: 'Wirausahawan (Entrepreneur) mengelola faktor alam, tenaga kerja, dan modal agar efisien. Hasilnya berupa produksi barang atau jasa.',
+    sections: [
+      {
+        heading: '🚀 Peran Faktor Keahlian (Entrepreneurship)',
+        content: `Tanpa jiwa wirausaha, faktor alam, modal, dan tenaga kerja tidak akan berjalan optimal. Seorang wirausahawan memiliki 3 keahlian:`,
+        bullets: [
+          '**Managerial Skill**: Kemampuan mengelola dan memimpin usaha.',
+          '**Technological Skill**: Kemampuan menguasai teknik dan teknologi produksi.',
+          '**Organizational Skill**: Kemampuan membagi tugas dan mengorganisasi tim kerja.'
+        ]
+      },
+      {
+        heading: '📦 Produksi Barang (Modal vs Konsumsi)',
+        content: 'Barang Modal digunakan untuk membuat barang lain (mesin bubut), sedangkan Barang Konsumsi langsung dipakai masyarakat (pakaian, roti).'
+      },
+      {
+        heading: '💆 Produksi Jasa (Kecantikan, Pariwisata, Pengobatan)',
+        content: 'Produksi Jasa memberikan pelayanan bermanfaat tanpa wujud fisik: Jasa Kecantikan (salon/barbershop), Jasa Pariwisata (hotel/tour), dan Jasa Pengobatan (dokter/rumah sakit).'
+      }
+    ],
+    quickCheck: {
+      question: 'Layanan dokter rumah sakit dan pemandu wisata tergolong ke dalam jenis...',
+      options: [
+        'Produksi Barang Modal',
+        'Produksi Jasa',
+        'Distribusi Langsung'
+      ],
+      correctAnswer: 1,
+      explanation: 'Dokter dan pemandu wisata memberikan pelayanan non-fisik yang bernilai guna (Produksi Jasa).'
     }
   }
 ];
