@@ -171,74 +171,70 @@ export default function AvatarCanvas({
             <path d="M 80 247 C 77 251 76 255 77 258" fill="none" stroke={adjustColor(skinTone, -25)} strokeWidth="1" opacity="0.6" />
           </g>
 
-          {/* Right Arm: Waving Pose Upper Arm vs Normal Arm */}
-          {wavingActive ? (
-            /* Upper Arm Skin leading towards elbow */
-            <path d="M 164 116 Q 176 116 188 120 L 184 134 Q 170 130 158 126 Z" fill="url(#skinGradient)" stroke={adjustColor(skinTone, -30)} strokeWidth="1" />
-          ) : (
-            /* Normal Relaxed Right Arm */
-            <path d="M 168 125 Q 180 180 172 245 L 158 245 Q 164 180 156 125 Z" fill="url(#skinGradient)" stroke={adjustColor(skinTone, -30)} strokeWidth="1" />
-          )}
-
+          {/* Right Arm: When not waving, render resting arm and hand */}
           {!wavingActive && (
-            /* Normal Relaxed Right Hand */
-            <g>
-              <path
-                d="M 172 245 C 182 252 180 264 170 268 C 162 270 157 262 159 255 C 155 252 156 247 160 245 Z"
-                fill="url(#skinGradient)"
-                stroke={adjustColor(skinTone, -30)}
-                strokeWidth="1.2"
-                strokeLinejoin="round"
-              />
-              <path d="M 160 247 C 163 251 164 255 163 258" fill="none" stroke={adjustColor(skinTone, -25)} strokeWidth="1" opacity="0.6" />
-            </g>
+            <>
+              {/* Normal Relaxed Right Arm */}
+              <path d="M 168 125 Q 180 180 172 245 L 158 245 Q 164 180 156 125 Z" fill="url(#skinGradient)" stroke={adjustColor(skinTone, -30)} strokeWidth="1" />
+              {/* Normal Relaxed Right Hand */}
+              <g>
+                <path
+                  d="M 172 245 C 182 252 180 264 170 268 C 162 270 157 262 159 255 C 155 252 156 247 160 245 Z"
+                  fill="url(#skinGradient)"
+                  stroke={adjustColor(skinTone, -30)}
+                  strokeWidth="1.2"
+                  strokeLinejoin="round"
+                />
+                <path d="M 160 247 C 163 251 164 255 163 258" fill="none" stroke={adjustColor(skinTone, -25)} strokeWidth="1" opacity="0.6" />
+              </g>
+            </>
           )}
 
           {/* --- TOPS (WHITE T-SHIRT / UNIFORM / JACKET) --- */}
           {renderTops(activeEquipped.top, wavingActive)}
 
-          {/* --- ANIMATED WAVING FOREARM & HAND (Melambaikan Tangan) --- */}
+          {/* --- ANIMATED WAVING FOREARM & HAND (Proportional & Natural) --- */}
           {wavingActive && (
             <g 
               className="avatar-waving-arm"
               style={{ 
-                transformOrigin: '186px 126px', 
+                transformOrigin: '178px 166px', 
                 animation: animated ? 'avatarWaveArm 2.2s ease-in-out infinite' : 'none' 
               }}
             >
-              {/* Forearm skin emerging from sleeve cuff */}
+              {/* Proportional Forearm emerging smoothly from sleeve cuff (uniform 14-15px width) */}
               <path
-                d="M 186 120 L 192 72 L 204 74 L 182 130 Z"
+                d="M 170 168 
+                   C 172 150 178 130 190 96 
+                   L 204 94 
+                   C 192 130 186 150 185 165 Z"
                 fill="url(#skinGradient)"
                 stroke={adjustColor(skinTone, -30)}
                 strokeWidth="1.2"
                 strokeLinejoin="round"
               />
               
-              {/* Waving Open Hand with 4 fingers & thumb */}
+              {/* Proportional Cartoon Waving Hand (matched scale to left hand) */}
               <path
-                d="M 192 72 
-                   C 188 68 184 63 182 58 
-                   C 180 53 184 50 188 54 
-                   C 190 56 191 58 193 54
-                   C 192 48 193 38 196 36 
-                   C 198 35 200 37 200 44
-                   C 200 38 201 34 204 34 
-                   C 206 34 207 38 207 44
-                   C 208 39 209 37 212 37 
-                   C 214 37 214 41 213 47
-                   C 215 43 216 42 218 42 
-                   C 220 42 220 46 218 52
-                   C 216 58 214 66 204 74 Z"
+                d="M 190 96 
+                   C 186 92 183 87 182 82 
+                   C 180 77 184 75 186 78 
+                   C 188 80 189 82 191 78 
+                   C 190 73 191 67 193 66 
+                   C 195 65 197 67 197 73 
+                   C 198 69 200 66 202 66 
+                   C 204 66 205 69 205 73 
+                   C 206 70 207 68 209 68 
+                   C 211 68 211 71 210 75 
+                   C 211 80 209 87 204 94 Z"
                 fill="url(#skinGradient)"
                 stroke={adjustColor(skinTone, -30)}
                 strokeWidth="1.2"
                 strokeLinejoin="round"
               />
               
-              {/* Palm creases */}
-              <path d="M 192 60 Q 200 66 208 62" fill="none" stroke={adjustColor(skinTone, -25)} strokeWidth="1" opacity="0.6" />
-              <path d="M 196 56 Q 202 60 206 58" fill="none" stroke={adjustColor(skinTone, -25)} strokeWidth="0.8" opacity="0.4" />
+              {/* Palm crease detail */}
+              <path d="M 189 84 Q 196 88 203 85" fill="none" stroke={adjustColor(skinTone, -25)} strokeWidth="1" opacity="0.6" />
             </g>
           )}
 
@@ -415,37 +411,19 @@ function renderTops(topId, isWaving = false) {
   }
 }
 
-function renderRightSleeve(topId, isWaving) {
-  if (!isWaving) {
-    switch (topId) {
-      case 'top-seragam-smp':
-        return <path d="M 168 114 L 186 165 L 165 168 L 162 122 Z" fill="#ffffff" stroke="#cbd5e1" strokeWidth="1.5" />;
-      case 'top-jaket-produksi':
-        return <path d="M 172 112 L 192 168 L 170 172 L 166 120 Z" fill="#059669" />;
-      case 'top-rompi-kurir':
-        return <path d="M 172 112 L 190 168 L 168 172 L 166 120 Z" fill="#3b82f6" />;
-      case 'top-jubah-raja':
-        return <path d="M 172 112 L 190 168 L 168 172 L 166 120 Z" fill="#4c1d95" />;
-      case 'top-kaos-ips':
-      default:
-        return <path d="M 168 114 L 188 165 L 165 168 L 162 122 Z" fill="url(#shirtGradient)" stroke="#cbd5e1" strokeWidth="1.5" />;
-    }
-  }
-
-  // Waving pose sleeve: wraps upper arm towards elbow
-  const sleevePath = "M 164 114 Q 176 114 188 118 L 184 136 Q 170 132 158 126 Z";
+function renderRightSleeve(topId) {
   switch (topId) {
     case 'top-seragam-smp':
-      return <path d={sleevePath} fill="#ffffff" stroke="#cbd5e1" strokeWidth="1.5" />;
+      return <path d="M 168 114 L 188 165 L 165 168 L 162 122 Z" fill="#ffffff" stroke="#cbd5e1" strokeWidth="1.5" />;
     case 'top-jaket-produksi':
-      return <path d={sleevePath} fill="#059669" stroke="#047857" strokeWidth="1.5" />;
+      return <path d="M 172 112 L 192 168 L 170 172 L 166 120 Z" fill="#059669" />;
     case 'top-rompi-kurir':
-      return <path d={sleevePath} fill="#3b82f6" stroke="#2563eb" strokeWidth="1.5" />;
+      return <path d="M 172 112 L 190 168 L 168 172 L 166 120 Z" fill="#3b82f6" />;
     case 'top-jubah-raja':
-      return <path d={sleevePath} fill="#4c1d95" stroke="#f59e0b" strokeWidth="1.5" />;
+      return <path d="M 172 112 L 190 168 L 168 172 L 166 120 Z" fill="#4c1d95" />;
     case 'top-kaos-ips':
     default:
-      return <path d={sleevePath} fill="url(#shirtGradient)" stroke="#cbd5e1" strokeWidth="1.5" />;
+      return <path d="M 168 114 L 188 165 L 165 168 L 162 122 Z" fill="url(#shirtGradient)" stroke="#cbd5e1" strokeWidth="1.5" />;
   }
 }
 
