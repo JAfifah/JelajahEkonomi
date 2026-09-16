@@ -18,7 +18,7 @@ export default function HeaderBar({ student, onOpenApiKeyModal }) {
         </div>
       </div>
 
-      {/* Currencies & Gemini API */}
+      {/* Currencies */}
       <div className="flex items-center gap-4 flex-wrap justify-end">
         
         {/* Koin Edukasi Badge */}

@@ -35,7 +35,7 @@ export const MISSIONS_DATA = [
         id: 'wants-t3',
         text: 'Menyelesaikan Misi Foto: Misi Pengenalan Kebutuhan & Kelangkaan',
         type: 'ai-scan',
-        detail: 'Pindai objek alat pemuas kebutuhan dasar manusia dengan Google Gemini AI Scanner.',
+        detail: 'Pindai objek alat pemuas kebutuhan dasar manusia dengan AI Scanner.',
         rewardCoins: 40,
         rewardXp: 35
       }

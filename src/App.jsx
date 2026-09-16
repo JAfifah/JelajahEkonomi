@@ -98,7 +98,7 @@ export default function App() {
 
       </div>
 
-      {/* Gemini API Key Configuration Modal */}
+      {/* API Key Configuration Modal */}
       <ApiKeyModal
         isOpen={isApiKeyModalOpen}
         onClose={() => setIsApiKeyModalOpen(false)}

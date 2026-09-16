@@ -214,7 +214,7 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
     setUseCameraMode(false);
   };
 
-  // Execute Gemini AI Scan
+  // Execute AI Scan
   const handleScanImage = async () => {
     if (!imagePreview || !activeModalMission) return;
     soundFx.playClick();
@@ -309,17 +309,17 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
         <div className="space-y-2">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold border border-emerald-200">
             <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
-            <span>AI Image Scanner • Google Gemini Engine</span>
+            <span>AI Image Scanner • Smart Vision Engine</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
             Misi Foto AI Kegiatan Ekonomi
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 max-w-xl">
-            Pilih salah satu dari 7 Misi Foto di bawah ini, ambil/unggah foto objek nyata, dan biarkan Google Gemini AI mengevaluasi kaitan konsep IPS-nya!
+            Pilih salah satu dari 7 Misi Foto di bawah ini, ambil/unggah foto objek nyata, dan biarkan AI Scanner mengevaluasi kaitan konsep IPS-nya!
           </p>
         </div>
 
-        {/* Gemini Key Status & Progress */}
+        {/* Scanner Key Status & Progress */}
         <div className="flex flex-wrap items-center gap-3">
           <div className="px-4 py-3 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center gap-2.5 shadow-sm">
             <ShieldCheck className="w-5 h-5 text-emerald-600" />
@@ -488,7 +488,7 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
                     <div className="absolute inset-0 bg-emerald-500/10 rounded-2xl flex flex-col items-center justify-center pointer-events-none">
                       <div className="w-full h-1 bg-gradient-to-r from-transparent via-emerald-500 to-transparent animate-pulse" />
                       <Scan className="w-12 h-12 text-emerald-600 animate-spin mt-4" />
-                      <p className="text-xs font-bold text-emerald-800 mt-2">Sedang Menganalisis dengan Gemini AI...</p>
+                      <p className="text-xs font-bold text-emerald-800 mt-2">Sedang Menganalisis dengan AI Scanner...</p>
                     </div>
                   )}
                 </div>
@@ -543,7 +543,7 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
                   className="py-3 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm flex items-center gap-2 shadow-md"
                 >
                   <Zap className="w-4 h-4" />
-                  <span>Analisis Objek dengan Gemini AI</span>
+                  <span>Analisis Objek dengan AI Scanner</span>
                 </button>
               </div>
             )}
