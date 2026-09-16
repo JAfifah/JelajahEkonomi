@@ -11,8 +11,10 @@ export default function AvatarCanvas({
   previewItem = null, 
   size = 'lg', 
   viewMode = null, 
-  animated = true 
+  animated = true,
+  isWaving = null
 }) {
+  const wavingActive = isWaving !== null ? isWaving : (animated && size !== 'sm');
   // Merge equipped items with preview item if provided
   const activeEquipped = { ...(equipped || {}) };
   if (previewItem) {
@@ -81,139 +83,231 @@ export default function AvatarCanvas({
           <filter id="softShadow" x="-10%" y="-10%" width="120%" height="120%">
             <feDropShadow dx="0" dy="5" stdDeviation="4" floodOpacity="0.22" />
           </filter>
+
+          {/* SVG Keyframe Animations */}
+          <style>{`
+            @keyframes avatarWaveArm {
+              0%, 100% { transform: rotate(0deg); }
+              12% { transform: rotate(-16deg); }
+              24% { transform: rotate(14deg); }
+              36% { transform: rotate(-16deg); }
+              48% { transform: rotate(12deg); }
+              60% { transform: rotate(-8deg); }
+              72% { transform: rotate(0deg); }
+            }
+            @keyframes avatarBlink {
+              0%, 90%, 100% { transform: scaleY(1); }
+              95% { transform: scaleY(0.08); }
+            }
+            @keyframes avatarIdleBreath {
+              0%, 100% { transform: translateY(0px); }
+              50% { transform: translateY(-5px); }
+            }
+            @keyframes avatarShadowPulse {
+              0%, 100% { transform: scale(1); opacity: 0.16; }
+              50% { transform: scale(0.92); opacity: 0.10; }
+            }
+          `}</style>
         </defs>
 
         {/* --- SHADOW BASE ON GROUND --- */}
-        <ellipse cx="120" cy="410" rx="65" ry="8" fill="#000000" opacity="0.16" />
-
-        {/* --- BACK ACCESSORIES (e.g. Backpack / Cape) --- */}
-        {renderBackAccessory(activeEquipped.accessory, activeEquipped.top)}
-
-        {/* --- LEGS & BARE FEET BASE (Unified seamless vector shapes pointing outward) --- */}
-        {/* Left Leg & Foot */}
-        <path
-          d="M 84 270 L 82 342 C 80 353 64 357 48 361 C 42 363 42 368 48 368 L 104 368 C 108 368 108 356 106 342 L 106 270 Z"
-          fill="url(#skinGradient)"
-          stroke={adjustColor(skinTone, -30)}
-          strokeWidth="1.2"
-          strokeLinejoin="round"
+        <ellipse 
+          cx="120" 
+          cy="410" 
+          rx="65" 
+          ry="8" 
+          fill="#000000" 
+          opacity="0.16" 
+          style={animated ? { transformOrigin: '120px 410px', animation: 'avatarShadowPulse 2.6s ease-in-out infinite' } : {}}
         />
-        {/* Right Leg & Foot */}
-        <path
-          d="M 134 270 L 134 342 C 132 356 132 368 136 368 L 192 368 C 198 368 198 363 192 361 C 176 357 158 353 156 342 L 156 270 Z"
-          fill="url(#skinGradient)"
-          stroke={adjustColor(skinTone, -30)}
-          strokeWidth="1.2"
-          strokeLinejoin="round"
-        />
-        
-        {/* Knees Shader */}
-        <ellipse cx="94" cy="305" rx="5" ry="3" fill="#f43f5e" opacity="0.25" />
-        <ellipse cx="146" cy="305" rx="5" ry="3" fill="#f43f5e" opacity="0.25" />
 
-        {/* --- BOTTOMS (SHORTS / SKIRT / PANTS) --- */}
-        {renderBottoms(activeEquipped.bottom)}
+        {/* --- ANIMATED CHARACTER BODY (Idle Breathing Float) --- */}
+        <g style={animated ? { animation: 'avatarIdleBreath 2.6s ease-in-out infinite' } : {}}>
+          
+          {/* --- BACK ACCESSORIES (e.g. Backpack / Cape) --- */}
+          {renderBackAccessory(activeEquipped.accessory, activeEquipped.top)}
 
-        {/* --- SHOES --- */}
-        {renderShoes(activeEquipped.shoes)}
-
-        {/* --- ARMS BASE (Smooth relaxed cartoon arms) --- */}
-        {/* Left Arm */}
-        <path d="M 72 125 Q 60 180 68 245 L 82 245 Q 76 180 84 125 Z" fill="url(#skinGradient)" stroke={adjustColor(skinTone, -30)} strokeWidth="1" />
-        {/* Right Arm */}
-        <path d="M 168 125 Q 180 180 172 245 L 158 245 Q 164 180 156 125 Z" fill="url(#skinGradient)" stroke={adjustColor(skinTone, -30)} strokeWidth="1" />
-
-        {/* --- HANDS (Minimalist Cartoon Mitten style matching reference image) --- */}
-        {/* Left Hand */}
-        <g>
+          {/* --- LEGS & BARE FEET BASE --- */}
+          {/* Left Leg & Foot */}
           <path
-            d="M 68 245 C 58 252 60 264 70 268 C 78 270 83 262 81 255 C 85 252 84 247 80 245 Z"
+            d="M 84 270 L 82 342 C 80 353 64 357 48 361 C 42 363 42 368 48 368 L 104 368 C 108 368 108 356 106 342 L 106 270 Z"
             fill="url(#skinGradient)"
             stroke={adjustColor(skinTone, -30)}
             strokeWidth="1.2"
             strokeLinejoin="round"
           />
-          <path d="M 80 247 C 77 251 76 255 77 258" fill="none" stroke={adjustColor(skinTone, -25)} strokeWidth="1" opacity="0.6" />
-        </g>
-
-        {/* Right Hand */}
-        <g>
+          {/* Right Leg & Foot */}
           <path
-            d="M 172 245 C 182 252 180 264 170 268 C 162 270 157 262 159 255 C 155 252 156 247 160 245 Z"
+            d="M 134 270 L 134 342 C 132 356 132 368 136 368 L 192 368 C 198 368 198 363 192 361 C 176 357 158 353 156 342 L 156 270 Z"
             fill="url(#skinGradient)"
             stroke={adjustColor(skinTone, -30)}
             strokeWidth="1.2"
             strokeLinejoin="round"
           />
-          <path d="M 160 247 C 163 251 164 255 163 258" fill="none" stroke={adjustColor(skinTone, -25)} strokeWidth="1" opacity="0.6" />
+          
+          {/* Knees Shader */}
+          <ellipse cx="94" cy="305" rx="5" ry="3" fill="#f43f5e" opacity="0.25" />
+          <ellipse cx="146" cy="305" rx="5" ry="3" fill="#f43f5e" opacity="0.25" />
+
+          {/* --- BOTTOMS (SHORTS / SKIRT / PANTS) --- */}
+          {renderBottoms(activeEquipped.bottom)}
+
+          {/* --- SHOES --- */}
+          {renderShoes(activeEquipped.shoes)}
+
+          {/* --- ARMS BASE --- */}
+          {/* Left Arm (Relaxed) */}
+          <path d="M 72 125 Q 60 180 68 245 L 82 245 Q 76 180 84 125 Z" fill="url(#skinGradient)" stroke={adjustColor(skinTone, -30)} strokeWidth="1" />
+
+          {/* Left Hand */}
+          <g>
+            <path
+              d="M 68 245 C 58 252 60 264 70 268 C 78 270 83 262 81 255 C 85 252 84 247 80 245 Z"
+              fill="url(#skinGradient)"
+              stroke={adjustColor(skinTone, -30)}
+              strokeWidth="1.2"
+              strokeLinejoin="round"
+            />
+            <path d="M 80 247 C 77 251 76 255 77 258" fill="none" stroke={adjustColor(skinTone, -25)} strokeWidth="1" opacity="0.6" />
+          </g>
+
+          {/* Right Arm: Waving Pose Upper Arm vs Normal Arm */}
+          {wavingActive ? (
+            /* Upper Arm Skin leading towards elbow */
+            <path d="M 164 116 Q 176 116 188 120 L 184 134 Q 170 130 158 126 Z" fill="url(#skinGradient)" stroke={adjustColor(skinTone, -30)} strokeWidth="1" />
+          ) : (
+            /* Normal Relaxed Right Arm */
+            <path d="M 168 125 Q 180 180 172 245 L 158 245 Q 164 180 156 125 Z" fill="url(#skinGradient)" stroke={adjustColor(skinTone, -30)} strokeWidth="1" />
+          )}
+
+          {!wavingActive && (
+            /* Normal Relaxed Right Hand */
+            <g>
+              <path
+                d="M 172 245 C 182 252 180 264 170 268 C 162 270 157 262 159 255 C 155 252 156 247 160 245 Z"
+                fill="url(#skinGradient)"
+                stroke={adjustColor(skinTone, -30)}
+                strokeWidth="1.2"
+                strokeLinejoin="round"
+              />
+              <path d="M 160 247 C 163 251 164 255 163 258" fill="none" stroke={adjustColor(skinTone, -25)} strokeWidth="1" opacity="0.6" />
+            </g>
+          )}
+
+          {/* --- TOPS (WHITE T-SHIRT / UNIFORM / JACKET) --- */}
+          {renderTops(activeEquipped.top, wavingActive)}
+
+          {/* --- ANIMATED WAVING FOREARM & HAND (Melambaikan Tangan) --- */}
+          {wavingActive && (
+            <g 
+              className="avatar-waving-arm"
+              style={{ 
+                transformOrigin: '186px 126px', 
+                animation: animated ? 'avatarWaveArm 2.2s ease-in-out infinite' : 'none' 
+              }}
+            >
+              {/* Forearm skin emerging from sleeve cuff */}
+              <path
+                d="M 186 120 L 192 72 L 204 74 L 182 130 Z"
+                fill="url(#skinGradient)"
+                stroke={adjustColor(skinTone, -30)}
+                strokeWidth="1.2"
+                strokeLinejoin="round"
+              />
+              
+              {/* Waving Open Hand with 4 fingers & thumb */}
+              <path
+                d="M 192 72 
+                   C 188 68 184 63 182 58 
+                   C 180 53 184 50 188 54 
+                   C 190 56 191 58 193 54
+                   C 192 48 193 38 196 36 
+                   C 198 35 200 37 200 44
+                   C 200 38 201 34 204 34 
+                   C 206 34 207 38 207 44
+                   C 208 39 209 37 212 37 
+                   C 214 37 214 41 213 47
+                   C 215 43 216 42 218 42 
+                   C 220 42 220 46 218 52
+                   C 216 58 214 66 204 74 Z"
+                fill="url(#skinGradient)"
+                stroke={adjustColor(skinTone, -30)}
+                strokeWidth="1.2"
+                strokeLinejoin="round"
+              />
+              
+              {/* Palm creases */}
+              <path d="M 192 60 Q 200 66 208 62" fill="none" stroke={adjustColor(skinTone, -25)} strokeWidth="1" opacity="0.6" />
+              <path d="M 196 56 Q 202 60 206 58" fill="none" stroke={adjustColor(skinTone, -25)} strokeWidth="0.8" opacity="0.4" />
+            </g>
+          )}
+
+          {/* --- NECK & HEAD --- */}
+          {/* Neck */}
+          <path d="M 110 98 L 110 118 Q 120 122 130 118 L 130 98 Z" fill={adjustColor(skinTone, -12)} />
+          <path d="M 110 108 Q 120 115 130 108 Z" fill="#f43f5e" opacity="0.15" />
+
+          {/* Head Shape */}
+          <path d="M 82 62 Q 80 105 120 110 Q 160 105 158 62 C 160 20 80 20 82 62 Z" fill="url(#skinGradient)" filter="url(#softShadow)" />
+
+          {/* Ears */}
+          {/* Left Ear */}
+          <path
+            d="M 82 58 C 70 58 70 78 82 78 Z"
+            fill="url(#skinGradient)"
+            stroke={adjustColor(skinTone, -30)}
+            strokeWidth="1.2"
+            strokeLinejoin="round"
+          />
+          <path d="M 80 64 Q 74 68 80 72" stroke="#f43f5e" strokeWidth="1.5" strokeLinecap="round" fill="none" opacity="0.4" />
+
+          {/* Right Ear */}
+          <path
+            d="M 158 58 C 170 58 170 78 158 78 Z"
+            fill="url(#skinGradient)"
+            stroke={adjustColor(skinTone, -30)}
+            strokeWidth="1.2"
+            strokeLinejoin="round"
+          />
+          <path d="M 160 64 Q 166 68 160 72" stroke="#f43f5e" strokeWidth="1.5" strokeLinecap="round" fill="none" opacity="0.4" />
+
+          {/* Eyes with Anime Blinking Animation */}
+          <g style={animated ? { transformOrigin: '120px 65px', animation: 'avatarBlink 4.2s infinite' } : {}}>
+            {/* Left Eye */}
+            <ellipse cx="102" cy="65" rx="7.5" ry="9" fill="#291e1a" />
+            <circle cx="100" cy="62" r="3" fill="#ffffff" />
+            <circle cx="104" cy="68" r="1.5" fill="#ffffff" opacity="0.8" />
+
+            {/* Right Eye */}
+            <ellipse cx="138" cy="65" rx="7.5" ry="9" fill="#291e1a" />
+            <circle cx="136" cy="62" r="3" fill="#ffffff" />
+            <circle cx="140" cy="68" r="1.5" fill="#ffffff" opacity="0.8" />
+          </g>
+
+          {/* Eyebrows */}
+          <path d="M 93 51 Q 102 46 111 53" stroke="#291e1a" strokeWidth="3" strokeLinecap="round" fill="none" />
+          <path d="M 129 53 Q 138 46 147 51" stroke="#291e1a" strokeWidth="3" strokeLinecap="round" fill="none" />
+
+          {/* Nose Bridge */}
+          <path d="M 119 68 L 121 75 L 118 76" stroke="#d97706" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" fill="none" opacity="0.5" />
+
+          {/* Blush Cheeks */}
+          <ellipse cx="92" cy="74" rx="8" ry="4.5" fill="#f43f5e" opacity="0.3" />
+          <ellipse cx="148" cy="74" rx="8" ry="4.5" fill="#f43f5e" opacity="0.3" />
+
+          {/* Friendly Open Smile */}
+          <path d="M 106 82 Q 120 96 134 82 Z" fill="#991b1b" stroke="#7f1d1d" strokeWidth="1.5" />
+          {/* Teeth */}
+          <path d="M 108 83 Q 120 88 132 83 Q 120 86 108 83 Z" fill="#ffffff" />
+          {/* Tongue */}
+          <path d="M 112 90 Q 120 95 128 90 Q 120 96 112 90 Z" fill="#f43f5e" />
+
+          {/* --- HAIRSTYLE / HEAD COVERING --- */}
+          {renderHair(activeEquipped.accessories || activeEquipped.accessory || activeEquipped.hairstyle, hairColor)}
+
+          {/* --- HEAD ACCESSORIES (CAP, GLASSES, CROWN) --- */}
+          {renderHeadAccessory(activeEquipped.accessories || activeEquipped.accessory)}
         </g>
-
-        {/* --- TOPS (WHITE T-SHIRT / UNIFORM / JACKET) --- */}
-        {renderTops(activeEquipped.top)}
-
-        {/* --- NECK & HEAD --- */}
-        {/* Neck */}
-        <path d="M 110 98 L 110 118 Q 120 122 130 118 L 130 98 Z" fill={adjustColor(skinTone, -12)} />
-        <path d="M 110 108 Q 120 115 130 108 Z" fill="#f43f5e" opacity="0.15" />
-
-        {/* Head Shape (Smooth rounded bald skull) */}
-        <path d="M 82 62 Q 80 105 120 110 Q 160 105 158 62 C 160 20 80 20 82 62 Z" fill="url(#skinGradient)" filter="url(#softShadow)" />
-
-        {/* Ears (Symmetrical, Natural, Proportioned Cartoon Ears) */}
-        {/* Left Ear */}
-        <path
-          d="M 82 58 C 70 58 70 78 82 78 Z"
-          fill="url(#skinGradient)"
-          stroke={adjustColor(skinTone, -30)}
-          strokeWidth="1.2"
-          strokeLinejoin="round"
-        />
-        <path d="M 80 64 Q 74 68 80 72" stroke="#f43f5e" strokeWidth="1.5" strokeLinecap="round" fill="none" opacity="0.4" />
-
-        {/* Right Ear */}
-        <path
-          d="M 158 58 C 170 58 170 78 158 78 Z"
-          fill="url(#skinGradient)"
-          stroke={adjustColor(skinTone, -30)}
-          strokeWidth="1.2"
-          strokeLinejoin="round"
-        />
-        <path d="M 160 64 Q 166 68 160 72" stroke="#f43f5e" strokeWidth="1.5" strokeLinecap="round" fill="none" opacity="0.4" />
-
-        {/* Eyes (Large Webtoon Anime Style) */}
-        {/* Left Eye */}
-        <ellipse cx="102" cy="65" rx="7.5" ry="9" fill="#291e1a" />
-        <circle cx="100" cy="62" r="3" fill="#ffffff" />
-        <circle cx="104" cy="68" r="1.5" fill="#ffffff" opacity="0.8" />
-
-        {/* Right Eye */}
-        <ellipse cx="138" cy="65" rx="7.5" ry="9" fill="#291e1a" />
-        <circle cx="136" cy="62" r="3" fill="#ffffff" />
-        <circle cx="140" cy="68" r="1.5" fill="#ffffff" opacity="0.8" />
-
-        {/* Eyebrows */}
-        <path d="M 93 51 Q 102 46 111 53" stroke="#291e1a" strokeWidth="3" strokeLinecap="round" fill="none" />
-        <path d="M 129 53 Q 138 46 147 51" stroke="#291e1a" strokeWidth="3" strokeLinecap="round" fill="none" />
-
-        {/* Nose Bridge */}
-        <path d="M 119 68 L 121 75 L 118 76" stroke="#d97706" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" fill="none" opacity="0.5" />
-
-        {/* Blush Cheeks */}
-        <ellipse cx="92" cy="74" rx="8" ry="4.5" fill="#f43f5e" opacity="0.3" />
-        <ellipse cx="148" cy="74" rx="8" ry="4.5" fill="#f43f5e" opacity="0.3" />
-
-        {/* Friendly Open Smile */}
-        <path d="M 106 82 Q 120 96 134 82 Z" fill="#991b1b" stroke="#7f1d1d" strokeWidth="1.5" />
-        {/* Teeth */}
-        <path d="M 108 83 Q 120 88 132 83 Q 120 86 108 83 Z" fill="#ffffff" />
-        {/* Tongue */}
-        <path d="M 112 90 Q 120 95 128 90 Q 120 96 112 90 Z" fill="#f43f5e" />
-
-        {/* --- HAIRSTYLE / HEAD COVERING --- */}
-        {renderHair(activeEquipped.accessories || activeEquipped.accessory || activeEquipped.hairstyle, hairColor)}
-
-        {/* --- HEAD ACCESSORIES (CAP, GLASSES, CROWN) --- */}
-        {renderHeadAccessory(activeEquipped.accessories || activeEquipped.accessory)}
       </svg>
 
       {/* Preview Tag */}
@@ -230,16 +324,17 @@ export default function AvatarCanvas({
 // ATTIRE RENDERERS MATCHING 2D WEBTOON ART STYLE
 // =========================================================================
 
-function renderTops(topId) {
+function renderTops(topId, isWaving = false) {
   switch (topId) {
     case 'top-seragam-smp':
       return (
         <g>
           {/* SMP White Uniform Shirt */}
           <path d="M 72 114 L 168 114 L 164 210 L 76 210 Z" fill="#ffffff" stroke="#cbd5e1" strokeWidth="1.5" />
-          {/* Sleeves */}
+          {/* Left Sleeve */}
           <path d="M 72 114 L 54 165 L 75 168 L 78 122 Z" fill="#ffffff" stroke="#cbd5e1" strokeWidth="1.5" />
-          <path d="M 168 114 L 186 165 L 165 168 L 162 122 Z" fill="#ffffff" stroke="#cbd5e1" strokeWidth="1.5" />
+          {/* Right Sleeve */}
+          {renderRightSleeve(topId, isWaving)}
           {/* Collars */}
           <path d="M 98 114 L 120 138 L 88 114 Z" fill="#f1f5f9" stroke="#cbd5e1" strokeWidth="1" />
           <path d="M 142 114 L 120 138 L 152 114 Z" fill="#f1f5f9" stroke="#cbd5e1" strokeWidth="1" />
@@ -256,9 +351,10 @@ function renderTops(topId) {
         <g>
           {/* Green Factory Jacket */}
           <path d="M 68 112 L 172 112 L 165 212 L 75 212 Z" fill="#059669" />
-          {/* Sleeves */}
+          {/* Left Sleeve */}
           <path d="M 68 112 L 48 168 L 70 172 L 74 120 Z" fill="#059669" />
-          <path d="M 172 112 L 192 168 L 170 172 L 166 120 Z" fill="#059669" />
+          {/* Right Sleeve */}
+          {renderRightSleeve(topId, isWaving)}
           {/* Zipper Line */}
           <line x1="120" y1="112" x2="120" y2="212" stroke="#fbbf24" strokeWidth="3.5" />
           {/* Pockets */}
@@ -272,6 +368,10 @@ function renderTops(topId) {
         <g>
           {/* Blue Inner Shirt */}
           <path d="M 75 114 L 165 114 L 160 210 L 80 210 Z" fill="#3b82f6" />
+          {/* Left Sleeve */}
+          <path d="M 68 112 L 48 168 L 70 172 L 74 120 Z" fill="#3b82f6" />
+          {/* Right Sleeve */}
+          {renderRightSleeve(topId, isWaving)}
           {/* Orange Vest */}
           <path d="M 68 112 L 105 112 L 110 212 L 72 212 Z" fill="#d97706" />
           <path d="M 172 112 L 135 112 L 130 212 L 168 212 Z" fill="#d97706" />
@@ -286,6 +386,8 @@ function renderTops(topId) {
         <g>
           {/* Royal Cape */}
           <path d="M 52 110 Q 120 95 188 110 L 205 290 Q 120 305 35 290 Z" fill="#7c3aed" opacity="0.9" />
+          {/* Right Sleeve */}
+          {renderRightSleeve(topId, isWaving)}
           {/* Gold Collar Trim */}
           <path d="M 68 112 L 172 112 L 162 208 L 78 208 Z" fill="#f59e0b" />
           <path d="M 76 118 L 164 118 L 156 202 L 84 202 Z" fill="#4c1d95" />
@@ -302,7 +404,7 @@ function renderTops(topId) {
           {/* Left Sleeve */}
           <path d="M 72 114 L 52 165 L 75 168 L 78 122 Z" fill="url(#shirtGradient)" stroke="#cbd5e1" strokeWidth="1.5" />
           {/* Right Sleeve */}
-          <path d="M 168 114 L 188 165 L 165 168 L 162 122 Z" fill="url(#shirtGradient)" stroke="#cbd5e1" strokeWidth="1.5" />
+          {renderRightSleeve(topId, isWaving)}
           {/* Crew-Neck Collar Line */}
           <path d="M 102 114 Q 120 128 138 114" stroke="#94a3b8" strokeWidth="2.5" fill="none" />
           {/* Shirt Fold Wrinkles */}
@@ -310,6 +412,40 @@ function renderTops(topId) {
           <path d="M 108 190 Q 120 198 128 208" stroke="#cbd5e1" strokeWidth="1.5" fill="none" />
         </g>
       );
+  }
+}
+
+function renderRightSleeve(topId, isWaving) {
+  if (!isWaving) {
+    switch (topId) {
+      case 'top-seragam-smp':
+        return <path d="M 168 114 L 186 165 L 165 168 L 162 122 Z" fill="#ffffff" stroke="#cbd5e1" strokeWidth="1.5" />;
+      case 'top-jaket-produksi':
+        return <path d="M 172 112 L 192 168 L 170 172 L 166 120 Z" fill="#059669" />;
+      case 'top-rompi-kurir':
+        return <path d="M 172 112 L 190 168 L 168 172 L 166 120 Z" fill="#3b82f6" />;
+      case 'top-jubah-raja':
+        return <path d="M 172 112 L 190 168 L 168 172 L 166 120 Z" fill="#4c1d95" />;
+      case 'top-kaos-ips':
+      default:
+        return <path d="M 168 114 L 188 165 L 165 168 L 162 122 Z" fill="url(#shirtGradient)" stroke="#cbd5e1" strokeWidth="1.5" />;
+    }
+  }
+
+  // Waving pose sleeve: wraps upper arm towards elbow
+  const sleevePath = "M 164 114 Q 176 114 188 118 L 184 136 Q 170 132 158 126 Z";
+  switch (topId) {
+    case 'top-seragam-smp':
+      return <path d={sleevePath} fill="#ffffff" stroke="#cbd5e1" strokeWidth="1.5" />;
+    case 'top-jaket-produksi':
+      return <path d={sleevePath} fill="#059669" stroke="#047857" strokeWidth="1.5" />;
+    case 'top-rompi-kurir':
+      return <path d={sleevePath} fill="#3b82f6" stroke="#2563eb" strokeWidth="1.5" />;
+    case 'top-jubah-raja':
+      return <path d={sleevePath} fill="#4c1d95" stroke="#f59e0b" strokeWidth="1.5" />;
+    case 'top-kaos-ips':
+    default:
+      return <path d={sleevePath} fill="url(#shirtGradient)" stroke="#cbd5e1" strokeWidth="1.5" />;
   }
 }
 
