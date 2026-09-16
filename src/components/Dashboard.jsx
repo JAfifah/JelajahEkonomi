@@ -20,6 +20,7 @@ import { soundFx } from '../utils/audio';
 import { MISSIONS_DATA } from '../data/missionData';
 import { toggleTaskCompletion } from '../utils/storage';
 import confetti from 'canvas-confetti';
+import mapImage from '../assets/economic_realm_map_id.jpg';
 
 export default function Dashboard({ student, updateStudentData, setActiveTab, onNavigateToCourseHub }) {
   const [selectedMissionModal, setSelectedMissionModal] = useState(null);
@@ -96,9 +97,13 @@ export default function Dashboard({ student, updateStudentData, setActiveTab, on
         
         {/* Map Background Image */}
         <img 
-          src="/economic_realm_map_id.jpg" 
+          src={mapImage} 
           alt="Peta 7 Pulau Kegiatan Ekonomi IPS SMP" 
           className="w-full h-full object-contain rounded-2xl"
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = `${import.meta.env.BASE_URL}economic_realm_map_id.jpg`;
+          }}
         />
 
         {/* --- INTERACTIVE CLICKABLE PIN ICONS OVERLAYED ON ALL 7 ISLANDS --- */}
