@@ -778,13 +778,6 @@ export default function MateriKuis({
         <div className="space-y-8">
           {!activeQuizState && (
             <div className="space-y-6">
-              <div className="text-center max-w-xl mx-auto space-y-2">
-                <h3 className="text-2xl font-black text-slate-900">Pilih Tingkat Kesulitan Kuis</h3>
-                <p className="text-slate-600 text-xs sm:text-sm">
-                  Selesaikan kuis untuk mengumpulkan Koin Edukasi dan menaikkan Level karaktermu!
-                </p>
-              </div>
-
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {QUIZ_LEVELS.map((level) => {
                   const isUnlocked = student.level >= level.unlockedAtLevel;

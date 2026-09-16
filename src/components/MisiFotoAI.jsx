@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { analyzeEconomicImage } from '../utils/geminiService';
 import { soundFx } from '../utils/audio';
 import confetti from 'canvas-confetti';
+import { MISSIONS_DATA } from '../data/missionData';
 import { 
   Camera, 
   Upload, 
@@ -18,7 +19,7 @@ import {
 } from 'lucide-react';
 
 export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyModal }) {
-  const [selectedMission, setSelectedMission] = useState('produksi');
+  const [selectedMission, setSelectedMission] = useState('kebutuhan-kelangkaan');
   const [imagePreview, setImagePreview] = useState(null);
   const [mimeType, setMimeType] = useState('image/jpeg');
   const [analyzing, setAnalyzing] = useState(false);
@@ -30,34 +31,46 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
 
   const missions = [
     {
+      id: 'kebutuhan-kelangkaan',
+      title: 'Misi Pengenalan Kebutuhan & Kelangkaan',
+      desc: 'Pindai situasi atau benda yang menunjukkan pemenuhan kebutuhan dasar manusia di lingkungan sekitar guna memahami kondisi keterbatasan alat pemuas kebutuhan.',
+      badgeColor: 'bg-orange-500/20 text-orange-300 border-orange-500/30'
+    },
+    {
       id: 'sumber-daya-alam',
-      title: 'Misi 1: Foto Objek Sumber Daya Alam',
-      desc: 'Pindai objek kekayaan alam lokal di sekitarmu (tanah, tanaman pangan, air, atau batuan alam).',
+      title: 'Misi Eksplorasi Faktor Alam',
+      desc: 'Sesuai dengan Misi 1: Foto Objek Sumber Daya Alam, pindai kekayaan alam lokal di sekitarmu (seperti tanah, tanaman pangan, air, atau bebatuan alam).',
       badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
     },
     {
       id: 'distribusi',
-      title: 'Misi 2: Foto Logistik / Warung Sekitar',
-      desc: 'Pindai sarana atau aktivitas penyaluran barang (kurir paket, truk angkut, warung klontong, minimarket).',
-      badgeColor: 'bg-blue-500/20 text-blue-300 border-blue-500/30'
-    },
-    {
-      id: 'kayu-mebel',
-      title: 'Misi 3: Scan Produk Olahan Kayu',
-      desc: 'Pindai barang olahan kayu hasil hutan (meja belajar, kursi, pensil kayu, bingkai, atau furnitur).',
-      badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/30'
+      title: 'Misi Perdagangan & Distribusi',
+      desc: 'Sesuai dengan Misi 2: Foto Logistik / Warung Sekitar, pindai sarana atau aktivitas penyaluran barang (seperti kurir paket, truk angkut, warung klontong, atau minimarket).',
+      badgeColor: 'bg-sky-500/20 text-sky-300 border-sky-500/30'
     },
     {
       id: 'konsumsi',
-      title: 'Misi 4: Aktivitas / Benda Konsumsi',
-      desc: 'Foto barang yang sedang kamu pakai atau konsumsi (makanan, minuman, buku IPS, sepatu sekolah).',
-      badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/30'
+      title: 'Misi Pola Konsumen & Pasar',
+      desc: 'Sesuai dengan Misi 4: Aktivitas / Benda Konsumsi, foto barang yang sedang kamu pakai atau konsumsi (seperti makanan, minuman, buku IPS, atau sepatu sekolah) untuk melihat pola kebiasaan konsumen.',
+      badgeColor: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30'
+    },
+    {
+      id: 'kayu-mebel',
+      title: 'Misi Konservasi & Bahan Baku',
+      desc: 'Sesuai dengan Misi 3: Scan Produk Olahan Kayu, pindai barang olahan kayu hasil hutan (seperti meja belajar, kursi, pensil kayu, bingkai, atau furnitur) untuk mempelajari pemanfaatan dan pelestarian bahan baku.',
+      badgeColor: 'bg-teal-500/20 text-teal-300 border-teal-500/30'
+    },
+    {
+      id: 'modal-keuangan',
+      title: 'Misi Pengelolaan Modal & Keuangan',
+      desc: 'Pindai benda-benda penunjang kegiatan ekonomi yang berfungsi sebagai modal (seperti peralatan kerja, mesin, atau perangkat pendukung produktivitas lainnya).',
+      badgeColor: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30'
     },
     {
       id: 'bebas',
-      title: 'Scan Bebas Detektif Ekonomi',
-      desc: 'Pindai objek apa saja di sekitarmu untuk dikategorikan oleh Google Gemini AI Engine!',
-      badgeColor: 'bg-slate-500/20 text-slate-300 border-slate-500/30'
+      title: 'Misi Keahlian & Jenis Produksi',
+      desc: 'Sesuai dengan Scan Bebas Deteksi Ekonomi, pindai objek apa saja di sekitarmu yang mencerminkan hasil proses produksi barang/jasa atau penerapan keahlian kerja tertentu untuk dikategorikan oleh mesin AI.',
+      badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/30'
     }
   ];
 
@@ -140,6 +153,16 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
       if (result.isValid) {
         soundFx.playScanSuccess();
         
+        // Auto-complete corresponding ai-scan task in MISSIONS_DATA if present
+        let updatedCompletedTasks = [...(student.completedTasks || [])];
+        const currentIslandMission = MISSIONS_DATA.find(m => m.aiMissionId === selectedMission);
+        if (currentIslandMission) {
+          const aiScanTask = currentIslandMission.tasks.find(t => t.type === 'ai-scan');
+          if (aiScanTask && !updatedCompletedTasks.includes(aiScanTask.id)) {
+            updatedCompletedTasks.push(aiScanTask.id);
+          }
+        }
+
         // Award Student
         const newXp = student.xp + result.pointsEarned;
         let newLevel = student.level;
@@ -164,9 +187,10 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
           xpToNextLevel: newXpToNext,
           coins: student.coins + result.coinsEarned,
           points: student.points + result.pointsEarned,
+          completedTasks: updatedCompletedTasks,
           stats: {
             ...student.stats,
-            aiScansVerified: student.stats.aiScansVerified + 1
+            aiScansVerified: (student.stats?.aiScansVerified || 0) + 1
           }
         });
       } else {
