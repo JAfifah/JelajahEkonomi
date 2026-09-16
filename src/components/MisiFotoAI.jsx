@@ -558,12 +558,12 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
                     {analysisResult.isValid ? (
                       <>
                         <CheckCircle2 className="w-5 h-5 text-emerald-600" />
-                        <span className="text-emerald-800">✓ Hasil Verifikasi: FOTO SUDAH SESUAI!</span>
+                        <span className="text-emerald-800">Hasil Verifikasi: FOTO SUDAH SESUAI!</span>
                       </>
                     ) : (
                       <>
                         <XCircle className="w-5 h-5 text-rose-600" />
-                        <span className="text-rose-800">❌ Hasil Verifikasi: FOTO KURANG SESUAI</span>
+                        <span className="text-rose-800">Hasil Verifikasi: FOTO KURANG SESUAI</span>
                       </>
                     )}
                   </div>
