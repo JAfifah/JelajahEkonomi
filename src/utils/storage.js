@@ -41,15 +41,7 @@ export const INITIAL_STUDENT_DATA = {
     { id: 'b6', title: 'Konsumen Bijak', icon: '🛒', desc: 'Beli item sesuai skala prioritas utama', unlocked: false },
     { id: 'b7', title: 'Master Ekonomi IPS', icon: '👑', desc: 'Selesaikan seluruh tugas di 7 pulau ekonomi', unlocked: false }
   ],
-  completedTasks: [
-    'wants-t1', 'wants-t2', 
-    'res-t1', 'res-t2', 
-    'trade-t1', 'trade-t2',
-    'mkt-t1', 'mkt-t2',
-    'fst-t1',
-    'inv-t1',
-    'ent-t1'
-  ],
+  completedTasks: [],
   geminiApiKey: ''
 };
 

@@ -14,6 +14,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [courseHubSubTab, setCourseHubSubTab] = useState('materi');
   const [selectedMission, setSelectedMission] = useState(null);
+  const [targetMateriId, setTargetMateriId] = useState(null);
   const [isApiKeyModalOpen, setIsApiKeyModalOpen] = useState(false);
 
   // Sync updates to LocalStorage
@@ -22,9 +23,10 @@ export default function App() {
     saveStudentData(updatedData);
   };
 
-  const handleNavigateToCourseHub = (subTab = 'misi', mission = null) => {
+  const handleNavigateToCourseHub = (subTab = 'misi', mission = null, materiId = null) => {
     setCourseHubSubTab(subTab);
     setSelectedMission(mission);
+    if (materiId) setTargetMateriId(materiId);
     setActiveTab('materi');
   };
 
@@ -66,6 +68,8 @@ export default function App() {
               setActiveTab={setActiveTab}
               initialSelectedMission={selectedMission}
               onClearInitialMission={() => setSelectedMission(null)}
+              initialMateriId={targetMateriId}
+              onClearInitialMateriId={() => setTargetMateriId(null)}
             />
           )}
 

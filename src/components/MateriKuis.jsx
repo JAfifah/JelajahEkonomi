@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { MATERI_KEGIATAN_EKONOMI } from '../data/materiData';
 import { QUIZ_LEVELS } from '../data/kuisData';
 import { MISSIONS_DATA } from '../data/missionData';
@@ -40,7 +40,9 @@ export default function MateriKuis({
   setSubTab: setControlledSubTab,
   setActiveTab,
   initialSelectedMission,
-  onClearInitialMission
+  onClearInitialMission,
+  initialMateriId,
+  onClearInitialMateriId
 }) {
   const [localSubTab, setLocalSubTab] = useState('materi');
   const activeSubTab = controlledSubTab || localSubTab;
@@ -57,9 +59,12 @@ export default function MateriKuis({
   const [selectedMateriIndex, setSelectedMateriIndex] = useState(0);
   const [speaking, setSpeaking] = useState(false);
 
-  // Quick check state for materi
+  // Quick check & scroll state for materi modules
   const [quickAnswer, setQuickAnswer] = useState(null);
   const [quickResult, setQuickResult] = useState(null);
+  const [completedQuickChecks, setCompletedQuickChecks] = useState({});
+  const [scrolledModules, setScrolledModules] = useState({});
+  const bottomSentinelRef = useRef(null);
 
   // Quiz player state
   const [selectedLevelId, setSelectedLevelId] = useState('level-1');
@@ -69,6 +74,23 @@ export default function MateriKuis({
   const [selectedMissionModal, setSelectedMissionModal] = useState(null);
 
   useEffect(() => {
+    if (initialMateriId) {
+      const idx = MATERI_KEGIATAN_EKONOMI.findIndex(m => m.id === initialMateriId);
+      if (idx !== -1) {
+        setSelectedMateriIndex(idx);
+        if (setControlledSubTab) {
+          setControlledSubTab('materi');
+        } else {
+          setLocalSubTab('materi');
+        }
+      }
+      if (onClearInitialMateriId) {
+        onClearInitialMateriId();
+      }
+    }
+  }, [initialMateriId, onClearInitialMateriId, setControlledSubTab]);
+
+  useEffect(() => {
     if (initialSelectedMission) {
       setSelectedMissionModal(initialSelectedMission);
       if (onClearInitialMission) {
@@ -76,28 +98,138 @@ export default function MateriKuis({
       }
     }
   }, [initialSelectedMission, onClearInitialMission]);
+
+  const currentMateri = MATERI_KEGIATAN_EKONOMI[selectedMateriIndex];
+
+  // IntersectionObserver & Scroll Tracking to detect reading to the bottom
+  useEffect(() => {
+    if (!currentMateri) return;
+    const currentId = currentMateri.id;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (entry && entry.isIntersecting) {
+          setScrolledModules((prev) => ({ ...prev, [currentId]: true }));
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (bottomSentinelRef.current) {
+      observer.observe(bottomSentinelRef.current);
+    }
+
+    const handleScroll = () => {
+      const windowBottom = window.innerHeight + window.scrollY;
+      const documentHeight = document.documentElement.scrollHeight;
+      if (windowBottom >= documentHeight - 150) {
+        setScrolledModules((prev) => ({ ...prev, [currentId]: true }));
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [selectedMateriIndex, currentMateri]);
+
   const completedSet = new Set(student?.completedTasks || []);
 
-  const handleToggleTask = (e, taskObj) => {
+  // Manual Override Block: Clicking task checklist items redirects directly to module/activity
+  const handleTaskClick = (e, taskObj, parentMission = null) => {
     e.stopPropagation();
     soundFx.playClick();
-    if (!student || !updateStudentData) return;
-    
-    const isNowDone = !completedSet.has(taskObj.id);
-    const updatedStudent = toggleTaskCompletion(student, taskObj);
-    updateStudentData(updatedStudent);
 
-    if (isNowDone) {
-      soundFx.playScanSuccess();
-      confetti({
-        particleCount: 40,
-        spread: 50,
-        origin: { y: 0.7 }
-      });
+    if (completedSet.has(taskObj.id)) return;
+
+    const targetMateriId = parentMission?.materiId || taskObj.materiId;
+    if (taskObj.type === 'materi') {
+      const idx = MATERI_KEGIATAN_EKONOMI.findIndex(m => m.id === targetMateriId);
+      if (idx !== -1) {
+        setSelectedMateriIndex(idx);
+      }
+      handleSubTabChange('materi');
+      if (selectedMissionModal) setSelectedMissionModal(null);
+    } else if (taskObj.type === 'ai-scan') {
+      if (setActiveTab) setActiveTab('ai-mission');
+    } else if (taskObj.type === 'quiz') {
+      handleSubTabChange('kuis');
+      if (selectedMissionModal) setSelectedMissionModal(null);
+    } else if (taskObj.type === 'shop') {
+      if (setActiveTab) setActiveTab('shop');
+    } else {
+      handleSubTabChange('materi');
+      if (selectedMissionModal) setSelectedMissionModal(null);
     }
   };
 
-  const currentMateri = MATERI_KEGIATAN_EKONOMI[selectedMateriIndex];
+  // Automated Mission Integration: Triggered when "Selesaikan Materi" button is clicked
+  const handleFinishMateriModule = () => {
+    if (!student || !updateStudentData || !currentMateri) return;
+
+    soundFx.playScanSuccess();
+    confetti({
+      particleCount: 70,
+      spread: 70,
+      origin: { y: 0.6 }
+    });
+
+    const currentCompleted = student.completedTasks || [];
+    const tasksToComplete = [];
+
+    MISSIONS_DATA.forEach(mission => {
+      if (mission.materiId === currentMateri.id) {
+        (mission.tasks || []).forEach(task => {
+          if (task.type === 'materi' && !currentCompleted.includes(task.id)) {
+            tasksToComplete.push(task);
+          }
+        });
+      }
+    });
+
+    let updatedCompleted = [...currentCompleted];
+    let newCoins = student.coins;
+    let newXp = student.xp;
+    let newPoints = student.points;
+
+    tasksToComplete.forEach(task => {
+      if (!updatedCompleted.includes(task.id)) {
+        updatedCompleted.push(task.id);
+        newCoins += task.rewardCoins || 25;
+        newXp += task.rewardXp || 20;
+        newPoints += task.rewardXp || 20;
+      }
+    });
+
+    let newLevel = student.level;
+    let newXpToNext = student.xpToNextLevel;
+    if (newXp >= newXpToNext) {
+      newLevel += 1;
+      newXpToNext += 100;
+      soundFx.playLevelUp();
+    }
+
+    const updatedBadges = (student.badges || []).map(b => {
+      if (b.id === 'b7' && updatedCompleted.length >= 28) {
+        return { ...b, unlocked: true };
+      }
+      return b;
+    });
+
+    updateStudentData({
+      ...student,
+      coins: newCoins,
+      xp: newXp,
+      points: newPoints,
+      level: newLevel,
+      xpToNextLevel: newXpToNext,
+      completedTasks: updatedCompleted,
+      badges: updatedBadges
+    });
+  };
 
   // Voice Narration handler using Web Speech API
   const handleToggleSpeech = (text) => {
@@ -136,6 +268,7 @@ export default function MateriKuis({
   // Quick Check submit
   const handleQuickCheck = (optionIdx) => {
     setQuickAnswer(optionIdx);
+    setCompletedQuickChecks((prev) => ({ ...prev, [currentMateri.id]: true }));
     if (optionIdx === currentMateri.quickCheck.correctAnswer) {
       soundFx.playCorrect();
       setQuickResult({
@@ -543,6 +676,97 @@ export default function MateriKuis({
               )}
             </div>
 
+            {/* Bottom "Selesaikan Materi" Interactive Section */}
+            {(() => {
+              const associatedMateriTasks = currentMateri 
+                ? MISSIONS_DATA.flatMap(m => m.materiId === currentMateri.id ? m.tasks.filter(t => t.type === 'materi') : [])
+                : [];
+              const isModuleCompleted = associatedMateriTasks.length > 0 
+                && associatedMateriTasks.every(t => completedSet.has(t.id));
+              
+              // Requirements must be actually performed by the user during reading session
+              const hasScrolled = !!scrolledModules[currentMateri?.id];
+              const hasCompletedQuickCheck = !!completedQuickChecks[currentMateri?.id] || quickAnswer !== null;
+              
+              // Unlocks only when both requirements are fulfilled
+              const isReadyToFinish = hasScrolled && hasCompletedQuickCheck;
+
+              return (
+                <div className="pt-6 border-t border-slate-200 space-y-4">
+                  {/* Syarat Aktifnya Tombol Box */}
+                  <div className="bg-slate-50 p-4 sm:p-5 rounded-2xl border border-slate-200 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs sm:text-sm font-extrabold text-slate-800">
+                        Syarat Kelengkapan Modul Ini:
+                      </span>
+                      <span className={`text-xs font-black px-2.5 py-1 rounded-full border ${
+                        isModuleCompleted 
+                          ? 'bg-emerald-100 text-emerald-800 border-emerald-300' 
+                          : isReadyToFinish 
+                          ? 'bg-sky-100 text-sky-800 border-sky-300' 
+                          : 'bg-amber-100 text-amber-800 border-amber-300'
+                      }`}>
+                        {isModuleCompleted ? 'Materi Selesai ✔' : isReadyToFinish ? 'Siap Diselesaikan ✨' : 'Belum Lengkap 🔒'}
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                      <div className={`flex items-center gap-2.5 p-3 rounded-xl border transition-all ${
+                        hasScrolled || isModuleCompleted 
+                          ? 'bg-emerald-50 border-emerald-300 text-emerald-800 font-bold' 
+                          : 'bg-white border-slate-200 text-slate-500'
+                      }`}>
+                        <div className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-black shrink-0 ${
+                          hasScrolled || isModuleCompleted ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-500'
+                        }`}>
+                          {hasScrolled || isModuleCompleted ? '✓' : '🔒'}
+                        </div>
+                        <span>1. Scroll & membaca sampai paling bawah</span>
+                      </div>
+
+                      <div className={`flex items-center gap-2.5 p-3 rounded-xl border transition-all ${
+                        hasCompletedQuickCheck || isModuleCompleted 
+                          ? 'bg-emerald-50 border-emerald-300 text-emerald-800 font-bold' 
+                          : 'bg-white border-slate-200 text-slate-500'
+                      }`}>
+                        <div className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-black shrink-0 ${
+                          hasCompletedQuickCheck || isModuleCompleted ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-500'
+                        }`}>
+                          {hasCompletedQuickCheck || isModuleCompleted ? '✓' : '🔒'}
+                        </div>
+                        <span>2. Jawab Uji Cepat Pemahaman Siswa</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Selesaikan Materi Button */}
+                  <button
+                    onClick={handleFinishMateriModule}
+                    disabled={!isReadyToFinish || isModuleCompleted}
+                    className={`w-full py-4 px-6 rounded-2xl font-black text-sm sm:text-base transition-all duration-300 flex items-center justify-center gap-2.5 shadow-lg ${
+                      isModuleCompleted
+                        ? 'bg-emerald-100 text-emerald-800 border-2 border-emerald-400 cursor-default shadow-none'
+                        : isReadyToFinish
+                        ? 'bg-emerald-600 hover:bg-emerald-500 text-white animate-pulse shadow-emerald-200 cursor-pointer scale-[1.01]'
+                        : 'bg-slate-200 text-slate-400 border border-slate-300 cursor-not-allowed opacity-80 shadow-none'
+                    }`}
+                  >
+                    <CheckCircle2 className="w-5 h-5" />
+                    <span>
+                      {isModuleCompleted 
+                        ? 'Materi Ini Telah Diselesaikan! (Misi Tercentang Otomatis ✔)' 
+                        : isReadyToFinish 
+                        ? 'Selesaikan Materi ✨' 
+                        : 'Selesaikan Materi (Terkunci 🔒)'}
+                    </span>
+                  </button>
+                </div>
+              );
+            })()}
+
+            {/* Bottom Sentinel element for IntersectionObserver */}
+            <div ref={bottomSentinelRef} className="h-4 w-full" />
+
           </div>
         </div>
       )}
@@ -815,9 +1039,9 @@ export default function MateriKuis({
                         return (
                           <div 
                             key={task.id}
-                            onClick={(e) => handleToggleTask(e, task)}
+                            onClick={(e) => handleTaskClick(e, task, mission)}
                             className="flex items-center gap-2 text-xs font-bold text-slate-700 cursor-pointer group/item select-none hover:text-emerald-700 transition-colors"
-                            title="Klik untuk menyelesaikan tugas"
+                            title={isTaskDone ? "Tugas Selesai (Auto-Checked)" : "Klik untuk membaca materi & menyelesaikan tugas"}
                           >
                             <div className={`w-4 h-4 rounded flex items-center justify-center text-[10px] shrink-0 transition-all ${
                               isTaskDone 
@@ -903,12 +1127,13 @@ export default function MateriKuis({
                   return (
                     <div 
                       key={task.id}
-                      onClick={(e) => handleToggleTask(e, task)}
+                      onClick={(e) => handleTaskClick(e, task, selectedMissionModal)}
                       className={`p-4 rounded-2xl border cursor-pointer transition-all flex items-start justify-between gap-3 ${
                         isDone 
                           ? 'bg-emerald-50/60 border-emerald-300' 
                           : 'bg-white border-slate-200 hover:border-sky-300'
                       }`}
+                      title={isDone ? "Tugas Selesai (Auto-Checked)" : "Klik untuk membaca materi & menyelesaikan tugas"}
                     >
                       <div className="flex items-start gap-3">
                         <div className={`w-5 h-5 rounded flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 ${

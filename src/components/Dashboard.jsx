@@ -26,22 +26,35 @@ export default function Dashboard({ student, updateStudentData, setActiveTab, on
 
   const completedSet = new Set(student?.completedTasks || []);
 
-  const handleToggleTask = (e, taskObj) => {
+  const handleTaskClick = (e, taskObj, parentMission = null) => {
     e.stopPropagation();
     soundFx.playClick();
-    if (!student || !updateStudentData) return;
     
-    const isNowDone = !completedSet.has(taskObj.id);
-    const updatedStudent = toggleTaskCompletion(student, taskObj);
-    updateStudentData(updatedStudent);
+    // If task is completed, do nothing
+    if (completedSet.has(taskObj.id)) return;
 
-    if (isNowDone) {
-      soundFx.playScanSuccess();
-      confetti({
-        particleCount: 40,
-        spread: 50,
-        origin: { y: 0.7 }
-      });
+    // Manual override block: Navigate directly to the corresponding module/activity
+    const targetMateriId = parentMission?.materiId || taskObj.materiId;
+    if (taskObj.type === 'materi') {
+      if (onNavigateToCourseHub) {
+        onNavigateToCourseHub('materi', null, targetMateriId);
+      } else {
+        setActiveTab('materi');
+      }
+    } else if (taskObj.type === 'ai-scan') {
+      setActiveTab('ai-mission');
+    } else if (taskObj.type === 'quiz') {
+      if (onNavigateToCourseHub) {
+        onNavigateToCourseHub('kuis');
+      } else {
+        setActiveTab('materi');
+      }
+    } else if (taskObj.type === 'shop') {
+      setActiveTab('shop');
+    } else {
+      if (onNavigateToCourseHub) {
+        onNavigateToCourseHub('materi', null, targetMateriId);
+      }
     }
   };
 
@@ -243,9 +256,9 @@ export default function Dashboard({ student, updateStudentData, setActiveTab, on
                       return (
                         <div 
                           key={task.id}
-                          onClick={(e) => handleToggleTask(e, task)}
+                          onClick={(e) => handleTaskClick(e, task, mission)}
                           className="flex items-center gap-2 text-xs font-bold text-slate-700 cursor-pointer group/item select-none hover:text-emerald-700 transition-colors"
-                          title="Klik untuk menyelesaikan tugas"
+                          title={isTaskDone ? "Tugas Selesai (Auto-Checked)" : "Klik untuk membaca materi & menyelesaikan tugas"}
                         >
                           <div className={`w-4 h-4 rounded flex items-center justify-center text-[10px] shrink-0 transition-all ${
                             isTaskDone 
@@ -339,12 +352,13 @@ export default function Dashboard({ student, updateStudentData, setActiveTab, on
                   return (
                     <div 
                       key={task.id}
-                      onClick={(e) => handleToggleTask(e, task)}
+                      onClick={(e) => handleTaskClick(e, task, selectedMissionModal)}
                       className={`p-4 rounded-2xl border cursor-pointer transition-all flex items-start justify-between gap-3 ${
                         isDone 
                           ? 'bg-emerald-50/60 border-emerald-300' 
                           : 'bg-white border-slate-200 hover:border-sky-300'
                       }`}
+                      title={isDone ? "Tugas Selesai (Auto-Checked)" : "Klik untuk membaca materi & menyelesaikan tugas"}
                     >
                       <div className="flex items-start gap-3">
                         <div className={`w-5 h-5 rounded flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 ${
