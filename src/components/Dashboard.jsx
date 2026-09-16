@@ -217,7 +217,7 @@ export default function Dashboard({ student, updateStudentData, setActiveTab, on
             className="text-xs font-extrabold px-3.5 py-1.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 hover:bg-emerald-200 transition-all flex items-center gap-1 cursor-pointer shadow-sm"
             title="Klik untuk membuka Course Hub > Misi"
           >
-            <span>{completedSet.size} / 28 Tugas Selesai</span>
+            <span>{completedSet.size} / {MISSIONS_DATA.reduce((acc, m) => acc + (m.tasks?.length || 0), 0)} Tugas Selesai</span>
             <ChevronRight className="w-3.5 h-3.5 text-emerald-700" />
           </button>
         </div>
@@ -257,17 +257,17 @@ export default function Dashboard({ student, updateStudentData, setActiveTab, on
                         <div 
                           key={task.id}
                           onClick={(e) => handleTaskClick(e, task, mission)}
-                          className="flex items-center gap-2 text-xs font-bold text-slate-700 cursor-pointer group/item select-none hover:text-emerald-700 transition-colors"
+                          className="flex items-start gap-2 text-xs font-bold text-slate-700 cursor-pointer group/item select-none hover:text-emerald-700 transition-colors"
                           title={isTaskDone ? "Tugas Selesai (Auto-Checked)" : "Klik untuk membaca materi & menyelesaikan tugas"}
                         >
-                          <div className={`w-4 h-4 rounded flex items-center justify-center text-[10px] shrink-0 transition-all ${
+                          <div className={`w-4 h-4 rounded flex items-center justify-center text-[10px] shrink-0 mt-0.5 transition-all ${
                             isTaskDone 
                               ? 'bg-emerald-500 border border-emerald-600 text-white font-black scale-105' 
                               : 'bg-emerald-50 border border-emerald-400 text-emerald-600 group-hover/item:border-emerald-600'
                           }`}>
                             ✓
                           </div>
-                          <span className={`line-clamp-1 ${isTaskDone ? 'line-through opacity-70 text-slate-500' : ''}`}>
+                          <span className={`line-clamp-2 text-[11px] leading-tight ${isTaskDone ? 'line-through opacity-70 text-slate-500' : ''}`}>
                             {task.text}
                           </span>
                         </div>

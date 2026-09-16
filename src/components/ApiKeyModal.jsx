@@ -44,8 +44,8 @@ export default function ApiKeyModal({ isOpen, onClose, student, updateStudentDat
             <Key className="w-6 h-6" />
           </div>
           <div>
-            <h3 className="text-xl font-black text-slate-900">Pengaturan Google Gemini API Key</h3>
-            <p className="text-xs text-slate-500">Integrasi Kecerdasan Buatan untuk Misi Foto AI</p>
+            <h3 className="text-xl font-black text-slate-900">Pengaturan 9Router API Key</h3>
+            <p className="text-xs text-slate-500">Integrasi AI Router untuk Misi Foto AI</p>
           </div>
         </div>
 
@@ -58,12 +58,12 @@ export default function ApiKeyModal({ isOpen, onClose, student, updateStudentDat
           <ShieldCheck className="w-6 h-6 shrink-0" />
           <div>
             <p className="font-extrabold text-sm">
-              Status: {student.geminiApiKey ? 'Terhubung dengan Real Google Gemini API' : 'Mode Smart Vision Engine (Aktif Tambahan)'}
+              Status: {student.geminiApiKey ? 'Terhubung dengan 9Router API' : 'Mode Smart Vision Engine (Aktif Tambahan)'}
             </p>
             <p className="text-[11px] opacity-90 mt-0.5">
               {student.geminiApiKey
-                ? 'Semua foto akan dianalisis langsung oleh model kecerdasan buatan Gemini AI.'
-                : 'Aplikasi siap digunakan 100%! Kamu juga bisa memasukkan API Key resmi untuk analisis real-time.'}
+                ? 'Semua foto akan dianalisis melalui 9Router API.'
+                : 'Aplikasi siap digunakan 100%! Key default 9Router telah diaktifkan.'}
             </p>
           </div>
         </div>
@@ -72,35 +72,24 @@ export default function ApiKeyModal({ isOpen, onClose, student, updateStudentDat
         <form onSubmit={handleSaveKey} className="space-y-4">
           <div className="space-y-2">
             <label className="text-xs font-bold text-slate-700 block">
-              Masukkan Google Gemini API Key (Opsional):
+              Masukkan 9Router API Key:
             </label>
             <input
               type="password"
               value={apiKeyInput}
               onChange={(e) => setApiKeyInput(e.target.value)}
-              placeholder="AIzaSy..."
+              placeholder="sk-aba05541f9164d44-bhi1xh-a5e4130e"
               className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-indigo-500 font-mono"
             />
           </div>
 
           <div className="text-[11px] text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1">
-            <p className="font-bold text-amber-600 flex items-center gap-1">
-              💡 Cara mendapatkan Gemini API Key gratis:
+            <p className="font-bold text-emerald-600 flex items-center gap-1">
+              💡 Status API 9Router:
             </p>
             <p>
-              1. Buka situs resmi Google AI Studio. <br />
-              2. Login dengan akun Google dan klik "Get API Key". <br />
-              3. Salin dan tempelkan token ke dalam kotak di atas.
+              Default API Key 9Router (<code className="font-mono bg-slate-200 px-1 py-0.5 rounded text-[10px]">sk-aba0...a5e4130e</code>) sudah dikonfigurasi secara otomatis untuk pemindaian foto AI.
             </p>
-            <a
-              href="https://aistudio.google.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-indigo-600 font-bold hover:underline mt-1"
-            >
-              <span>Buka Google AI Studio</span>
-              <ExternalLink className="w-3 h-3" />
-            </a>
           </div>
 
           <div className="flex items-center justify-between gap-3 pt-2">

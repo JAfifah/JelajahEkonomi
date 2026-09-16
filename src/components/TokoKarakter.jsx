@@ -11,10 +11,27 @@ import {
   Lock, 
   Shirt, 
   Crown, 
+  SportShoe,
   Info,
   AlertCircle,
   HelpCircle
 } from 'lucide-react';
+
+function PantsIcon({ className = "w-5 h-5" }) {
+  return (
+    <svg 
+      className={className} 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      stroke="currentColor" 
+      strokeWidth="2" 
+      strokeLinecap="round" 
+      strokeLinejoin="round"
+    >
+      <path d="M6 3h12v4l-1 14h-3.5L12 11l-1.5 10H7L6 7V3z" />
+    </svg>
+  );
+}
 
 export default function TokoKarakter({ student, updateStudentData }) {
   const [activeCategory, setActiveCategory] = useState('tops'); // 'tops' | 'bottoms' | 'shoes' | 'accessories'
@@ -22,10 +39,10 @@ export default function TokoKarakter({ student, updateStudentData }) {
   const [buyingItem, setBuyingItem] = useState(null); // Item pending confirmation
 
   const categories = [
-    { id: 'tops', label: 'Baju & Jubah', icon: Shirt },
-    { id: 'bottoms', label: 'Celana & Rok', icon: ShoppingBag },
-    { id: 'shoes', label: 'Sepatu', icon: Sparkles },
-    { id: 'accessories', label: 'Rambut & Hijab', icon: Crown }
+    { id: 'tops', label: 'tops', icon: Shirt },
+    { id: 'bottoms', label: 'bottoms', icon: PantsIcon },
+    { id: 'shoes', label: 'shoes', icon: SportShoe },
+    { id: 'accessories', label: 'accessories', icon: Crown }
   ];
 
   const categoryItems = AVATAR_SHOP_ITEMS.filter(item => item.category === activeCategory);

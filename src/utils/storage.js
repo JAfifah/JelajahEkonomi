@@ -42,7 +42,7 @@ export const INITIAL_STUDENT_DATA = {
     { id: 'b7', title: 'Master Ekonomi IPS', icon: '👑', desc: 'Selesaikan seluruh tugas di 7 pulau ekonomi', unlocked: false }
   ],
   completedTasks: [],
-  geminiApiKey: ''
+  geminiApiKey: 'sk-aba05541f9164d44-bhi1xh-a5e4130e'
 };
 
 export function loadStudentData() {
@@ -69,12 +69,18 @@ export function loadStudentData() {
       equipped.hairstyle = 'hair-rambut-laki';
     }
 
+    const savedKey = parsed.geminiApiKey;
+    const finalApiKey = (!savedKey || savedKey.startsWith('AQ.') || savedKey.startsWith('AIza')) 
+      ? INITIAL_STUDENT_DATA.geminiApiKey 
+      : savedKey;
+
     return {
       ...INITIAL_STUDENT_DATA,
       ...parsed,
       inventory: Array.from(inventorySet),
       equipped,
       completedTasks: parsed.completedTasks || INITIAL_STUDENT_DATA.completedTasks,
+      geminiApiKey: finalApiKey,
       stats: { ...INITIAL_STUDENT_DATA.stats, ...(parsed.stats || {}) }
     };
   } catch (e) {

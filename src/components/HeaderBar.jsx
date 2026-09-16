@@ -31,31 +31,15 @@ export default function HeaderBar({ student, onOpenApiKeyModal }) {
           </span>
         </div>
 
-        {/* Poin Belajar Badge */}
+        {/* Level Badge */}
         <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 px-3.5 py-1.5 rounded-full shadow-sm">
           <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center text-white font-bold text-xs shadow-inner">
-            💎
+            🏆
           </div>
           <span className="text-xs sm:text-sm font-bold text-slate-700">
-            Poin Belajar: <span className="font-black text-emerald-600">{student.points.toLocaleString()}</span>
+            Level: <span className="font-black text-emerald-600">{student.level}</span>
           </span>
         </div>
-
-        {/* Gemini API Key */}
-        <button
-          onClick={onOpenApiKeyModal}
-          className={`p-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all border ${
-            student.geminiApiKey
-              ? 'bg-emerald-100 border-emerald-300 text-emerald-800'
-              : 'bg-slate-200 border-slate-300 text-slate-700 hover:bg-slate-300'
-          }`}
-          title="Pengaturan Google Gemini API Key"
-        >
-          <Key className="w-4 h-4 text-amber-500" />
-          <span className="hidden md:inline">
-            {student.geminiApiKey ? 'Gemini AI Active' : 'API Key'}
-          </span>
-        </button>
 
       </div>
 

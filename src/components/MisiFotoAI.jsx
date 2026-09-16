@@ -14,12 +14,21 @@ import {
   Key,
   Scan,
   Zap,
-  Info,
-  Award
+  Award,
+  X,
+  ChevronRight,
+  Compass,
+  Trees,
+  Ship,
+  Store,
+  Landmark,
+  Check,
+  FileSearch,
+  ShieldCheck
 } from 'lucide-react';
 
 export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyModal }) {
-  const [selectedMission, setSelectedMission] = useState('kebutuhan-kelangkaan');
+  const [activeModalMission, setActiveModalMission] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [mimeType, setMimeType] = useState('image/jpeg');
   const [analyzing, setAnalyzing] = useState(false);
@@ -29,50 +38,123 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
   const [useCameraMode, setUseCameraMode] = useState(false);
   const videoRef = useRef(null);
 
-  const missions = [
+  const photoMissions = [
     {
       id: 'kebutuhan-kelangkaan',
+      islandKey: 'wants',
+      locationName: 'PULAU KEINGINAN',
       title: 'Misi Pengenalan Kebutuhan & Kelangkaan',
+      icon: Compass,
+      accentColor: 'orange',
+      badgeBg: 'bg-orange-100 text-orange-800 border-orange-200',
+      cardBorderHover: 'hover:border-orange-400',
       desc: 'Pindai situasi atau benda yang menunjukkan pemenuhan kebutuhan dasar manusia di lingkungan sekitar guna memahami kondisi keterbatasan alat pemuas kebutuhan.',
-      badgeColor: 'bg-orange-500/20 text-orange-300 border-orange-500/30'
+      targetHint: 'Foto air minum, makanan pokok, pakaian, atau alat pemuas kebutuhan primer.',
+      taskId: 'wants-t4'
     },
     {
       id: 'sumber-daya-alam',
+      islandKey: 'resources',
+      locationName: 'PULAU SUMBER DAYA',
       title: 'Misi Eksplorasi Faktor Alam',
+      icon: Trees,
+      accentColor: 'emerald',
+      badgeBg: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+      cardBorderHover: 'hover:border-emerald-400',
       desc: 'Sesuai dengan Misi 1: Foto Objek Sumber Daya Alam, pindai kekayaan alam lokal di sekitarmu (seperti tanah, tanaman pangan, air, atau bebatuan alam).',
-      badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
+      targetHint: 'Foto tanaman pangan, tanah subur, sumber air, atau bebatuan alam.',
+      taskId: 'res-t4'
     },
     {
       id: 'distribusi',
+      islandKey: 'trade',
+      locationName: 'PELABUHAN PERDAGANGAN',
       title: 'Misi Perdagangan & Distribusi',
+      icon: Ship,
+      accentColor: 'sky',
+      badgeBg: 'bg-sky-100 text-sky-800 border-sky-200',
+      cardBorderHover: 'hover:border-sky-400',
       desc: 'Sesuai dengan Misi 2: Foto Logistik / Warung Sekitar, pindai sarana atau aktivitas penyaluran barang (seperti kurir paket, truk angkut, warung klontong, atau minimarket).',
-      badgeColor: 'bg-sky-500/20 text-sky-300 border-sky-500/30'
+      targetHint: 'Foto kurir paket, truk ekspedisi, warung kelontong, atau minimarket.',
+      taskId: 'trade-t3'
     },
     {
       id: 'konsumsi',
+      islandKey: 'marketplace',
+      locationName: 'MISI PASAR',
       title: 'Misi Pola Konsumen & Pasar',
+      icon: Store,
+      accentColor: 'amber',
+      badgeBg: 'bg-yellow-100 text-yellow-800 border-yellow-200',
+      cardBorderHover: 'hover:border-amber-400',
       desc: 'Sesuai dengan Misi 4: Aktivitas / Benda Konsumsi, foto barang yang sedang kamu pakai atau konsumsi (seperti makanan, minuman, buku IPS, atau sepatu sekolah) untuk melihat pola kebiasaan konsumen.',
-      badgeColor: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30'
+      targetHint: 'Foto barang konsumsi harian seperti buku IPS, makanan, atau sepatu sekolah.',
+      taskId: 'mkt-t4'
     },
     {
       id: 'kayu-mebel',
+      islandKey: 'forest',
+      locationName: 'HUTAN SUMBERDAYA',
       title: 'Misi Konservasi & Bahan Baku',
+      icon: Trees,
+      accentColor: 'teal',
+      badgeBg: 'bg-teal-100 text-teal-800 border-teal-200',
+      cardBorderHover: 'hover:border-teal-400',
       desc: 'Sesuai dengan Misi 3: Scan Produk Olahan Kayu, pindai barang olahan kayu hasil hutan (seperti meja belajar, kursi, pensil kayu, bingkai, atau furnitur) untuk mempelajari pemanfaatan dan pelestarian bahan baku.',
-      badgeColor: 'bg-teal-500/20 text-teal-300 border-teal-500/30'
+      targetHint: 'Foto meja belajar kayu, kursi kayu, pensil kayu, atau bingkai kayu.',
+      taskId: 'fst-t4'
     },
     {
       id: 'modal-keuangan',
+      islandKey: 'investment',
+      locationName: 'BANK INVESTASI',
       title: 'Misi Pengelolaan Modal & Keuangan',
+      icon: Landmark,
+      accentColor: 'indigo',
+      badgeBg: 'bg-indigo-100 text-indigo-800 border-indigo-200',
+      cardBorderHover: 'hover:border-indigo-400',
       desc: 'Pindai benda-benda penunjang kegiatan ekonomi yang berfungsi sebagai modal (seperti peralatan kerja, mesin, atau perangkat pendukung produktivitas lainnya).',
-      badgeColor: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30'
+      targetHint: 'Foto peralatan kerja, mesin, laptop/komputer, atau alat produktivitas.',
+      taskId: 'inv-t4'
     },
     {
       id: 'bebas',
+      islandKey: 'entrepreneur',
+      locationName: 'PULAU KEWIRAUSAHAAN',
       title: 'Misi Keahlian & Jenis Produksi',
-      desc: 'Sesuai dengan Scan Bebas Deteksi Ekonomi, pindai objek apa saja di sekitarmu yang mencerminkan hasil proses produksi barang/jasa atau penerapan keahlian kerja tertentu untuk dikategorikan oleh mesin AI.',
-      badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/30'
+      icon: Award,
+      accentColor: 'purple',
+      badgeBg: 'bg-purple-100 text-purple-800 border-purple-200',
+      cardBorderHover: 'hover:border-purple-400',
+      desc: 'Sesuai dengan instruksi Scan Bebas Deteksi Ekonomi, ambil foto dari salah satu objek di sekitarmu yang merupakan hasil produksi barang/jasa (contoh: pakaian, makanan kemasan, atau barang elektronik) agar dapat dianalisis oleh mesin AI.',
+      targetHint: 'Foto satu objek nyata yang menunjukkan hasil produksi barang/jasa.',
+      taskId: 'ent-t4'
     }
   ];
+
+  const completedTasks = student?.completedTasks || [];
+
+  // Open Pop-Up Modal for a specific mission card
+  const handleOpenMission = (mission) => {
+    soundFx.playClick();
+    setActiveModalMission(mission);
+    setImagePreview(null);
+    setAnalysisResult(null);
+    setUseCameraMode(false);
+  };
+
+  // Close Modal
+  const handleCloseModal = () => {
+    soundFx.playClick();
+    if (videoRef.current && videoRef.current.srcObject) {
+      const tracks = videoRef.current.srcObject.getTracks();
+      tracks.forEach(track => track.stop());
+    }
+    setUseCameraMode(false);
+    setActiveModalMission(null);
+    setImagePreview(null);
+    setAnalysisResult(null);
+  };
 
   // Handle File Upload
   const handleFileChange = (e) => {
@@ -134,7 +216,7 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
 
   // Execute Gemini AI Scan
   const handleScanImage = async () => {
-    if (!imagePreview) return;
+    if (!imagePreview || !activeModalMission) return;
     soundFx.playClick();
     setAnalyzing(true);
     setAnalysisResult(null);
@@ -143,7 +225,7 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
       const result = await analyzeEconomicImage({
         imageBase64: imagePreview,
         mimeType,
-        missionType: selectedMission,
+        missionType: activeModalMission.id,
         apiKey: student.geminiApiKey
       });
 
@@ -155,12 +237,15 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
         
         // Auto-complete corresponding ai-scan task in MISSIONS_DATA if present
         let updatedCompletedTasks = [...(student.completedTasks || [])];
-        const currentIslandMission = MISSIONS_DATA.find(m => m.aiMissionId === selectedMission);
+        const currentIslandMission = MISSIONS_DATA.find(m => m.aiMissionId === activeModalMission.id);
         if (currentIslandMission) {
           const aiScanTask = currentIslandMission.tasks.find(t => t.type === 'ai-scan');
           if (aiScanTask && !updatedCompletedTasks.includes(aiScanTask.id)) {
             updatedCompletedTasks.push(aiScanTask.id);
           }
+        }
+        if (activeModalMission.taskId && !updatedCompletedTasks.includes(activeModalMission.taskId)) {
+          updatedCompletedTasks.push(activeModalMission.taskId);
         }
 
         // Award Student
@@ -209,6 +294,13 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
     setAnalysisResult(null);
   };
 
+  // Calculate overall verified missions count
+  const verifiedCount = photoMissions.filter(m => {
+    const matchedIsland = MISSIONS_DATA.find(is => is.aiMissionId === m.id);
+    const aiTask = matchedIsland?.tasks?.find(t => t.type === 'ai-scan');
+    return aiTask ? completedTasks.includes(aiTask.id) : completedTasks.includes(m.taskId);
+  }).length;
+
   return (
     <div className="space-y-8 pb-12 animate-fade-in">
       
@@ -223,232 +315,327 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
             Misi Foto AI Kegiatan Ekonomi
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 max-w-xl">
-            Cari benda atau aktivitas nyata di sekitarmu, ambil fotonya, dan biarkan Google Gemini AI mengevaluasi konsep IPS-nya!
+            Pilih salah satu dari 7 Misi Foto di bawah ini, ambil/unggah foto objek nyata, dan biarkan Google Gemini AI mengevaluasi kaitan konsep IPS-nya!
           </p>
         </div>
 
-        {/* Gemini Key Status Button */}
-        <button
-          onClick={onOpenApiKeyModal}
-          className={`px-4 py-3 rounded-2xl border text-xs font-bold flex items-center gap-2.5 shadow-sm transition-all ${
-            student.geminiApiKey
-              ? 'bg-emerald-50 border-emerald-200 text-emerald-800 hover:bg-emerald-100'
-              : 'bg-amber-50 border-amber-200 text-amber-800 hover:bg-amber-100'
-          }`}
-        >
-          <Key className="w-4 h-4 text-amber-500" />
-          <div className="text-left">
-            <p className="text-[10px] opacity-80 uppercase font-semibold">Status Integrasi AI</p>
-            <p className="font-extrabold">
-              {student.geminiApiKey ? 'Gemini 1.5/2.0 API Active' : 'Menggunakan Smart AI Vision Engine'}
-            </p>
-          </div>
-        </button>
-      </div>
-
-      {/* Main Grid: Mission Selector & Scanner Panel */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        
-        {/* Left Column: Mission Selection */}
-        <div className="lg:col-span-5 space-y-4">
-          <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider px-1">
-            Langkah 1: Pilih Misi Pemindaian
-          </h3>
-
-          <div className="space-y-3">
-            {missions.map((m) => {
-              const isSelected = selectedMission === m.id;
-              return (
-                <div
-                  key={m.id}
-                  onClick={() => { soundFx.playClick(); setSelectedMission(m.id); }}
-                  className={`p-4 rounded-2xl border cursor-pointer transition-all ${
-                    isSelected
-                      ? 'bg-white border-emerald-500 ring-2 ring-emerald-500/20 shadow-md scale-[1.02]'
-                      : 'bg-white border-slate-200 hover:bg-slate-50 text-slate-700'
-                  }`}
-                >
-                  <div className="flex items-start justify-between gap-2 mb-1.5">
-                    <h4 className="font-extrabold text-slate-900 text-sm sm:text-base">{m.title}</h4>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full border bg-emerald-50 text-emerald-700 border-emerald-200">
-                      Target
-                    </span>
-                  </div>
-                  <p className="text-xs text-slate-600 leading-relaxed">{m.desc}</p>
-                </div>
-              );
-            })}
+        {/* Gemini Key Status & Progress */}
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="px-4 py-3 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center gap-2.5 shadow-sm">
+            <ShieldCheck className="w-5 h-5 text-emerald-600" />
+            <div>
+              <p className="text-[10px] opacity-80 uppercase font-semibold">Progres Pemindaian</p>
+              <p className="font-extrabold text-sm">{verifiedCount} / 7 Misi Selesai</p>
+            </div>
           </div>
         </div>
+      </div>
 
-        {/* Right Column: Camera / Image Upload & Analysis Card */}
-        <div className="lg:col-span-7 bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 space-y-6 shadow-md">
-          <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            Langkah 2: Ambil Foto / Unggah Gambar Objek
+      {/* ========================================================================= */}
+      {/* 7 MISSION CARDS GRID IN EXACT REQUESTED PULAU FORMAT */}
+      {/* ========================================================================= */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between px-1">
+          <h3 className="text-xl font-black text-slate-900 flex items-center gap-2">
+            <Compass className="w-6 h-6 text-emerald-600" />
+            <span>Daftar 7 Misi Foto Pulau Kegiatan Ekonomi</span>
           </h3>
+          <span className="text-xs font-extrabold px-3 py-1 rounded-full bg-slate-100 text-slate-700 border border-slate-200">
+            Klik Misi untuk Buka Pop-Up Scanner
+          </span>
+        </div>
 
-          {/* Upload / Camera Box Area */}
-          <div className="relative border-2 border-dashed border-slate-300 hover:border-emerald-500/60 rounded-3xl p-6 text-center bg-slate-50 transition-colors overflow-hidden min-h-[260px] flex flex-col items-center justify-center">
-            
-            {/* Real Camera Stream View */}
-            {useCameraMode && (
-              <div className="space-y-4 w-full flex flex-col items-center">
-                <video ref={videoRef} autoPlay playsInline className="w-full max-h-64 rounded-2xl object-cover border border-slate-300" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {photoMissions.map((mission) => {
+            const IconComp = mission.icon;
+            const matchedIsland = MISSIONS_DATA.find(is => is.aiMissionId === mission.id);
+            const aiTask = matchedIsland?.tasks?.find(t => t.type === 'ai-scan');
+            const isVerified = aiTask ? completedTasks.includes(aiTask.id) : completedTasks.includes(mission.taskId);
+
+            return (
+              <div 
+                key={mission.id}
+                onClick={() => handleOpenMission(mission)}
+                className={`bg-white border-2 border-slate-200 rounded-3xl p-5 flex flex-col justify-between shadow-md space-y-4 ${mission.cardBorderHover} cursor-pointer transition-all duration-200 hover:shadow-xl hover:-translate-y-1 group`}
+              >
+                <div className="space-y-3">
+                  {/* Header Title & Location */}
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0 border border-emerald-200 text-emerald-600 group-hover:scale-110 transition-transform">
+                        <IconComp className="w-5 h-5 text-emerald-600" />
+                      </div>
+                      <div>
+                        <span className="text-[11px] font-black uppercase text-slate-500 block leading-tight">
+                          {mission.locationName}
+                        </span>
+                      </div>
+                    </div>
+
+                    {isVerified ? (
+                      <span className="text-[10px] font-black px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center gap-1 shrink-0">
+                        <Check className="w-3 h-3 text-emerald-600" />
+                        Terverifikasi
+                      </span>
+                    ) : (
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full border bg-amber-50 text-amber-800 border-amber-200 shrink-0">
+                        Target Misi
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Mission Title */}
+                  <h4 className="font-extrabold text-slate-900 text-sm sm:text-base leading-snug group-hover:text-emerald-700 transition-colors">
+                    {mission.title}
+                  </h4>
+
+                  {/* Task Description */}
+                  <p className="text-xs text-slate-600 leading-relaxed line-clamp-3">
+                    {mission.desc}
+                  </p>
+                </div>
+
+                {/* Bottom Action Button */}
                 <button
-                  onClick={handleCapturePhoto}
-                  className="py-3 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm flex items-center gap-2 shadow-lg"
+                  className={`w-full py-2.5 px-4 rounded-xl font-extrabold text-sm shadow-md transition-colors flex items-center justify-center gap-2 text-white ${
+                    isVerified
+                      ? 'bg-emerald-600 hover:bg-emerald-500'
+                      : 'bg-emerald-600 hover:bg-emerald-500'
+                  }`}
                 >
-                  <Camera className="w-5 h-5" />
-                  <span>Ambil Foto Sekarang</span>
+                  <span>Mulai Misi Foto</span>
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ========================================================================= */}
+      {/* POP-UP MODAL: MISSION DETAIL & AI SCANNER INTERFACE */}
+      {/* ========================================================================= */}
+      {activeModalMission && (
+        <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto animate-fade-in">
+          <div className="bg-white rounded-3xl border border-slate-200 shadow-2xl max-w-2xl w-full p-6 sm:p-8 space-y-6 animate-scale-up my-auto max-h-[90vh] overflow-y-auto relative">
+            
+            {/* Modal Header */}
+            <div className="flex items-start justify-between border-b border-slate-100 pb-4">
+              <div className="space-y-1">
+                <span className="text-xs font-black uppercase text-emerald-600 tracking-wider">
+                  {activeModalMission.locationName}
+                </span>
+                <h3 className="text-xl sm:text-2xl font-black text-slate-900">
+                  {activeModalMission.title}
+                </h3>
+              </div>
+              <button
+                onClick={handleCloseModal}
+                className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors"
+                title="Tutup Misi Foto"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Mission Task Explanation Banner */}
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-5 space-y-2">
+              <div className="flex items-center gap-2 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                <FileSearch className="w-4 h-4 text-emerald-600" />
+                <span>Instruksi Tugas Pemindaian Misi</span>
+              </div>
+              <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+                {activeModalMission.desc}
+              </p>
+              <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-200/80">
+                <span className="text-xs text-emerald-700 font-bold">
+                  💡 Target Objek: {activeModalMission.targetHint}
+                </span>
+                <span className="text-xs font-extrabold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200">
+                  Imbalan: +40 Koin & +35 XP
+                </span>
+              </div>
+            </div>
+
+            {/* Camera / Upload Box Area */}
+            <div className="relative border-2 border-dashed border-slate-300 hover:border-emerald-500/60 rounded-3xl p-6 text-center bg-slate-50 transition-colors overflow-hidden min-h-[240px] flex flex-col items-center justify-center">
+              
+              {/* Real Camera Stream View */}
+              {useCameraMode && (
+                <div className="space-y-4 w-full flex flex-col items-center">
+                  <video ref={videoRef} autoPlay playsInline className="w-full max-h-64 rounded-2xl object-cover border border-slate-300" />
+                  <button
+                    onClick={handleCapturePhoto}
+                    className="py-3 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm flex items-center gap-2 shadow-lg"
+                  >
+                    <Camera className="w-5 h-5" />
+                    <span>Ambil Foto Sekarang</span>
+                  </button>
+                </div>
+              )}
+
+              {/* Static Image Preview */}
+              {!useCameraMode && imagePreview && (
+                <div className="relative w-full flex flex-col items-center space-y-4">
+                  <img 
+                    src={imagePreview} 
+                    alt="Preview Scan" 
+                    className="max-h-64 rounded-2xl object-contain border border-slate-200 shadow-md" 
+                  />
+
+                  {/* Animated Scanner Beam overlay during analysis */}
+                  {analyzing && (
+                    <div className="absolute inset-0 bg-emerald-500/10 rounded-2xl flex flex-col items-center justify-center pointer-events-none">
+                      <div className="w-full h-1 bg-gradient-to-r from-transparent via-emerald-500 to-transparent animate-pulse" />
+                      <Scan className="w-12 h-12 text-emerald-600 animate-spin mt-4" />
+                      <p className="text-xs font-bold text-emerald-800 mt-2">Sedang Menganalisis dengan Gemini AI...</p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Initial Empty Upload State */}
+              {!useCameraMode && !imagePreview && (
+                <div className="space-y-4 max-w-sm mx-auto">
+                  <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto border border-emerald-200">
+                    <Camera className="w-8 h-8" />
+                  </div>
+                  <div>
+                    <h4 className="font-extrabold text-slate-900 text-base">Ambil Foto atau Unggah Gambar</h4>
+                    <p className="text-xs text-slate-600 mt-1">
+                      Foto objek di sekitarmu yang sesuai dengan instruksi misi di atas.
+                    </p>
+                  </div>
+
+                  <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+                    <label className="py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs cursor-pointer flex items-center gap-2 shadow-md transition-colors">
+                      <Upload className="w-4 h-4" />
+                      <span>Pilih Gambar Galeri</span>
+                      <input type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
+                    </label>
+
+                    <button
+                      onClick={handleStartCamera}
+                      className="py-2.5 px-4 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold text-xs flex items-center gap-2 transition-colors shadow-sm"
+                    >
+                      <Camera className="w-4 h-4 text-emerald-600" />
+                      <span>Gunakan Kamera</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+
+            </div>
+
+            {/* Action Controls before scan */}
+            {imagePreview && !analyzing && !analysisResult && (
+              <div className="flex items-center justify-between gap-4 pt-2">
+                <button
+                  onClick={resetScan}
+                  className="py-3 px-4 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold text-xs flex items-center gap-2"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                  <span>Ganti Foto</span>
+                </button>
+
+                <button
+                  onClick={handleScanImage}
+                  className="py-3 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm flex items-center gap-2 shadow-md"
+                >
+                  <Zap className="w-4 h-4" />
+                  <span>Analisis Objek dengan Gemini AI</span>
                 </button>
               </div>
             )}
 
-            {/* Static Image Preview */}
-            {!useCameraMode && imagePreview && (
-              <div className="relative w-full flex flex-col items-center space-y-4">
-                <img 
-                  src={imagePreview} 
-                  alt="Preview Scan" 
-                  className="max-h-72 rounded-2xl object-contain border border-slate-200 shadow-md" 
-                />
-
-                {/* Animated Scanner Beam overlay during analysis */}
-                {analyzing && (
-                  <div className="absolute inset-0 bg-emerald-500/10 rounded-2xl flex flex-col items-center justify-center pointer-events-none">
-                    <div className="w-full h-1 bg-gradient-to-r from-transparent via-emerald-500 to-transparent animate-pulse" />
-                    <Scan className="w-12 h-12 text-emerald-600 animate-spin mt-4" />
-                    <p className="text-xs font-bold text-emerald-800 mt-2">Sedang Menganalisis dengan Gemini AI...</p>
+            {/* AI VERIFICATION RESULTS REPORT CARD */}
+            {analysisResult && (
+              <div className={`p-6 rounded-3xl space-y-4 animate-fade-in shadow-sm border ${
+                analysisResult.isValid ? 'bg-emerald-50/70 border-emerald-300' : 'bg-rose-50/70 border-rose-300'
+              }`}>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 font-black text-sm">
+                    {analysisResult.isValid ? (
+                      <>
+                        <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                        <span className="text-emerald-800">✓ Hasil Verifikasi: FOTO SUDAH SESUAI!</span>
+                      </>
+                    ) : (
+                      <>
+                        <XCircle className="w-5 h-5 text-rose-600" />
+                        <span className="text-rose-800">❌ Hasil Verifikasi: FOTO KURANG SESUAI</span>
+                      </>
+                    )}
                   </div>
-                )}
-              </div>
-            )}
-
-            {/* Initial Empty Upload State */}
-            {!useCameraMode && !imagePreview && (
-              <div className="space-y-4 max-w-sm mx-auto">
-                <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto border border-emerald-200">
-                  <Camera className="w-8 h-8" />
                 </div>
-                <div>
-                  <h4 className="font-extrabold text-slate-900 text-base">Unggah Foto atau Buka Kamera</h4>
-                  <p className="text-xs text-slate-600 mt-1">
-                    Pilih file gambar (JPG, PNG) dari galeri perangkatmu atau ambil foto baru.
+
+                <div className="space-y-2 border-t border-b border-slate-200/80 py-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs text-slate-600">Objek Terdeteksi:</span>
+                    <span className="text-sm font-extrabold text-slate-900">{analysisResult.objectName}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs text-slate-600 font-medium">Kategori Konsep IPS:</span>
+                    <span className="text-xs font-bold text-emerald-700">{analysisResult.economicTypeDetail || analysisResult.category}</span>
+                  </div>
+                </div>
+
+                {/* Teacher Explanation Feedback */}
+                <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1 shadow-sm">
+                  <p className="text-xs font-bold text-indigo-700">💬 Evaluasi Guru IPS AI:</p>
+                  <p className="text-xs sm:text-sm text-slate-700 leading-relaxed italic">
+                    "{analysisResult.explanation}"
                   </p>
                 </div>
 
-                <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-                  <label className="py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs cursor-pointer flex items-center gap-2 shadow-md transition-colors">
-                    <Upload className="w-4 h-4" />
-                    <span>Pilih Gambar Galeri</span>
-                    <input type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
-                  </label>
+                {/* Reward Badge if Valid */}
+                {analysisResult.isValid && (
+                  <div className="bg-white p-4 rounded-2xl border border-emerald-200 flex items-center justify-between shadow-sm">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-amber-600 border border-amber-300">
+                        <Award className="w-6 h-6" />
+                      </div>
+                      <div>
+                        <p className="text-xs text-slate-900 font-bold">Misi Foto Berhasil Diselesaikan!</p>
+                        <p className="text-[11px] text-slate-600">Imbalan koin & XP telah ditambahkan</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3 font-black text-sm">
+                      <span className="text-amber-600 flex items-center gap-1">
+                        <Coins className="w-4 h-4 text-amber-500 fill-amber-500" />
+                        +{analysisResult.coinsEarned}
+                      </span>
+                      <span className="text-indigo-600 flex items-center gap-1">
+                        <Sparkles className="w-4 h-4 text-indigo-500" />
+                        +{analysisResult.pointsEarned} XP
+                      </span>
+                    </div>
+                  </div>
+                )}
+
+                <div className="pt-2 flex items-center justify-between gap-3">
+                  <button
+                    onClick={resetScan}
+                    className="py-2.5 px-4 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold text-xs flex items-center gap-2 shadow-sm"
+                  >
+                    <RotateCcw className="w-4 h-4" />
+                    <span>Pindai Ulang Foto</span>
+                  </button>
 
                   <button
-                    onClick={handleStartCamera}
-                    className="py-2.5 px-4 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold text-xs flex items-center gap-2 transition-colors shadow-sm"
+                    onClick={handleCloseModal}
+                    className="py-2.5 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-md"
                   >
-                    <Camera className="w-4 h-4 text-emerald-600" />
-                    <span>Gunakan Kamera</span>
+                    Tutup & Simpan Progress
                   </button>
                 </div>
               </div>
             )}
 
           </div>
-
-          {/* Action & Rescan Controls */}
-          {imagePreview && !analyzing && !analysisResult && (
-            <div className="flex items-center justify-between gap-4">
-              <button
-                onClick={resetScan}
-                className="py-3 px-4 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold text-xs flex items-center gap-2"
-              >
-                <RotateCcw className="w-4 h-4" />
-                <span>Ganti Foto</span>
-              </button>
-
-              <button
-                onClick={handleScanImage}
-                className="py-3 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm flex items-center gap-2 shadow-md"
-              >
-                <Zap className="w-4 h-4" />
-                <span>Analisis Objek dengan Gemini AI</span>
-              </button>
-            </div>
-          )}
-
-          {/* AI ANALYSIS RESULTS REPORT CARD */}
-          {analysisResult && (
-            <div className="bg-slate-50 border border-emerald-200 p-6 rounded-3xl space-y-4 animate-fade-in shadow-sm">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-emerald-700 font-bold text-sm">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-600" />
-                  <span>Laporan Evaluasi Gemini AI</span>
-                </div>
-                <span className="text-[10px] font-mono px-2.5 py-1 rounded bg-white text-slate-600 border border-slate-200">
-                  {analysisResult.isRealAi ? 'Real Gemini API' : 'Smart Vision Engine'}
-                </span>
-              </div>
-
-              <div className="space-y-2 border-t border-b border-slate-200 py-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-xs text-slate-600">Objek Terdeteksi:</span>
-                  <span className="text-sm font-extrabold text-slate-900">{analysisResult.objectName}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-xs text-slate-600">Detail Kegiatan Ekonomi:</span>
-                  <span className="text-xs font-bold text-amber-600">{analysisResult.economicTypeDetail}</span>
-                </div>
-              </div>
-
-              {/* Teacher Explanation Feedback */}
-              <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1 shadow-sm">
-                <p className="text-xs font-bold text-indigo-700">💬 Ulasan Guru IPS AI:</p>
-                <p className="text-xs sm:text-sm text-slate-700 leading-relaxed italic">
-                  "{analysisResult.explanation}"
-                </p>
-              </div>
-
-              {/* Reward Badge */}
-              <div className="bg-emerald-50 p-4 rounded-2xl border border-emerald-200 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-amber-600 border border-amber-300">
-                    <Award className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-slate-800 font-bold">Misi Berhasil Diverifikasi!</p>
-                    <p className="text-[11px] text-slate-600">Imbalan ditambahkan ke dompetmu</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3 font-black text-sm">
-                  <span className="text-amber-600 flex items-center gap-1">
-                    <Coins className="w-4 h-4 text-amber-500 fill-amber-500" />
-                    +{analysisResult.coinsEarned}
-                  </span>
-                  <span className="text-indigo-600 flex items-center gap-1">
-                    <Sparkles className="w-4 h-4 text-indigo-500" />
-                    +{analysisResult.pointsEarned} XP
-                  </span>
-                </div>
-              </div>
-
-              <div className="pt-2 flex justify-end">
-                <button
-                  onClick={resetScan}
-                  className="py-2.5 px-5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold text-xs flex items-center gap-2 shadow-sm"
-                >
-                  <RotateCcw className="w-4 h-4" />
-                  <span>Pindai Foto Lainnya</span>
-                </button>
-              </div>
-            </div>
-          )}
-
         </div>
-
-      </div>
+      )}
 
     </div>
   );

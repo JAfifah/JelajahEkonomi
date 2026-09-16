@@ -95,25 +95,8 @@ export default function Navbar({
 
           </div>
 
-          {/* Right Action Icons (Audio & Gemini API Key Settings) */}
+          {/* Right Action Icons (Audio) */}
           <div className="flex items-center gap-2">
-            
-            {/* Gemini API Key Config */}
-            <button
-              onClick={onOpenApiKeyModal}
-              className={`p-2.5 rounded-xl border text-xs font-semibold flex items-center gap-1.5 transition-all ${
-                student.geminiApiKey
-                  ? 'bg-emerald-50 border-emerald-200 text-emerald-800 hover:bg-emerald-100'
-                  : 'bg-slate-100 border-slate-200 text-slate-700 hover:bg-slate-200'
-              }`}
-              title="Pengaturan Google Gemini API Key"
-            >
-              <Key className="w-4 h-4 text-amber-500" />
-              <span className="hidden sm:inline">
-                {student.geminiApiKey ? 'Gemini AI Active' : 'API Key'}
-              </span>
-            </button>
-
             {/* Sound Toggle */}
             <button
               onClick={handleToggleSound}
