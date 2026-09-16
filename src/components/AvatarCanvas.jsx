@@ -377,20 +377,6 @@ function renderTops(topId, isWaving = false) {
         </g>
       );
 
-    case 'top-jubah-raja':
-      return (
-        <g>
-          {/* Royal Cape */}
-          <path d="M 52 110 Q 120 95 188 110 L 205 290 Q 120 305 35 290 Z" fill="#7c3aed" opacity="0.9" />
-          {/* Right Sleeve */}
-          {renderRightSleeve(topId, isWaving)}
-          {/* Gold Collar Trim */}
-          <path d="M 68 112 L 172 112 L 162 208 L 78 208 Z" fill="#f59e0b" />
-          <path d="M 76 118 L 164 118 L 156 202 L 84 202 Z" fill="#4c1d95" />
-          <polygon points="120,130 128,145 145,145 131,154 136,170 120,160 104,170 109,154 95,145 112,145" fill="#fbbf24" />
-        </g>
-      );
-
     case 'top-kaos-ips':
     default:
       return (
@@ -400,7 +386,7 @@ function renderTops(topId, isWaving = false) {
           {/* Left Sleeve */}
           <path d="M 72 114 L 52 165 L 75 168 L 78 122 Z" fill="url(#shirtGradient)" stroke="#cbd5e1" strokeWidth="1.5" />
           {/* Right Sleeve */}
-          {renderRightSleeve(topId, isWaving)}
+          {renderRightSleeve(topId)}
           {/* Crew-Neck Collar Line */}
           <path d="M 102 114 Q 120 128 138 114" stroke="#94a3b8" strokeWidth="2.5" fill="none" />
           {/* Shirt Fold Wrinkles */}
@@ -419,8 +405,6 @@ function renderRightSleeve(topId) {
       return <path d="M 172 112 L 192 168 L 170 172 L 166 120 Z" fill="#059669" />;
     case 'top-rompi-kurir':
       return <path d="M 172 112 L 190 168 L 168 172 L 166 120 Z" fill="#3b82f6" />;
-    case 'top-jubah-raja':
-      return <path d="M 172 112 L 190 168 L 168 172 L 166 120 Z" fill="#4c1d95" />;
     case 'top-kaos-ips':
     default:
       return <path d="M 168 114 L 188 165 L 165 168 L 162 122 Z" fill="url(#shirtGradient)" stroke="#cbd5e1" strokeWidth="1.5" />;

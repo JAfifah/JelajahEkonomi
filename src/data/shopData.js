@@ -64,22 +64,7 @@ export const AVATAR_SHOP_ITEMS = [
       label: 'DIST'
     }
   },
-  {
-    id: 'top-jubah-raja',
-    name: 'Jubah Sultan Ekonomi Royal',
-    category: 'tops',
-    priorityCategory: 'Tersier',
-    priceCoins: 350,
-    pricePoints: 250,
-    description: 'Jubah kerajaan emas mewah bagi penguasai skala prioritas kebutuhan!',
-    unlockedByDefault: false,
-    styleProps: {
-      type: 'royal-cape',
-      color: '#7c3aed',
-      accentColor: '#f59e0b',
-      label: 'ROYAL'
-    }
-  },
+
 
   // --- BOTTOMS (CELANA / ROK) ---
   {
