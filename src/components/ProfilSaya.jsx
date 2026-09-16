@@ -36,7 +36,7 @@ export default function ProfilSaya({ student, updateStudentData }) {
         
         <div className="flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
           {/* Avatar Preview */}
-          <div className="bg-white p-3 rounded-2xl border border-indigo-100 shadow-md">
+          <div className="shrink-0 flex items-center justify-center">
             <AvatarCanvas equipped={student.equipped} size="md" animated={false} />
           </div>
 
