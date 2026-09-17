@@ -3,6 +3,7 @@ import RambutAnakLakiLaki from './RambutAnakLakiLaki';
 import RambutPerempuanPendek from './RambutPerempuanPendek';
 import RambutPerempuanPanjang from './RambutPerempuanPanjang';
 import RambutMohawk from './RambutMohawk';
+import jelakomLogo from '../assets/jelakom.png';
 
 /**
  * High-Precision Vector SVG Avatar Component (.jsx)
@@ -117,6 +118,83 @@ export default function AvatarCanvas({
             @keyframes avatarShadowPulse {
               0%, 100% { transform: scale(1); opacity: 0.16; }
               50% { transform: scale(0.92); opacity: 0.10; }
+            }
+            @keyframes goldSparkleTwinkle {
+              0%, 100% {
+                transform: scale(0) rotate(0deg);
+                opacity: 0;
+              }
+              25% {
+                transform: scale(0.65) rotate(45deg);
+                opacity: 0.75;
+              }
+              50% {
+                transform: scale(1.25) rotate(90deg);
+                opacity: 1;
+              }
+              75% {
+                transform: scale(0.65) rotate(135deg);
+                opacity: 0.75;
+              }
+            }
+            @keyframes goldGlitterPulse {
+              0%, 100% {
+                opacity: 0.2;
+                transform: scale(0.6);
+              }
+              50% {
+                opacity: 1;
+                transform: scale(1.4);
+              }
+            }
+            .gold-twinkle {
+              transform-box: fill-box;
+              transform-origin: center;
+            }
+            @keyframes lightningZapPulse {
+              0%, 100% {
+                filter: drop-shadow(0 0 2px #facc15);
+                opacity: 0.9;
+              }
+              50% {
+                filter: drop-shadow(0 0 6px #38bdf8) drop-shadow(0 0 9px #fef08a);
+                opacity: 1;
+              }
+            }
+            @keyframes electricSparkleTwinkle {
+              0%, 100% {
+                transform: scale(0) rotate(0deg);
+                opacity: 0;
+              }
+              25% {
+                transform: scale(0.65) rotate(45deg);
+                opacity: 0.8;
+              }
+              50% {
+                transform: scale(1.3) rotate(90deg);
+                opacity: 1;
+              }
+              75% {
+                transform: scale(0.65) rotate(135deg);
+                opacity: 0.8;
+              }
+            }
+            @keyframes electricArcFlash {
+              0%, 100% {
+                opacity: 0;
+                transform: scale(0.6);
+              }
+              20%, 45% {
+                opacity: 1;
+                transform: scale(1.2);
+              }
+              70% {
+                opacity: 0.2;
+              }
+            }
+            .electric-sparkle {
+              transform-box: fill-box;
+              transform-origin: center;
             }
           `}</style>
         </defs>
@@ -351,9 +429,125 @@ function renderTops(topId, isWaving = false) {
           <path d="M 142 114 L 120 138 L 152 114 Z" fill="#f1f5f9" stroke="#cbd5e1" strokeWidth="1" />
           {/* Blue Tie */}
           <path d="M 116 122 L 124 122 L 127 175 L 120 184 L 113 175 Z" fill="#1e3a8a" />
-          {/* Badge IPS */}
-          <rect x="138" y="142" width="16" height="20" rx="2" fill="#2563eb" />
-          <text x="146" y="156" fill="#ffffff" fontSize="9" fontWeight="bold" textAnchor="middle">IPS</text>
+
+          {/* Saku Dada Kemeja SMP */}
+          <path 
+            d="M 134 140 L 158 140 L 158 168 L 146 173 L 134 168 Z" 
+            fill="#ffffff" 
+            stroke="#cbd5e1" 
+            strokeWidth="1.2" 
+            strokeLinejoin="round" 
+          />
+          <line x1="134" y1="144" x2="158" y2="144" stroke="#e2e8f0" strokeWidth="1" />
+
+          {/* ========================================================================= */}
+          {/* LOGO OSIS SMP RESMI INDONESIA */}
+          {/* ========================================================================= */}
+          <g id="logo-osis-smp">
+            {/* 1. Perisai Dasar Kuning Emas OSIS */}
+            <path 
+              d="M 138.5 161 
+                 C 137.5 158 138 152 138 149 
+                 C 138 144.5 141.5 143 146 143 
+                 C 150.5 143 154 144.5 154 149 
+                 C 154 152 154.5 158 153.5 161 Z" 
+              fill="#facc15" 
+              stroke="#0f172a" 
+              strokeWidth="0.8" 
+              strokeLinejoin="round"
+            />
+
+            {/* 2. Lengkungan Pelangi Merah Putih di Kubah Atas */}
+            <path 
+              d="M 139.2 149.5 C 139.5 145.2 142.2 144 146 144 C 149.8 144 152.5 145.2 152.8 149.5" 
+              fill="none" 
+              stroke="#dc2626" 
+              strokeWidth="1.2" 
+            />
+            <path 
+              d="M 140.2 150 C 140.5 146.5 142.8 145.2 146 145.2 C 149.2 145.2 151.5 146.5 151.8 150" 
+              fill="none" 
+              stroke="#ffffff" 
+              strokeWidth="0.8" 
+            />
+
+            {/* 3. Tangkai Padi Kuning Keemasan (Kiri) */}
+            <path d="M 139.5 159 Q 140 154 141.2 150.5" fill="none" stroke="#d97706" strokeWidth="0.9" />
+            <circle cx="140.2" cy="152" r="0.6" fill="#fef08a" stroke="#b45309" strokeWidth="0.3" />
+            <circle cx="139.8" cy="154" r="0.6" fill="#fef08a" stroke="#b45309" strokeWidth="0.3" />
+            <circle cx="139.5" cy="156" r="0.6" fill="#fef08a" stroke="#b45309" strokeWidth="0.3" />
+            <circle cx="139.2" cy="158" r="0.6" fill="#fef08a" stroke="#b45309" strokeWidth="0.3" />
+
+            {/* 4. Tangkai Kapas Hijau Putih (Kanan) */}
+            <path d="M 152.5 159 Q 152 154 150.8 150.5" fill="none" stroke="#15803d" strokeWidth="0.9" />
+            <circle cx="151.8" cy="152" r="0.7" fill="#ffffff" stroke="#15803d" strokeWidth="0.4" />
+            <circle cx="152.2" cy="154" r="0.7" fill="#ffffff" stroke="#15803d" strokeWidth="0.4" />
+            <circle cx="152.5" cy="156" r="0.7" fill="#ffffff" stroke="#15803d" strokeWidth="0.4" />
+            <circle cx="152.8" cy="158" r="0.7" fill="#ffffff" stroke="#15803d" strokeWidth="0.4" />
+
+            {/* 5. Sepasang Tangan Penopang (Merah Bata) */}
+            <path d="M 143.2 155.5 C 143.2 153.5 144.2 152.2 144.6 154" fill="none" stroke="#b91c1c" strokeWidth="1" strokeLinecap="round" />
+            <path d="M 148.8 155.5 C 148.8 153.5 147.8 152.2 147.4 154" fill="none" stroke="#b91c1c" strokeWidth="1" strokeLinecap="round" />
+
+            {/* 6. Bunga Bintang 5 Sudut Putih (Inti Lambang OSIS) */}
+            <polygon 
+              points="146,147.5 148,150 147.2,152.5 144.8,152.5 144,150" 
+              fill="#ffffff" 
+              stroke="#0f172a" 
+              strokeWidth="0.5" 
+              strokeLinejoin="round" 
+            />
+            <circle cx="146" cy="150" r="0.7" fill="#facc15" stroke="#0f172a" strokeWidth="0.3" />
+
+            {/* 7. Buku Terbuka Putih di Bawah */}
+            <path 
+              d="M 143 158.5 
+                 Q 144.5 157.8 146 159 
+                 Q 147.5 157.8 149 158.5 
+                 L 149 156.5 
+                 Q 147.5 155.8 146 157 
+                 Q 144.5 155.8 143 156.5 Z" 
+              fill="#ffffff" 
+              stroke="#0f172a" 
+              strokeWidth="0.5" 
+              strokeLinejoin="round" 
+            />
+            <line x1="146" y1="157" x2="146" y2="159" stroke="#0f172a" strokeWidth="0.4" />
+
+            {/* 8. Pita Dasar Hitam & Plakat Merah "OSIS" */}
+            <path 
+              d="M 137.5 161.5 
+                 L 154.5 161.5 
+                 C 155.5 164 154.5 165.5 153 165.5 
+                 L 139 165.5 
+                 C 137.5 165.5 136.5 164 137.5 161.5 Z" 
+              fill="#0f172a" 
+              stroke="#000000" 
+              strokeWidth="0.5" 
+            />
+            <rect 
+              x="138.8" 
+              y="162.2" 
+              width="14.4" 
+              height="2.8" 
+              rx="0.6" 
+              fill="#dc2626" 
+              stroke="#991b1b" 
+              strokeWidth="0.3" 
+            />
+            <text 
+              x="146" 
+              y="164.5" 
+              fill="#ffffff" 
+              fontSize="2.4" 
+              fontWeight="900" 
+              textAnchor="middle" 
+              letterSpacing="0.4" 
+              fontFamily="system-ui, -apple-system, sans-serif"
+            >
+              OSIS
+            </text>
+          </g>
         </g>
       );
 
@@ -395,7 +589,7 @@ function renderTops(topId, isWaving = false) {
     case 'top-kaos-ips':
     default:
       return (
-        <g>
+        <g id="top-kaos-ips">
           {/* White Crew-Neck T-Shirt matching reference image */}
           <path d="M 72 114 L 168 114 L 162 212 L 78 212 Z" fill="url(#shirtGradient)" stroke="#cbd5e1" strokeWidth="1.5" />
           {/* Left Sleeve */}
@@ -405,8 +599,50 @@ function renderTops(topId, isWaving = false) {
           {/* Crew-Neck Collar Line */}
           <path d="M 102 114 Q 120 128 138 114" stroke="#94a3b8" strokeWidth="2.5" fill="none" />
           {/* Shirt Fold Wrinkles */}
-          <path d="M 120 170 Q 135 185 142 205" stroke="#cbd5e1" strokeWidth="1.5" fill="none" />
-          <path d="M 108 190 Q 120 198 128 208" stroke="#cbd5e1" strokeWidth="1.5" fill="none" />
+          <path d="M 120 178 Q 135 190 142 205" stroke="#cbd5e1" strokeWidth="1.5" fill="none" />
+          <path d="M 108 192 Q 120 198 128 208" stroke="#cbd5e1" strokeWidth="1.5" fill="none" />
+
+          {/* Logo Kebanggaan Pejuang IPS Jelajah Ekonomi (jelakom.png) */}
+          <image 
+            href={jelakomLogo} 
+            xlinkHref={jelakomLogo} 
+            x="103" 
+            y="126" 
+            width="34" 
+            height="34" 
+            preserveAspectRatio="xMidYMid meet" 
+            style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.15))' }}
+          />
+
+          {/* Tulisan Branded "Jelajah Ekonomi" Khas Squad IPS */}
+          <g id="brand-text-jelajah-ekonomi">
+            {/* Cyan Blue Badge Banner */}
+            <rect 
+              x="83" 
+              y="161" 
+              width="74" 
+              height="14" 
+              rx="7" 
+              fill="#0ea5e9" 
+              stroke="#0284c7" 
+              strokeWidth="1" 
+              style={{ filter: 'drop-shadow(0 1px 2px rgba(2,132,199,0.35))' }}
+            />
+            {/* Text: "Jelajah" (Kuning Emas) & "Ekonomi" (Putih Bersih) Tebal Miring */}
+            <text 
+              x="120" 
+              y="171.5" 
+              textAnchor="middle" 
+              fontSize="7.5" 
+              fontWeight="900" 
+              fontStyle="italic"
+              fontFamily="system-ui, -apple-system, sans-serif"
+              letterSpacing="0.3"
+            >
+              <tspan fill="#fde047" style={{ filter: 'drop-shadow(0.5px 1px 0px rgba(180,83,9,0.5))' }}>Jelajah </tspan>
+              <tspan fill="#ffffff" style={{ filter: 'drop-shadow(0.5px 1px 0px rgba(3,105,161,0.6))' }}>Ekonomi</tspan>
+            </text>
+          </g>
         </g>
       );
   }
@@ -528,10 +764,86 @@ function renderBottoms(bottomId) {
 
     case 'bottom-celana-emas':
       return (
-        <g>
-          {/* Royal Gold Pants */}
-          <path d="M 82 208 L 118 208 L 114 300 L 86 300 Z" fill="url(#goldGradient)" />
-          <path d="M 122 208 L 158 208 L 154 300 L 126 300 Z" fill="url(#goldGradient)" />
+        <g id="bottom-celana-emas">
+          {/* Royal Gold Long Pants with Sultan Sparkles */}
+          {/* Left Leg */}
+          <path 
+            d="M 78 208 L 118 208 L 114 340 L 78 340 Z" 
+            fill="url(#goldGradient)" 
+            stroke="#b45309" 
+            strokeWidth="1.5" 
+            strokeLinejoin="round" 
+          />
+          {/* Right Leg */}
+          <path 
+            d="M 122 208 L 162 208 L 162 340 L 126 340 Z" 
+            fill="url(#goldGradient)" 
+            stroke="#b45309" 
+            strokeWidth="1.5" 
+            strokeLinejoin="round" 
+          />
+
+          {/* Golden Seams & Creases */}
+          <line x1="96" y1="214" x2="96" y2="336" stroke="#fef08a" strokeWidth="1.2" opacity="0.8" />
+          <line x1="144" y1="214" x2="144" y2="336" stroke="#fef08a" strokeWidth="1.2" opacity="0.8" />
+          
+          {/* Royal Waistband & Golden Buckle */}
+          <rect x="78" y="206" width="84" height="6" rx="1.5" fill="#d97706" stroke="#92400e" strokeWidth="1" />
+          <rect x="113" y="205" width="14" height="8" rx="2" fill="#fef08a" stroke="#b45309" strokeWidth="1" />
+          <polygon points="120,206 123,209 120,212 117,209" fill="#3b82f6" />
+
+          {/* Ankle Golden Hem Lines */}
+          <line x1="78" y1="337" x2="114" y2="337" stroke="#fef08a" strokeWidth="1.5" />
+          <line x1="126" y1="337" x2="162" y2="337" stroke="#fef08a" strokeWidth="1.5" />
+
+          {/* --- ANIMATED SULTAN SPARKLES (✨ Twinkling Diamond Stars) --- */}
+          {/* Sparkle 1: Paha Kiri Atas */}
+          <g transform="translate(92, 238)" className="gold-twinkle" style={{ animation: 'goldSparkleTwinkle 1.8s ease-in-out infinite 0s' }}>
+            <path d="M 0 -8 Q 1.5 -1.5 8 0 Q 1.5 1.5 0 8 Q -1.5 1.5 -8 0 Q -1.5 -1.5 0 -8 Z" fill="#fef08a" />
+            <path d="M 0 -6 Q 1 -1 6 0 Q 1 1 0 6 Q -1 1 -6 0 Q -1 -1 0 -6 Z" fill="#ffffff" />
+            <circle cx="0" cy="0" r="1.5" fill="#ffffff" />
+          </g>
+
+          {/* Sparkle 2: Paha Kanan Atas */}
+          <g transform="translate(146, 248) scale(1.1)" className="gold-twinkle" style={{ animation: 'goldSparkleTwinkle 2.2s ease-in-out infinite 0.6s' }}>
+            <path d="M 0 -8 Q 1.5 -1.5 8 0 Q 1.5 1.5 0 8 Q -1.5 1.5 -8 0 Q -1.5 -1.5 0 -8 Z" fill="#fef08a" />
+            <path d="M 0 -6 Q 1 -1 6 0 Q 1 1 0 6 Q -1 1 -6 0 Q -1 -1 0 -6 Z" fill="#ffffff" />
+            <circle cx="0" cy="0" r="1.5" fill="#ffffff" />
+          </g>
+
+          {/* Sparkle 3: Lutut Kiri */}
+          <g transform="translate(100, 284) scale(0.95)" className="gold-twinkle" style={{ animation: 'goldSparkleTwinkle 1.9s ease-in-out infinite 1.2s' }}>
+            <path d="M 0 -8 Q 1.5 -1.5 8 0 Q 1.5 1.5 0 8 Q -1.5 1.5 -8 0 Q -1.5 -1.5 0 -8 Z" fill="#fef08a" />
+            <path d="M 0 -6 Q 1 -1 6 0 Q 1 1 0 6 Q -1 1 -6 0 Q -1 -1 0 -6 Z" fill="#ffffff" />
+            <circle cx="0" cy="0" r="1.5" fill="#ffffff" />
+          </g>
+
+          {/* Sparkle 4: Betis Kanan */}
+          <g transform="translate(136, 304) scale(0.9)" className="gold-twinkle" style={{ animation: 'goldSparkleTwinkle 2.4s ease-in-out infinite 0.3s' }}>
+            <path d="M 0 -8 Q 1.5 -1.5 8 0 Q 1.5 1.5 0 8 Q -1.5 1.5 -8 0 Q -1.5 -1.5 0 -8 Z" fill="#fef08a" />
+            <path d="M 0 -6 Q 1 -1 6 0 Q 1 1 0 6 Q -1 1 -6 0 Q -1 -1 0 -6 Z" fill="#ffffff" />
+            <circle cx="0" cy="0" r="1.5" fill="#ffffff" />
+          </g>
+
+          {/* Sparkle 5: Kaki Kiri Bawah */}
+          <g transform="translate(88, 328) scale(1.05)" className="gold-twinkle" style={{ animation: 'goldSparkleTwinkle 2.0s ease-in-out infinite 1.5s' }}>
+            <path d="M 0 -8 Q 1.5 -1.5 8 0 Q 1.5 1.5 0 8 Q -1.5 1.5 -8 0 Q -1.5 -1.5 0 -8 Z" fill="#fef08a" />
+            <path d="M 0 -6 Q 1 -1 6 0 Q 1 1 0 6 Q -1 1 -6 0 Q -1 -1 0 -6 Z" fill="#ffffff" />
+            <circle cx="0" cy="0" r="1.5" fill="#ffffff" />
+          </g>
+
+          {/* Sparkle 6: Kaki Kanan Bawah */}
+          <g transform="translate(152, 326)" className="gold-twinkle" style={{ animation: 'goldSparkleTwinkle 1.7s ease-in-out infinite 0.9s' }}>
+            <path d="M 0 -8 Q 1.5 -1.5 8 0 Q 1.5 1.5 0 8 Q -1.5 1.5 -8 0 Q -1.5 -1.5 0 -8 Z" fill="#fef08a" />
+            <path d="M 0 -6 Q 1 -1 6 0 Q 1 1 0 6 Q -1 1 -6 0 Q -1 -1 0 -6 Z" fill="#ffffff" />
+            <circle cx="0" cy="0" r="1.5" fill="#ffffff" />
+          </g>
+
+          {/* --- AMBIENT PULSING GLITTER DOTS --- */}
+          <circle cx="108" cy="226" r="1.6" fill="#ffffff" className="gold-twinkle" style={{ animation: 'goldGlitterPulse 1.6s ease-in-out infinite 0.2s' }} />
+          <circle cx="132" cy="268" r="1.8" fill="#ffffff" className="gold-twinkle" style={{ animation: 'goldGlitterPulse 2.0s ease-in-out infinite 0.8s' }} />
+          <circle cx="94" cy="308" r="1.5" fill="#ffffff" className="gold-twinkle" style={{ animation: 'goldGlitterPulse 1.7s ease-in-out infinite 1.3s' }} />
+          <circle cx="142" cy="336" r="1.7" fill="#ffffff" className="gold-twinkle" style={{ animation: 'goldGlitterPulse 2.1s ease-in-out infinite 0.5s' }} />
         </g>
       );
 
@@ -611,7 +923,8 @@ function renderShoes(shoesId) {
     case 'shoes-sepatu-terbang':
       return (
         <g id="shoes-sepatu-terbang">
-          {/* Balanced Sky Blue Flying Sneakers */}
+          {/* Balanced Sky Blue Flying Sneakers with Turbo Lightning Sparkles */}
+          {/* Left Shoe Body */}
           <path
             d="M 80 339 C 78 350 64 356 49 360 C 43 362 43 369 47 369 L 106 369 C 109 369 109 354 107 339 Q 93 345 80 339 Z"
             fill="#0284c7"
@@ -619,6 +932,7 @@ function renderShoes(shoesId) {
             strokeWidth="1.2"
             strokeLinejoin="round"
           />
+          {/* Right Shoe Body */}
           <path
             d="M 133 339 C 131 354 131 369 134 369 L 193 369 C 197 369 197 362 191 360 C 176 356 162 350 160 339 Q 147 345 133 339 Z"
             fill="#0284c7"
@@ -626,35 +940,88 @@ function renderShoes(shoesId) {
             strokeWidth="1.2"
             strokeLinejoin="round"
           />
-          {/* Yellow Lightning Bolt Accents (Petir Kuning Kilat Lebih Besar & Tegas) */}
-          {/* Left Lightning Bolt */}
-          <path
-            d="M 82 344 L 66 353 L 74 353 L 53 364 L 69 355 L 61 355 Z"
-            fill="#facc15"
-            stroke="#b45309"
-            strokeWidth="1.2"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M 79 346 L 68 352 L 73 352 L 58 361 L 68 356 L 63 356 Z"
-            fill="#fef08a"
-          />
 
-          {/* Right Lightning Bolt */}
-          <path
-            d="M 158 344 L 174 353 L 166 353 L 187 364 L 171 355 L 179 355 Z"
-            fill="#facc15"
-            stroke="#b45309"
-            strokeWidth="1.2"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M 161 346 L 172 352 L 167 352 L 182 361 L 172 356 L 177 356 Z"
-            fill="#fef08a"
-          />
-          {/* Soles */}
-          <rect x="43" y="367.5" width="65" height="5" rx="2" fill="#38bdf8" />
-          <rect x="132" y="367.5" width="65" height="5" rx="2" fill="#38bdf8" />
+          {/* Glowing Neon Soles */}
+          <rect x="43" y="367.5" width="65" height="5" rx="2" fill="#38bdf8" style={{ filter: 'drop-shadow(0 0 3px #38bdf8)' }} />
+          <line x1="46" y1="369.5" x2="105" y2="369.5" stroke="#e0f2fe" strokeWidth="1.2" opacity="0.85" />
+          <rect x="132" y="367.5" width="65" height="5" rx="2" fill="#38bdf8" style={{ filter: 'drop-shadow(0 0 3px #38bdf8)' }} />
+          <line x1="135" y1="369.5" x2="194" y2="369.5" stroke="#e0f2fe" strokeWidth="1.2" opacity="0.85" />
+
+          {/* --- LEFT LIGHTNING BOLT WITH ELECTRIC ZAP PULSE --- */}
+          <g style={{ animation: 'lightningZapPulse 1.6s ease-in-out infinite' }}>
+            <path
+              d="M 82 344 L 66 353 L 74 353 L 53 364 L 69 355 L 61 355 Z"
+              fill="#facc15"
+              stroke="#b45309"
+              strokeWidth="1.2"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M 79 346 L 68 352 L 73 352 L 58 361 L 68 356 L 63 356 Z"
+              fill="#fef08a"
+            />
+          </g>
+
+          {/* Left Electric Arc Zaps */}
+          <path d="M 46 360 L 51 356 L 48 354 L 54 350" stroke="#67e8f9" strokeWidth="1.2" fill="none" className="electric-sparkle" style={{ animation: 'electricArcFlash 1.8s ease-in-out infinite 0.2s' }} />
+          <path d="M 88 358 L 93 355 L 90 353 L 95 350" stroke="#fef08a" strokeWidth="1.2" fill="none" className="electric-sparkle" style={{ animation: 'electricArcFlash 2.2s ease-in-out infinite 0.9s' }} />
+
+          {/* Left Shoe Animated Diamond Sparkles ✨ */}
+          {/* Tip Sparkle */}
+          <g transform="translate(53, 364)" className="electric-sparkle" style={{ animation: 'electricSparkleTwinkle 1.6s ease-in-out infinite 0s' }}>
+            <path d="M 0 -7 Q 1.3 -1.3 7 0 Q 1.3 1.3 0 7 Q -1.3 1.3 -7 0 Q -1.3 -1.3 0 -7 Z" fill="#38bdf8" opacity="0.9" />
+            <path d="M 0 -5.5 Q 0.8 -0.8 5.5 0 Q 0.8 0.8 0 5.5 Q -0.8 0.8 -5.5 0 Q -0.8 -0.8 0 -5.5 Z" fill="#ffffff" />
+            <circle cx="0" cy="0" r="1.3" fill="#fef08a" />
+          </g>
+          {/* Middle Sparkle */}
+          <g transform="translate(70, 353) scale(0.9)" className="electric-sparkle" style={{ animation: 'electricSparkleTwinkle 1.9s ease-in-out infinite 0.6s' }}>
+            <path d="M 0 -6 Q 1 -1 6 0 Q 1 1 0 6 Q -1 1 -6 0 Q -1 -1 0 -6 Z" fill="#facc15" />
+            <path d="M 0 -4.5 Q 0.6 -0.6 4.5 0 Q 0.6 0.6 0 4.5 Q -0.6 0.6 -4.5 0 Q -0.6 -0.6 0 -4.5 Z" fill="#ffffff" />
+          </g>
+          {/* Top Sparkle */}
+          <g transform="translate(82, 344) scale(0.85)" className="electric-sparkle" style={{ animation: 'electricSparkleTwinkle 2.1s ease-in-out infinite 1.1s' }}>
+            <path d="M 0 -6 Q 1 -1 6 0 Q 1 1 0 6 Q -1 1 -6 0 Q -1 -1 0 -6 Z" fill="#67e8f9" />
+            <path d="M 0 -4.5 Q 0.6 -0.6 4.5 0 Q 0.6 0.6 0 4.5 Q -0.6 0.6 -4.5 0 Q -0.6 -0.6 0 -4.5 Z" fill="#ffffff" />
+          </g>
+          <circle cx="60" cy="347" r="1.5" fill="#fef08a" className="electric-sparkle" style={{ animation: 'goldGlitterPulse 1.5s ease-in-out infinite 0.3s' }} />
+
+          {/* --- RIGHT LIGHTNING BOLT WITH ELECTRIC ZAP PULSE --- */}
+          <g style={{ animation: 'lightningZapPulse 1.6s ease-in-out infinite 0.3s' }}>
+            <path
+              d="M 158 344 L 174 353 L 166 353 L 187 364 L 171 355 L 179 355 Z"
+              fill="#facc15"
+              stroke="#b45309"
+              strokeWidth="1.2"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M 161 346 L 172 352 L 167 352 L 182 361 L 172 356 L 177 356 Z"
+              fill="#fef08a"
+            />
+          </g>
+
+          {/* Right Electric Arc Zaps */}
+          <path d="M 194 360 L 189 356 L 192 354 L 186 350" stroke="#67e8f9" strokeWidth="1.2" fill="none" className="electric-sparkle" style={{ animation: 'electricArcFlash 1.8s ease-in-out infinite 0.7s' }} />
+          <path d="M 152 358 L 147 355 L 150 353 L 145 350" stroke="#fef08a" strokeWidth="1.2" fill="none" className="electric-sparkle" style={{ animation: 'electricArcFlash 2.2s ease-in-out infinite 1.4s' }} />
+
+          {/* Right Shoe Animated Diamond Sparkles ✨ */}
+          {/* Tip Sparkle */}
+          <g transform="translate(187, 364)" className="electric-sparkle" style={{ animation: 'electricSparkleTwinkle 1.7s ease-in-out infinite 0.3s' }}>
+            <path d="M 0 -7 Q 1.3 -1.3 7 0 Q 1.3 1.3 0 7 Q -1.3 1.3 -7 0 Q -1.3 -1.3 0 -7 Z" fill="#38bdf8" opacity="0.9" />
+            <path d="M 0 -5.5 Q 0.8 -0.8 5.5 0 Q 0.8 0.8 0 5.5 Q -0.8 0.8 -5.5 0 Q -0.8 -0.8 0 -5.5 Z" fill="#ffffff" />
+            <circle cx="0" cy="0" r="1.3" fill="#fef08a" />
+          </g>
+          {/* Middle Sparkle */}
+          <g transform="translate(170, 353) scale(0.9)" className="electric-sparkle" style={{ animation: 'electricSparkleTwinkle 2.0s ease-in-out infinite 0.8s' }}>
+            <path d="M 0 -6 Q 1 -1 6 0 Q 1 1 0 6 Q -1 1 -6 0 Q -1 -1 0 -6 Z" fill="#facc15" />
+            <path d="M 0 -4.5 Q 0.6 -0.6 4.5 0 Q 0.6 0.6 0 4.5 Q -0.6 0.6 -4.5 0 Q -0.6 -0.6 0 -4.5 Z" fill="#ffffff" />
+          </g>
+          {/* Top Sparkle */}
+          <g transform="translate(158, 344) scale(0.85)" className="electric-sparkle" style={{ animation: 'electricSparkleTwinkle 2.2s ease-in-out infinite 1.3s' }}>
+            <path d="M 0 -6 Q 1 -1 6 0 Q 1 1 0 6 Q -1 1 -6 0 Q -1 -1 0 -6 Z" fill="#67e8f9" />
+            <path d="M 0 -4.5 Q 0.6 -0.6 4.5 0 Q 0.6 0.6 0 4.5 Q -0.6 0.6 -4.5 0 Q -0.6 -0.6 0 -4.5 Z" fill="#ffffff" />
+          </g>
+          <circle cx="180" cy="347" r="1.5" fill="#fef08a" className="electric-sparkle" style={{ animation: 'goldGlitterPulse 1.5s ease-in-out infinite 0.9s' }} />
         </g>
       );
 

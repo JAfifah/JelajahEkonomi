@@ -10,7 +10,7 @@ import {
   CheckCircle2, 
   Lock, 
   Shirt, 
-  Crown, 
+  Scissors, 
   SportShoe,
   Info,
   AlertCircle,
@@ -42,7 +42,7 @@ export default function TokoKarakter({ student, updateStudentData }) {
     { id: 'tops', label: 'tops', icon: Shirt },
     { id: 'bottoms', label: 'bottoms', icon: PantsIcon },
     { id: 'shoes', label: 'shoes', icon: SportShoe },
-    { id: 'accessories', label: 'accessories', icon: Crown }
+    { id: 'accessories', label: 'rambut', icon: Scissors }
   ];
 
   const categoryItems = AVATAR_SHOP_ITEMS.filter(item => item.category === activeCategory);
