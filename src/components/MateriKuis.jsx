@@ -1008,9 +1008,8 @@ export default function MateriKuis({
       {activeSubTab === 'misi' && (
         <div className="space-y-6 animate-fade-in">
           <div className="flex items-center justify-between px-1">
-            <h3 className="text-xl font-black text-slate-900 flex items-center gap-2">
-              <Compass className="w-6 h-6 text-emerald-600" />
-              <span>Daftar 7 Misi Pulau Kegiatan Ekonomi</span>
+            <h3 className="text-xl font-black text-slate-900">
+              Daftar 7 Misi Pulau Kegiatan Ekonomi
             </h3>
             <span className="text-xs font-extrabold px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">
               {completedSet.size} / 28 Tugas Selesai

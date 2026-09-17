@@ -70,7 +70,7 @@ export default function ProfilSaya({ student, updateStudentData, currentUser, on
           <div className="space-y-2">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold border border-indigo-200">
               <ShieldCheck className="w-3.5 h-3.5 text-indigo-600" />
-              <span>{student.schoolClass} • Level {student.level}</span>
+              <span>Level {student.level}</span>
             </div>
             <h2 className="text-3xl font-black text-slate-900">{student.name}</h2>
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-0.5">

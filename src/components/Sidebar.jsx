@@ -9,7 +9,6 @@ import {
   User
 } from 'lucide-react';
 import { soundFx } from '../utils/audio';
-import jelakomLogo from '../assets/jelakom.png';
 
 export default function Sidebar({ activeTab, setActiveTab, currentUser, onLogout }) {
   const navItems = [
@@ -36,16 +35,11 @@ export default function Sidebar({ activeTab, setActiveTab, currentUser, onLogout
     <aside className="w-full md:w-64 bg-gradient-to-b from-sky-400 via-sky-500 to-sky-600 text-slate-800 p-5 flex flex-col justify-between shrink-0 shadow-xl border-r border-sky-300">
       
       <div className="space-y-6">
-        {/* Playful Bubbly Logo with Jelakom compass logo */}
+        {/* Playful Bubbly Title without compass logo */}
         <div 
           onClick={() => handleTabClick('dashboard')}
-          className="cursor-pointer group select-none py-2 px-1 flex items-center gap-2.5"
+          className="cursor-pointer group select-none py-2 px-1 text-center md:text-left"
         >
-          <img 
-            src={jelakomLogo} 
-            alt="Logo Jelajah Ekonomi" 
-            className="w-10 h-10 object-contain bg-white/20 backdrop-blur-sm p-1 rounded-2xl shadow-md group-hover:scale-105 group-hover:rotate-6 transition-all duration-200" 
-          />
           <h1 className="text-xl sm:text-2xl font-black text-white drop-shadow-[0_2px_0_rgba(2,132,199,0.8)] tracking-tight font-sans italic flex items-center gap-1.5 flex-wrap">
             <span className="bg-gradient-to-r from-amber-300 to-yellow-100 bg-clip-text text-transparent">
               Jelajah
@@ -113,7 +107,7 @@ export default function Sidebar({ activeTab, setActiveTab, currentUser, onLogout
             Media Pembelajaran IPS SMP
           </p>
           <p className="text-[10px] text-white/70">
-            Kegiatan Ekonomi
+            Naimah, S.Pd
           </p>
         </div>
       </div>

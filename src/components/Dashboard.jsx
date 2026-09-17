@@ -213,9 +213,8 @@ export default function Dashboard({ student, updateStudentData, setActiveTab, on
       {/* ========================================================================= */}
       <div className="space-y-4">
         <div className="flex items-center justify-between px-1">
-          <h2 className="text-xl font-black text-slate-900 flex items-center gap-2">
-            <Compass className="w-6 h-6 text-sky-600" />
-            <span>Daftar 7 Misi Pulau Kegiatan Ekonomi</span>
+          <h2 className="text-xl font-black text-slate-900">
+            Daftar 7 Misi Pulau Kegiatan Ekonomi
           </h2>
           <button 
             onClick={() => onNavigateToCourseHub && onNavigateToCourseHub('misi')}

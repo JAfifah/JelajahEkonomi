@@ -985,5 +985,710 @@ export const QUIZ_LEVELS = [
         explanation: 'Keempat faktor produksi saling melengkapi dan dibutuhkan untuk menghasilkan barang/jasa secara efektif.'
       }
     ]
+  },
+  {
+    id: 'kuis-dasar-ekonomi',
+    name: 'Kuis Misi Dasar Kegiatan Ekonomi (Tingkat Mudah)',
+    description: 'Uji pemahaman dasar mengenai kebutuhan hidup, produksi, alur distribusi, konsumsi, dan faktor keahlian.',
+    badge: 'Pelopor Ekonomi',
+    unlockedAtLevel: 1,
+    rewardCoins: 15,
+    rewardXp: 20,
+    questions: [
+      {
+        id: 'qk8-1',
+        category: 'Kebutuhan & Kelangkaan',
+        question: 'Apa penyebab utama manusia harus melakukan kegiatan ekonomi setiap hari?',
+        options: [
+          'Karena kebutuhan manusia hampir tidak terbatas, sedangkan alat pemuas kebutuhan terbatas',
+          'Karena diperintah langsung oleh pemerintah pusat',
+          'Karena semua barang di dunia ini jumlahnya tak terhingga',
+          'Karena manusia tidak memiliki keinginan sama sekali'
+        ],
+        correctIndex: 0,
+        explanation: 'Inti masalah ekonomi adalah kebutuhan manusia yang hampir tidak terbatas, sedangkan alat pemuas kebutuhan terbatas, sehingga manusia perlu berkegiatan ekonomi setiap hari.'
+      },
+      {
+        id: 'qk8-2',
+        category: 'Kegiatan Ekonomi',
+        question: 'Kegiatan manusia dalam rangka memenuhi kebutuhannya secara garis besar dibagi menjadi tiga jenis, yaitu...',
+        options: [
+          'Membeli, menabung, dan menjual',
+          'Produksi, distribusi, dan konsumsi',
+          'Pertanian, perikanan, dan perindustrian',
+          'Ekspor, impor, dan perdagangan lokal'
+        ],
+        correctIndex: 1,
+        explanation: 'Tiga jenis pokok kegiatan ekonomi manusia untuk memenuhi kebutuhan hidup adalah produksi, distribusi, dan konsumsi.'
+      },
+      {
+        id: 'qk8-3',
+        category: 'Definisi Produksi',
+        question: 'Apa arti dari kegiatan produksi?',
+        options: [
+          'Kegiatan menghabiskan nilai guna suatu barang',
+          'Kegiatan menyalurkan barang dari pabrik ke toko',
+          'Kegiatan untuk menambah manfaat suatu barang atau menciptakan barang baru',
+          'Kegiatan membeli makanan untuk sarapan pagi'
+        ],
+        correctIndex: 2,
+        explanation: 'Kegiatan produksi adalah kegiatan menambah manfaat suatu barang atau menciptakan barang baru untuk memenuhi kebutuhan.'
+      },
+      {
+        id: 'qk8-4',
+        category: 'Faktor Produksi Alam',
+        question: 'Manakah di bawah ini yang merupakan contoh dari faktor produksi alam?',
+        options: [
+          'Mesin pabrik dan gedung kantor',
+          'Sayuran, buah-buahan, gas alam, dan batu bara',
+          'Uang tunai di dalam rekening bank',
+          'Keahlian seorang manajer perusahaan'
+        ],
+        correctIndex: 1,
+        explanation: 'Faktor produksi alam berasal langsung dari ketersediaan alam seperti sayuran, buah-buahan, gas alam, dan batu bara.'
+      },
+      {
+        id: 'qk8-5',
+        category: 'Definisi Distribusi',
+        question: 'Apa definisi dari kegiatan distribusi?',
+        options: [
+          'Kegiatan menyalurkan barang dari produsen kepada konsumen',
+          'Kegiatan mengubah bentuk kain mentah menjadi baju',
+          'Kegiatan memakai pakaian baru saat hari raya',
+          'Kegiatan mencari bahan tambang di dalam tanah'
+        ],
+        correctIndex: 0,
+        explanation: 'Distribusi didefinisikan sebagai kegiatan menyalurkan barang dan jasa dari produsen kepada konsumen.'
+      },
+      {
+        id: 'qk8-6',
+        category: 'Bentuk Distribusi',
+        question: 'Perusahaan roti menjual langsung roti buatannya kepada pembeli tanpa melalui perantara. Cara ini dinamakan distribusi...',
+        options: [
+          'Tidak langsung',
+          'Semilangsung',
+          'Langsung',
+          'Internasional'
+        ],
+        correctIndex: 2,
+        explanation: 'Distribusi langsung adalah penyaluran barang hasil produksi secara langsung ke tangan konsumen tanpa perantara.'
+      },
+      {
+        id: 'qk8-7',
+        category: 'Definisi Konsumsi',
+        question: 'Apa arti dari kegiatan konsumsi?',
+        options: [
+          'Kegiatan menghabiskan atau mengurangi manfaat suatu barang untuk memenuhi kebutuhan',
+          'Kegiatan memproduksi mesin-mesin canggih di pabrik',
+          'Kegiatan mengirim paket menggunakan truk pengangkut barang',
+          'Kegiatan menanam padi di sawah oleh petani'
+        ],
+        correctIndex: 0,
+        explanation: 'Konsumsi merupakan kegiatan menghabiskan atau mengurangi manfaat suatu barang/jasa untuk memenuhi kebutuhan hidup.'
+      },
+      {
+        id: 'qk8-8',
+        category: 'Faktor Internal Konsumsi',
+        question: 'Faktor dari dalam diri seseorang yang memengaruhi perbedaan konsumsi (faktor internal) meliputi...',
+        options: [
+          'Pekerjaan, harga barang, dan kebudayaan',
+          'Motivasi, sikap, dan selera',
+          'Pendapatan bulanan dan tempat tinggal',
+          'Kebijakan pemerintah dan cuaca'
+        ],
+        correctIndex: 1,
+        explanation: 'Faktor internal berasal dari kejiwaan dan pribadi seseorang seperti motivasi, sikap, dan selera.'
+      },
+      {
+        id: 'qk8-9',
+        category: 'Produksi Jasa',
+        question: 'Manakah di bawah ini yang termasuk contoh produksi jasa?',
+        options: [
+          'Produksi pakaian dan pembuatan sepatu',
+          'Jasa perawatan kecantikan dan jasa pengobatan',
+          'Pembuatan mebel meja dan kursi kayu',
+          'Industri pengolahan makanan kaleng'
+        ],
+        correctIndex: 1,
+        explanation: 'Jasa perawatan kecantikan dan jasa medis/pengobatan merupakan contoh kegiatan produksi jasa yang memberi layanan tanpa wujud barang fisik baru.'
+      },
+      {
+        id: 'qk8-10',
+        category: 'Faktor Keahlian',
+        question: 'Apa fungsi dari faktor keahlian dalam proses produksi?',
+        options: [
+          'Menyediakan uang tunai harian untuk karyawan',
+          'Mengontrol dan memastikan faktor-faktor produksi berjalan dengan baik',
+          'Menggantikan seluruh kebutuhan bahan baku dari alam',
+          'Menjual produk jadi langsung ke pasar tradisional'
+        ],
+        correctIndex: 1,
+        explanation: 'Faktor keahlian bertugas mengontrol, memimpin, dan memastikan seluruh faktor produksi (alam, tenaga kerja, modal) berjalan optimal.'
+      }
+    ]
+  },
+  {
+    id: 'kuis-pemahaman-dasar',
+    name: 'Kuis Misi Pemahaman Pokok Ekonomi (Tingkat Mudah)',
+    description: 'Uji pemahaman situasi kebutuhan hidup, distribusi semilangsung, tujuan konsumsi, dan peran faktor keahlian.',
+    badge: 'Bintang Penjelajah',
+    unlockedAtLevel: 1,
+    rewardCoins: 15,
+    rewardXp: 20,
+    questions: [
+      {
+        id: 'qk9-1',
+        category: 'Situasi Kebutuhan Hidup',
+        question: 'Apa yang dihadapi oleh manusia setiap harinya terkait dengan situasi kebutuhan hidup mereka?',
+        options: [
+          'Kebutuhan manusia hampir tidak terbatas, sedangkan alat pemuas kebutuhan terbatas',
+          'Kebutuhan manusia sangat sedikit dan semuanya sudah tercukupi',
+          'Jumlah alat pemuas kebutuhan jauh lebih banyak daripada keinginan manusia',
+          'Manusia tidak memiliki kebutuhan apa pun dalam hidupnya'
+        ],
+        correctIndex: 0,
+        explanation: 'Manusia setiap hari berhadapan dengan kenyataan bahwa kebutuhan hidupnya hampir tidak terbatas, sementara alat pemuas kebutuhannya terbatas.'
+      },
+      {
+        id: 'qk9-2',
+        category: 'Kelompok Pokok Ekonomi',
+        question: 'Dalam ilmu ekonomi, kegiatan manusia untuk memenuhi kebutuhannya dibagi menjadi tiga kelompok utama, yaitu...',
+        options: [
+          'Menabung, meminjam, dan berinvestasi',
+          'Produksi, distribusi, dan konsumsi',
+          'Perdagangan ekspor, impor, dan grosir',
+          'Pertanian, peternakan, dan perikanan'
+        ],
+        correctIndex: 1,
+        explanation: 'Tiga kelompok utama kegiatan ekonomi adalah produksi (menghasilkan), distribusi (menyalurkan), dan konsumsi (menggunakan/menghabiskan).'
+      },
+      {
+        id: 'qk9-3',
+        category: 'Definisi Produksi',
+        question: 'Apa definisi dari kegiatan produksi berdasarkan modul pembelajaran?',
+        options: [
+          'Kegiatan menghabiskan atau mengurangi manfaat suatu barang',
+          'Kegiatan mengirimkan barang dari pabrik ke toko-toko kecil',
+          'Kegiatan untuk menambah manfaat suatu barang atau menciptakan barang baru demi memenuhi kebutuhan',
+          'Kegiatan membeli makanan dan minuman di pasar malam'
+        ],
+        correctIndex: 2,
+        explanation: 'Kegiatan produksi diartikan sebagai kegiatan untuk menambah manfaat suatu barang atau menciptakan barang baru demi memenuhi kebutuhan manusia.'
+      },
+      {
+        id: 'qk9-4',
+        category: 'Komponen Faktor Alam',
+        question: 'Manakah di bawah ini yang merupakan contoh dari komponen faktor produksi alam?',
+        options: [
+          'Mesin cetak otomatis dan komputer kantor',
+          'Sayuran, buah-buahan, gas alam, batu bara, dan hutan',
+          'Uang tunai di dalam brankas perusahaan',
+          'Keahlian manajerial seorang pimpinan'
+        ],
+        correctIndex: 1,
+        explanation: 'Sayuran, buah-buahan, gas alam, batu bara, dan hutan adalah sumber daya yang disediakan langsung oleh alam sebagai faktor produksi.'
+      },
+      {
+        id: 'qk9-5',
+        category: 'Arti Kegiatan Distribusi',
+        question: 'Apa arti dari kegiatan distribusi dalam proses ekonomi?',
+        options: [
+          'Kegiatan menyalurkan barang dari produsen kepada konsumen',
+          'Kegiatan mengubah bentuk bahan mentah menjadi barang jadi',
+          'Kegiatan memakai atau menghabiskan kegunaan suatu produk',
+          'Kegiatan menanam bibit tanaman di lahan pertanian'
+        ],
+        correctIndex: 0,
+        explanation: 'Distribusi adalah kegiatan mengantarkan dan menyalurkan barang atau jasa dari pihak produsen kepada pihak konsumen.'
+      },
+      {
+        id: 'qk9-6',
+        category: 'Distribusi Semilangsung',
+        question: 'Perusahaan ponsel pintar menjual produknya kepada konsumen melalui toko resmi miliknya sendiri. Bentuk distribusi seperti ini disebut...',
+        options: [
+          'Distribusi langsung',
+          'Distribusi semilangsung',
+          'Distribusi tidak langsung',
+          'Distribusi bebas tanpa aturan'
+        ],
+        correctIndex: 1,
+        explanation: 'Penjualan produk melalui outlet atau toko resmi milik produsen sendiri merupakan contoh bentuk distribusi semilangsung.'
+      },
+      {
+        id: 'qk9-7',
+        category: 'Tujuan Kegiatan Konsumsi',
+        question: 'Apa tujuan utama manusia melakukan kegiatan konsumsi dalam kehidupan sehari-hari?',
+        options: [
+          'Menghasilkan barang modal dalam jumlah besar',
+          'Memenuhi kebutuhan dan menjaga kelangsungan hidup manusia',
+          'Menyalurkan produk dari pabrik ke pasar tradisional',
+          'Mencari keuntungan finansial yang sangat tinggi'
+        ],
+        correctIndex: 1,
+        explanation: 'Tujuan pokok kegiatan konsumsi adalah memenuhi berbagai macam kebutuhan fisik maupun rohani demi menjaga kelangsungan hidup manusia.'
+      },
+      {
+        id: 'qk9-8',
+        category: 'Faktor Internal Konsumsi',
+        question: 'Faktor apa saja yang termasuk ke dalam faktor internal (dari dalam diri seseorang) yang memengaruhi perbedaan konsumsi?',
+        options: [
+          'Pekerjaan, harga barang atau jasa, dan kebudayaan',
+          'Motivasi, sikap, dan selera',
+          'Pendapatan bulanan dan tempat tinggal',
+          'Kebijakan pemerintah dan kondisi iklim'
+        ],
+        correctIndex: 1,
+        explanation: 'Faktor internal yang berasal dari dalam diri seseorang meliputi motivasi hidup, sikap pribadi, dan selera individu.'
+      },
+      {
+        id: 'qk9-9',
+        category: 'Contoh Produksi Jasa',
+        question: 'Manakah di bawah ini yang tergolong ke dalam contoh produksi jasa?',
+        options: [
+          'Produksi pakaian seragam dan pembuatan mebel kursi',
+          'Jasa perawatan kecantikan dan jasa pengobatan medis',
+          'Industri pengolahan makanan kaleng siap saji',
+          'Pembuatan sepatu kulit asli di pabrik'
+        ],
+        correctIndex: 1,
+        explanation: 'Layanan perawatan kecantikan dan jasa pengobatan medis adalah contoh nyata produksi jasa yang memberikan manfaat layanan profesional.'
+      },
+      {
+        id: 'qk9-10',
+        category: 'Urgensi Faktor Keahlian',
+        question: 'Mengapa faktor keahlian sangat dibutuhkan dalam suatu proses produksi perusahaan?',
+        options: [
+          'Untuk mengontrol dan memastikan faktor-faktor produksi berjalan dengan baik dan menghasilkan produksi yang maksimal',
+          'Untuk menggantikan seluruh kebutuhan tenaga kerja manusia di pabrik',
+          'Untuk menyediakan pasokan uang tunai harian secara cuma-cuma',
+          'Untuk menjual barang langsung ke tangan pembeli akhir'
+        ],
+        correctIndex: 0,
+        explanation: 'Faktor keahlian sangat penting untuk mengatur, mengontrol, dan memastikan perpaduan faktor produksi lain bekerja optimal menghasilkan output maksimal.'
+      }
+    ]
+  },
+  {
+    id: 'kuis-analisis-ekonomi-sedang',
+    name: 'Kuis Misi Analisis Penerapan Ekonomi (Tingkat Sedang)',
+    description: 'Uji kemampuan analitis studi kasus skala prioritas, rantai distribusi, faktor modal, dan manajemen wirausaha.',
+    badge: 'Pakar Analisis',
+    unlockedAtLevel: 1,
+    rewardCoins: 20,
+    rewardXp: 25,
+    questions: [
+      {
+        id: 'qk10-1',
+        category: 'Skala Prioritas',
+        question: 'Manusia selalu dihadapkan pada situasi di mana kebutuhan hampir tidak terbatas sementara alat pemuas kebutuhan sangat terbatas. Tindakan yang paling tepat untuk mengatasi kondisi tersebut adalah...',
+        options: [
+          'Membeli semua barang yang diinginkan secara bersamaan',
+          'Menyusun skala prioritas berdasarkan tingkat kepentingan kebutuhan',
+          'Menunggu sampai seluruh barang di pasaran menjadi gratis',
+          'Menghentikan semua bentuk kegiatan konsumsi harian'
+        ],
+        correctIndex: 1,
+        explanation: 'Menyusun skala prioritas adalah langkah paling rasional dalam mengalokasikan alat pemuas yang terbatas untuk memenuhi kebutuhan yang paling mendesak terlebih dahulu.'
+      },
+      {
+        id: 'qk10-2',
+        category: 'Identifikasi Kegiatan Produksi',
+        question: 'Perhatikan kegiatan berikut: (1) Menambang minyak bumi untuk bahan bakar, (2) Mengonsumsi makanan siap saji, (3) Menjahit kain menjadi pakaian jadi, (4) Menyalurkan barang ke toko grosir. Manakah yang termasuk ke dalam kegiatan produksi?',
+        options: [
+          '(1), (2), dan (3)',
+          '(1), dan (3) saja',
+          '(2) dan (4) saja',
+          'Semuanya merupakan kegiatan produksi'
+        ],
+        correctIndex: 1,
+        explanation: 'Kegiatan (1) menambang minyak dan (3) menjahit kain adalah kegiatan produksi karena menghasilkan atau menambah nilai guna barang. Nomor (2) adalah konsumsi dan (4) adalah distribusi.'
+      },
+      {
+        id: 'qk10-3',
+        category: 'Klasifikasi Faktor Modal',
+        question: 'Sebuah pabrik mebel menggunakan kayu jati, mesin potong modern, tenaga kerja terampil, serta bangunan pabrik yang luas agar proses pembuatan lemari berjalan lancar. Dalam hal ini, bangunan dan mesin potong yang digunakan dikategorikan sebagai...',
+        options: [
+          'Faktor produksi alam',
+          'Faktor produksi modal',
+          'Faktor keahlian manajemen',
+          'Faktor tenaga kerja langsung'
+        ],
+        correctIndex: 1,
+        explanation: 'Bangunan pabrik dan mesin pemotong merupakan barang modal fisik (konkret) yang digunakan untuk menunjang kelancaran proses produksi.'
+      },
+      {
+        id: 'qk10-4',
+        category: 'Saluran Distribusi',
+        question: 'Perhatikan rantai distribusi berikut: Produsen ponsel pintar mengirimkan produknya ke konsumen melalui toko resmi miliknya sendiri. Bentuk saluran distribusi apakah yang sedang diterapkan oleh perusahaan tersebut?',
+        options: [
+          'Distribusi langsung',
+          'Distribusi semilangsung',
+          'Distribusi tidak langsung melalui pasar bebas',
+          'Distribusi ekspor antarnegara'
+        ],
+        correctIndex: 1,
+        explanation: 'Penyaluran barang dari produsen melalui perantara toko atau cabang resmi yang masih milik produsen sendiri disebut distribusi semilangsung.'
+      },
+      {
+        id: 'qk10-5',
+        category: 'Studi Kasus Faktor Keahlian',
+        question: 'Pak Budi seorang pengusaha mebel memiliki modal besar, bahan baku kayu berkualitas, dan pekerja yang rajin. Namun, usahanya tetap merugi karena salah dalam mengambil keputusan strategi pemasaran akibat kurangnya kemampuan manajerial. Berdasarkan unsur produksi, faktor apa yang menjadi kelemahan utama perusahaan Pak Budi?',
+        options: [
+          'Faktor alam',
+          'Faktor tenaga kerja',
+          'Faktor keahlian',
+          'Faktor konsumsi'
+        ],
+        correctIndex: 2,
+        explanation: 'Kelemahan manajerial dan strategi pemasaran merupakan bagian dari faktor keahlian (kewirausahaan) yang bertugas mengelola dan mengarahkan faktor produksi lain.'
+      },
+      {
+        id: 'qk10-6',
+        category: 'Signifikansi Distribusi',
+        question: 'Mengapa kegiatan distribusi memegang peranan yang sangat penting dan menentukan kelangsungan hidup sebuah perusahaan?',
+        options: [
+          'Karena hasil produksi tidak akan berguna jika tidak sampai kepada konsumen',
+          'Karena distribusi berfungsi untuk menggantikan fungsi mesin pabrik yang rusak',
+          'Karena kegiatan distribusi dapat menghapuskan seluruh pajak perusahaan',
+          'Karena distribusi menentukan jenis bahan mentah yang diambil dari alam'
+        ],
+        correctIndex: 0,
+        explanation: 'Barang yang telah diproduksi tidak akan memiliki nilai manfaat riil bagi masyarakat dan produsen tidak akan memperoleh pendapatan jika barang tersebut tidak tersalurkan kepada konsumen.'
+      },
+      {
+        id: 'qk10-7',
+        category: 'Faktor Eksternal Konsumsi',
+        question: 'Perbedaan pola konsumsi antara masyarakat di perkotaan dan pedesaan seringkali dipengaruhi oleh faktor luar diri manusia, seperti kebiasaan lingkungan dan jenis pekerjaan. Dalam modul ekonomi, faktor luar tersebut dinamakan...',
+        options: [
+          'Faktor internal',
+          'Faktor eksternal',
+          'Faktor intrinsik',
+          'Faktor psikologis murni'
+        ],
+        correctIndex: 1,
+        explanation: 'Faktor eksternal adalah faktor-faktor yang berasal dari luar diri individu konsumen, seperti lingkungan tempat tinggal, kebudayaan, status sosial, dan kondisi geografis.'
+      },
+      {
+        id: 'qk10-8',
+        category: 'Perbedaan Produksi Barang & Jasa',
+        question: 'Manakah di bawah ini yang paling tepat membedakan antara produksi barang dan produksi jasa?',
+        options: [
+          'Produksi barang mengubah bentuk benda, sedangkan produksi jasa menambah nilai guna tanpa mengubah bentuk',
+          'Produksi barang menghasilkan uang, sedangkan produksi jasa menghasilkan mesin',
+          'Produksi barang dilakukan oleh perorangan, sedangkan produksi jasa hanya oleh perusahaan besar',
+          'Produksi barang tidak memerlukan bahan baku, sedangkan produksi jasa wajib menggunakan kayu'
+        ],
+        correctIndex: 0,
+        explanation: 'Produksi barang menghasilkan wujud fisik baru dengan mengubah bentuk/sifat benda, sedangkan produksi jasa memberikan manfaat atau nilai guna melalui layanan tanpa mengubah wujud fisik benda.'
+      },
+      {
+        id: 'qk10-9',
+        category: 'Tujuan Khusus Konsumsi',
+        question: 'Seorang ibu rumah tangga membeli vitamin dan suplemen kesehatan untuk dikonsumsi seluruh keluarganya agar daya tahan tubuh mereka terjaga dengan baik. Tujuan khusus dari kegiatan konsumsi tersebut adalah...',
+        options: [
+          'Menjaga status sosial di masyarakat',
+          'Menjaga kesehatan tubuh dengan gizi seimbang',
+          'Memenuhi kebutuhan estetika dan keindahan',
+          'Mencari keuntungan finansial dari penjualan obat'
+        ],
+        correctIndex: 1,
+        explanation: 'Membeli dan mengonsumsi vitamin bertujuan untuk pemeliharaan daya tahan fisik dan kesehatan tubuh keluarga dengan asupan gizi seimbang.'
+      },
+      {
+        id: 'qk10-10',
+        category: 'Hubungan Produksi & Kemakmuran',
+        question: 'Apa hubungan sebab-akibat antara kegiatan produksi khusus (seperti pengolahan bahan alam) dengan tercapainya tujuan kemakmuran masyarakat?',
+        options: [
+          'Produksi menciptakan kelangkaan ekstrem agar harga barang melambung',
+          'Produksi menambah manfaat atau menciptakan barang baru yang cukup untuk memenuhi kebutuhan manusia',
+          'Produksi menghentikan seluruh peredaran uang di masyarakat',
+          'Produksi membuat manusia tidak lagi memerlukan kegiatan distribusi'
+        ],
+        correctIndex: 1,
+        explanation: 'Kegiatan produksi menghasilkan dan menambah manfaat barang kebutuhan sehingga ketersediaan barang di masyarakat tercukupi demi terwujudnya kemakmuran bersama.'
+      }
+    ]
+  },
+  {
+    id: 'kuis-strategi-ekonomi-sedang',
+    name: 'Kuis Misi Strategi & Dinamika Ekonomi (Tingkat Sedang)',
+    description: 'Uji pemahaman analitis mengenai sikap rasional kelangkaan, kebutuhan estetika, dan alur distribusi semilangsung.',
+    badge: 'Strategis Muda',
+    unlockedAtLevel: 1,
+    rewardCoins: 20,
+    rewardXp: 25,
+    questions: [
+      {
+        id: 'qk11-1',
+        category: 'Sikap Rasional Kelangkaan',
+        question: 'Manusia dihadapkan pada situasi di mana kebutuhan hampir tidak terbatas, sementara alat pemuas kebutuhan sangat terbatas. Sikap rasional yang harus diambil seseorang dalam mengelola keterbatasan tersebut adalah...',
+        options: [
+          'Membeli seluruh barang mewah yang ada di pasaran',
+          'Menyusun skala prioritas kebutuhan agar yang paling mendesak didahulukan',
+          'Menunggu bantuan pemerintah tanpa melakukan usaha apa pun',
+          'Menghabiskan seluruh tabungan untuk memenuhi keinginan sesaat'
+        ],
+        correctIndex: 1,
+        explanation: 'Sikap rasional dalam menghadapi kelangkaan adalah menyusun skala prioritas kebutuhan agar kebutuhan yang paling pokok dan mendesak dipenuhi terlebih dahulu.'
+      },
+      {
+        id: 'qk11-2',
+        category: 'Klasifikasi Kegiatan Produksi',
+        question: 'Perhatikan kegiatan ekonomi berikut: (1) Menanam padi di sawah, (2) Memakai pakaian seragam baru, (3) Menjahit kain menjadi celana, (4) Mengantar barang ke toko grosir. Kegiatan yang tergolong ke dalam bidang produksi adalah...',
+        options: [
+          '(1) dan (3)',
+          '(2) dan (4)',
+          '(1), (2), dan (3)',
+          'Semuanya merupakan produksi'
+        ],
+        correctIndex: 0,
+        explanation: 'Menanam padi (1) dan menjahit kain (3) adalah kegiatan produksi (menghasilkan atau menambah nilai guna barang). Nomor (2) adalah konsumsi, dan (4) adalah distribusi.'
+      },
+      {
+        id: 'qk11-3',
+        category: 'Unsur Faktor Modal',
+        question: 'Sebuah perusahaan gergaji kayu menggunakan mesin potong elektrik, bangunan gudang, serta peralatan penunjang lainnya agar proses pengolahan balok kayu berjalan lancar. Dalam konteks faktor produksi, bangunan dan mesin elektrik tersebut dikategorikan sebagai...',
+        options: [
+          'Faktor alam',
+          'Faktor modal',
+          'Faktor keahlian manajemen',
+          'Faktor tenaga kerja kasar'
+        ],
+        correctIndex: 1,
+        explanation: 'Mesin potong dan bangunan gudang merupakan sarana fisik penunjang proses produksi yang diklasifikasikan sebagai faktor modal.'
+      },
+      {
+        id: 'qk11-4',
+        category: 'Alur Distribusi Semilangsung',
+        question: 'Produsen barang elektronik menyalurkan produknya kepada konsumen melalui toko resmi atau cabang miliknya sendiri tanpa melibatkan pedagang luar. Bentuk saluran distribusi apakah yang digunakan dalam ilustrasi tersebut?',
+        options: [
+          'Distribusi langsung',
+          'Distribusi semilangsung',
+          'Distribusi tidak langsung',
+          'Distribusi massal internasional'
+        ],
+        correctIndex: 1,
+        explanation: 'Penyaluran produk melalui toko atau cabang resmi milik produsen sendiri merupakan contoh bentuk saluran distribusi semilangsung.'
+      },
+      {
+        id: 'qk11-5',
+        category: 'Analisis Faktor Keahlian',
+        question: 'Pak Andi memiliki modal yang cukup, bahan baku melimpah, dan pekerja yang rajin. Namun, usahanya mengalami kerugian karena salah mengambil keputusan manajerial dalam mengatur strategi penjualan. Unsur produksi manakah yang menjadi kelemahan utama pada kasus Pak Andi?',
+        options: [
+          'Faktor alam',
+          'Faktor tenaga kerja',
+          'Faktor keahlian',
+          'Faktor konsumsi akhir'
+        ],
+        correctIndex: 2,
+        explanation: 'Kelemahan dalam pengambilan keputusan manajerial dan strategi penjualan merupakan bagian dari faktor keahlian (kewirausahaan).'
+      },
+      {
+        id: 'qk11-6',
+        category: 'Urgensi Distribusi Logistik',
+        question: 'Mengapa kegiatan distribusi memegang peranan vital dan mutlak diperlukan dalam roda perekonomian?',
+        options: [
+          'Karena hasil produksi tidak akan berguna jika tidak sampai ke tangan konsumen',
+          'Karena distribusi berfungsi menggantikan seluruh tenaga kerja di pabrik',
+          'Karena kegiatan distribusi menghapuskan biaya pajak perusahaan',
+          'Karena distribusi menentukan jenis bahan mentah di dalam bumi'
+        ],
+        correctIndex: 0,
+        explanation: 'Distribusi mutlak diperlukan karena barang hasil produksi tidak dapat dimanfaatkan dan tidak menghasilkan nilai ekonomis jika tidak tersalurkan kepada konsumen.'
+      },
+      {
+        id: 'qk11-7',
+        category: 'Dinamika Faktor Eksternal',
+        question: 'Perbedaan pola dan jenis konsumsi antara masyarakat modern di perkotaan dengan masyarakat di pedesaan sering dipengaruhi oleh lingkungan luar seperti pekerjaan dan kebudayaan. Faktor luar tersebut dinamakan...',
+        options: [
+          'Faktor internal',
+          'Faktor eksternal',
+          'Faktor intrinsik psikologis',
+          'Faktor motivasi batin'
+        ],
+        correctIndex: 1,
+        explanation: 'Faktor yang berasal dari luar individu, seperti kondisi geografis, lingkungan kerja, kebudayaan, dan adat istiadat, dinamakan faktor eksternal.'
+      },
+      {
+        id: 'qk11-8',
+        category: 'Karakteristik Produksi Barang & Jasa',
+        question: 'Manakah pernyataan di bawah ini yang paling tepat membedakan antara produksi barang dan produksi jasa?',
+        options: [
+          'Produksi barang mengubah bentuk benda, sedangkan produksi jasa menambah nilai guna tanpa mengubah bentuk',
+          'Produksi barang menghasilkan uang tunai, sedangkan produksi jasa menghasilkan mesin pabrik',
+          'Produksi barang dilakukan perorangan, sedangkan produksi jasa hanya oleh perusahaan multinasional',
+          'Produksi barang tidak memerlukan bahan baku alam, sedangkan produksi jasa wajib menggunakan kayu'
+        ],
+        correctIndex: 0,
+        explanation: 'Produksi barang menghasilkan bentuk fisik baru yang berwujud, sedangkan produksi jasa memberikan layanan nilai guna tanpa mengubah bentuk fisik suatu benda.'
+      },
+      {
+        id: 'qk11-9',
+        category: 'Kebutuhan Estetika',
+        question: 'Seseorang membeli produk pakaian dengan desain estetis tertentu dan mengunjungi pameran seni rupa. Berdasarkan tujuan konsumsi, kegiatan tersebut ditujukan untuk...',
+        options: [
+          'Menjaga kesehatan tubuh dengan gizi seimbang',
+          'Memenuhi kebutuhan akan estetika',
+          'Memproduksi barang modal secara massal',
+          'Memperluas jalur distribusi logistik'
+        ],
+        correctIndex: 1,
+        explanation: 'Membeli pakaian berdesain estetis dan menghadiri pameran karya seni bertujuan untuk memuaskan rasa keindahan atau kebutuhan estetika rohani.'
+      },
+      {
+        id: 'qk11-10',
+        category: 'Hasil Produksi & Kemakmuran',
+        question: 'Bagaimana hubungan sebab-akibat antara kegiatan produksi yang baik dengan pencapaian kemakmuran masyarakat?',
+        options: [
+          'Produksi menciptakan kelangkaan ekstrem agar harga barang naik',
+          'Produksi menambah manfaat atau menciptakan barang baru yang cukup untuk memenuhi kebutuhan manusia',
+          'Produksi menghentikan seluruh peredaran uang di masyarakat',
+          'Produksi membuat manusia tidak lagi memerlukan interaksi sosial'
+        ],
+        correctIndex: 1,
+        explanation: 'Kegiatan produksi yang efektif menghasilkan kecukupan barang dan jasa bermutu yang dibutuhkan masyarakat untuk mencapai kemakmuran hidup.'
+      }
+    ]
+  },
+  {
+    id: 'kuis-analisis-kritis-sulit',
+    name: 'Kuis Misi Analisis Ekonomi Kritis (Tingkat Sulit)',
+    description: 'Uji penalaran tingkat tinggi mengenai skala prioritas produsen, disfungsi faktor produksi, saluran distribusi, dan krisis siklus kegiatan ekonomi.',
+    badge: 'Pakar Ekonomi Ulung',
+    unlockedAtLevel: 1,
+    rewardCoins: 25,
+    rewardXp: 35,
+    questions: [
+      {
+        id: 'qk12-1',
+        category: 'Skala Prioritas & Kelangkaan',
+        question: 'Manusia dihadapkan pada situasi di mana kebutuhan hampir tidak terbatas, sementara alat pemuas kebutuhan sangat terbatas. Jika seorang produsen salah menganalisis skala prioritas dan tetap memproduksi barang tersier di tengah kelangkaan bahan baku primer, apa dampak paling rasional terhadap perusahaan tersebut?',
+        options: [
+          'Perusahaan akan langsung mendominasi pasar internasional tanpa pesaing',
+          'Efisiensi modal meningkat drastis karena tingginya harga jual barang tersier',
+          'Terjadi pemborosan sumber daya dan kegagalan pasar karena tidak sesuai dengan urgensi kebutuhan konsumen',
+          'Kegiatan distribusi dan konsumsi akan berhenti secara total seketika'
+        ],
+        correctIndex: 2,
+        explanation: 'Di tengah kelangkaan bahan baku primer, memproduksi barang tersier tanpa skala prioritas yang tepat akan memicu pemborosan sumber daya dan kegagalan pasar karena tidak menjawab urgensi kebutuhan utama konsumen.'
+      },
+      {
+        id: 'qk12-2',
+        category: 'Faktor Alam & Produksi Barang',
+        question: 'Perhatikan serangkaian aktivitas berikut: (1) Perusahaan migas mengekstrak minyak mentah dari perut bumi, (2) Pabrik tekstil memproses kapas menjadi kain mori, (3) Lembaga logistik mengirimkan kontainer ke pulau seberang, (4) Konsumen memakai pakaian saat bekerja. Manakah kombinasi yang secara tepat menunjukkan integrasi antara faktor alam dan proses produksi barang?',
+        options: [
+          '(1) dan (2)',
+          '(2) dan (3)',
+          '(3) dan (4)',
+          '(1) dan (4)'
+        ],
+        correctIndex: 0,
+        explanation: 'Nomor (1) merupakan pemanfaatan langsung faktor alam (ekstraksi minyak mentah), sedangkan nomor (2) merupakan proses produksi barang (mengolah kapas menjadi kain). Nomor (3) adalah distribusi dan nomor (4) adalah konsumsi.'
+      },
+      {
+        id: 'qk12-3',
+        category: 'Disfungsi Elemen Produksi',
+        question: 'Sebuah perusahaan multinasional memiliki modal finansial yang kuat, fasilitas pabrik berteknologi tinggi, serta bahan baku alam yang melimpah. Namun, produk yang dihasilkan selalu gagal memenuhi standar pasar karena kesalahan operasional mesin oleh operator dan buruknya pengawasan mutu. Berdasarkan elemen produksi, komponen manakah yang mengalami disfungsi paling krusial?',
+        options: [
+          'Faktor alam dan modal semata',
+          'Sinergi antara faktor tenaga kerja dan faktor keahlian manajerial/pengontrolan',
+          'Jalur distribusi langsung dari produsen ke konsumen akhir',
+          'Faktor eksternal konsumsi masyarakat perkotaan'
+        ],
+        correctIndex: 1,
+        explanation: 'Kesalahan operasional oleh operator berkaitan erat dengan faktor tenaga kerja, sedangkan lemahnya pengawasan mutu berkaitan dengan faktor keahlian manajerial (controlling). Disfungsi terjadi pada sinergi kedua faktor tersebut.'
+      },
+      {
+        id: 'qk12-4',
+        category: 'Saluran Distribusi & Margin',
+        question: 'Perusahaan kendaraan listrik mendirikan jaringan showroom resmi di berbagai kota besar dan melarang keras agen luar menjual produknya kecuali melalui toko ritel milik perusahaan tersebut. Analisis bentuk saluran distribusi apakah yang diterapkan dan apa implikasinya terhadap margin keuntungan?',
+        options: [
+          'Distribusi tidak langsung; margin keuntungan sangat kecil karena dipotong banyak perantara',
+          'Distribusi semilangsung; perusahaan dapat mengontrol harga dan menjaga margin keuntungan tetap optimal',
+          'Distribusi langsung tanpa perantara sama sekali; biaya logistik ditanggung penuh oleh pembeli',
+          'Distribusi bebas; tidak memiliki pengaruh apa pun terhadap stabilitas harga pasar'
+        ],
+        correctIndex: 1,
+        explanation: 'Menjual melalui jaringan toko/showroom resmi milik produsen sendiri merupakan pola distribusi semilangsung. Cara ini memberi kendali penuh atas harga pasar serta memaksimalkan margin keuntungan tanpa potongan perantara independen.'
+      },
+      {
+        id: 'qk12-5',
+        category: 'Konservasi & Keberlangsungan Usaha',
+        question: 'Pak Harto adalah seorang pengusaha sukses yang menguasai seluruh faktor produksi mulai dari alam, modal, tenaga kerja, hingga keahlian manajerial. Namun, ia mengabaikan prinsip konservasi bahan baku dalam mengeksploitasi hutan untuk industri mebelnya. Apa implikasi jangka panjang yang paling fatal bagi keberlangsungan perusahaannya berdasarkan konsep ekonomi?',
+        options: [
+          'Perusahaan akan mengalami kelangkaan bahan baku yang berujung pada terhentinya proses produksi',
+          'Perusahaan akan mendapat subsidi penuh dari pemerintah secara permanen',
+          'Kualitas barang yang dihasilkan akan meningkat secara otomatis tanpa kayu',
+          'Jumlah tenaga kerja akan bertambah secara eksponensial'
+        ],
+        correctIndex: 0,
+        explanation: 'Eksploitasi tanpa konservasi menyebabkan kelangkaan dan kepunahan bahan baku alam di masa depan. Akibatnya, perusahaan tidak lagi memiliki bahan untuk diolah sehingga proses produksi terhenti total.'
+      },
+      {
+        id: 'qk12-6',
+        category: 'Pergeseran Pola Konsumsi',
+        question: 'Perbedaan pola konsumsi antara masyarakat tradisional pedesaan dan masyarakat modern perkotaan tidak hanya dipengaruhi oleh faktor internal (selera dan motivasi), tetapi juga faktor eksternal seperti kebudayaan dan tingkat pendapatan. Jika terjadi modernisasi budaya secara masif di pedesaan, bagaimana pergeseran pola konsumsi masyarakat tersebut?',
+        options: [
+          'Konsumsi akan kembali ke titik nol karena hilangnya seluruh alat pemuas kebutuhan',
+          'Terjadi pergeseran dari kebutuhan primer/sekunder menuju pola konsumsi yang dipengaruhi tren tersier dan gaya hidup modern',
+          'Masyarakat berhenti mengonsumsi produk lokal secara permanen',
+          'Faktor internal manusia akan hilang sepenuhnya tanpa bekas'
+        ],
+        correctIndex: 1,
+        explanation: 'Modernisasi budaya (faktor eksternal) mengubah gaya hidup masyarakat pedesaan sehingga konsumsi berkembang melampaui pemenuhan primer/sekunder menuju barang tersier dan preferensi modern.'
+      },
+      {
+        id: 'qk12-7',
+        category: 'Urgensi Kegiatan Distribusi',
+        question: 'Perhatikan pernyataan berikut: "Kegiatan distribusi merupakan jembatan mutlak yang menentukan hidup-matinya sebuah perusahaan manufaktur." Alasan ekonomi yang paling mendasar untuk memperkuat pernyataan tersebut adalah...',
+        options: [
+          'Karena distribusi berfungsi untuk menggantikan fungsi mesin pabrik yang aus',
+          'Karena hasil produksi sehebat apa pun tidak akan memberikan nilai guna atau keuntungan jika gagal sampai ke tangan konsumen',
+          'Karena distribusi menghapuskan seluruh beban pajak penghasilan perusahaan',
+          'Karena kegiatan distribusi adalah satu-satunya penentu harga bahan mentah di alam'
+        ],
+        correctIndex: 1,
+        explanation: 'Tanpa distribusi yang efektif, produk sebaik apa pun hanya akan menumpuk di gudang, tidak memberikan nilai guna bagi masyarakat, serta tidak mendatangkan pendapatan bagi kelangsungan produsen.'
+      },
+      {
+        id: 'qk12-8',
+        category: 'Barang Modal vs Barang Konsumsi',
+        question: 'Manakah analisis yang paling komprehensif dalam membedakan antara produksi barang modal dan produksi barang konsumsi?',
+        options: [
+          'Barang modal digunakan untuk menghasilkan barang lain lebih lanjut (seperti mesin pabrik), sedangkan barang konsumsi langsung dihabiskan manfaatnya oleh konsumen akhir (seperti roti dan pakaian)',
+          'Barang modal hanya berupa uang tunai di bank, sedangkan barang konsumsi berupa benda padat',
+          'Barang modal dibuat oleh perorangan, sedangkan barang konsumsi dibuat oleh robot otomatis',
+          'Tidak ada perbedaan mendasar karena keduanya melalui jalur distribusi yang sama'
+        ],
+        correctIndex: 0,
+        explanation: 'Barang modal (capital goods) adalah sarana produksi untuk menghasilkan output lanjutan, sedangkan barang konsumsi (consumer goods) adalah barang siap pakai yang langsung dinikmati konsumen akhir.'
+      },
+      {
+        id: 'qk12-9',
+        category: 'Alokasi Strategis Faktor Produksi',
+        question: 'Seorang direktur perusahaan menetapkan kebijakan anggaran operasional dengan mengalokasikan sebagian besar dana untuk memperbarui mesin produksi dan membangun gedung pelatihan keahlian karyawan, alih-alih membagikannya sebagai bonus tunai. Berdasarkan teori faktor produksi, tindakan strategis ini bertujuan untuk...',
+        options: [
+          'Mengurangi jumlah tenaga kerja secara drastis dalam waktu singkat',
+          'Memaksimalkan efisiensi faktor modal dan meningkatkan faktor keahlian demi keluaran produksi yang optimal',
+          'Menghilangkan ketergantungan perusahaan terhadap bahan baku alam',
+          'Menghentikan seluruh kegiatan distribusi logistik perusahaan'
+        ],
+        correctIndex: 1,
+        explanation: 'Memperbarui mesin meningkatkan kualitas faktor modal, sedangkan pelatihan karyawan meningkatkan faktor keahlian dan kapasitas tenaga kerja, keduanya bersinergi memaksimalkan efisiensi dan output produksi.'
+      },
+      {
+        id: 'qk12-10',
+        category: 'Siklus Krisis Kegiatan Ekonomi',
+        question: 'Jika suatu negara mengalami kerusakan lingkungan parah akibat eksploitasi faktor alam yang tidak terkendali tanpa diimbangi tindakan konservasi, apa bentuk krisis beruntun yang akan terjadi pada siklus kegiatan ekonomi nasional?',
+        options: [
+          'Kelangkaan bahan baku → kelumpuhan kegiatan produksi → terhentinya distribusi → penurunan drastis tingkat konsumsi dan kemakmuran masyarakat',
+          'Lonjakan jumlah uang beredar → peningkatan kemakmuran secara instan',
+          'Penutupan seluruh pasar tradisional → peralihan total ke sistem barter',
+          'Peningkatan jumlah tenaga kerja secara otomatis tanpa batas'
+        ],
+        correctIndex: 0,
+        explanation: 'Kerusakan alam memicu efek domino sistemik: kelangkaan bahan mentah melumpuhkan produksi, melumpuhkan distribusi karena tiadanya barang, hingga akhirnya menurunkan daya konsumsi dan kemakmuran masyarakat secara luas.'
+      }
+    ]
   }
 ];

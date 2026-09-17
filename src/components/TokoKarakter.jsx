@@ -57,7 +57,9 @@ export default function TokoKarakter({ student, updateStudentData }) {
     const updatedEquipped = {
       ...student.equipped,
       [item.category]: item.id,
-      ...(item.category === 'accessories' ? { accessory: item.id, hairstyle: item.id } : {})
+      ...(item.category === 'bottoms' ? { bottom: item.id, bottoms: item.id } : {}),
+      ...(item.category === 'tops' ? { top: item.id, tops: item.id } : {}),
+      ...(item.category === 'accessories' ? { accessory: item.id, hairstyle: item.id, accessories: item.id } : {})
     };
     updateStudentData({
       ...student,
@@ -90,7 +92,9 @@ export default function TokoKarakter({ student, updateStudentData }) {
     const newEquipped = {
       ...student.equipped,
       [buyingItem.category]: buyingItem.id,
-      ...(buyingItem.category === 'accessories' ? { accessory: buyingItem.id, hairstyle: buyingItem.id } : {})
+      ...(buyingItem.category === 'bottoms' ? { bottom: buyingItem.id, bottoms: buyingItem.id } : {}),
+      ...(buyingItem.category === 'tops' ? { top: buyingItem.id, tops: buyingItem.id } : {}),
+      ...(buyingItem.category === 'accessories' ? { accessory: buyingItem.id, hairstyle: buyingItem.id, accessories: buyingItem.id } : {})
     };
 
     updateStudentData({
@@ -203,7 +207,10 @@ export default function TokoKarakter({ student, updateStudentData }) {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {categoryItems.map((item) => {
               const isOwned = student.inventory.includes(item.id);
-              const isEquipped = student.equipped[item.category] === item.id;
+              const isEquipped = student.equipped[item.category] === item.id ||
+                (item.category === 'bottoms' && student.equipped.bottom === item.id) ||
+                (item.category === 'tops' && student.equipped.top === item.id) ||
+                (item.category === 'accessories' && (student.equipped.accessory === item.id || student.equipped.hairstyle === item.id));
               const isPreviewing = previewItem?.id === item.id;
               const canAfford = student.coins >= item.priceCoins;
 

@@ -95,7 +95,7 @@ export const DEFAULT_ACCOUNTS = [
     id: 'acc-user4',
     username: 'user4',
     password: 'user4',
-    name: "Jami'atul Afifah",
+    name: "Ambatuskul",
     role: 'siswa',
     schoolClass: 'Kelas 7A - SMP Negeri 1',
     level: 1,

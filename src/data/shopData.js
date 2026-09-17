@@ -96,6 +96,20 @@ export const AVATAR_SHOP_ITEMS = [
     }
   },
   {
+    id: 'bottom-celana-smp',
+    name: 'Celana Panjang Biru SMP',
+    category: 'bottoms',
+    priorityCategory: 'Primer',
+    priceCoins: 50,
+    pricePoints: 20,
+    description: 'Celana seragam sekolah SMP rapi berwarna biru tua.',
+    unlockedByDefault: false,
+    styleProps: {
+      type: 'pants',
+      color: '#1e3a8a'
+    }
+  },
+  {
     id: 'bottom-celana-cargo',
     name: 'Celana Cargo Pengirim Paket',
     category: 'bottoms',

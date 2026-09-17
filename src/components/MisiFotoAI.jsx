@@ -48,8 +48,8 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
       accentColor: 'orange',
       badgeBg: 'bg-orange-100 text-orange-800 border-orange-200',
       cardBorderHover: 'hover:border-orange-400',
-      desc: 'Pindai situasi atau benda yang menunjukkan pemenuhan kebutuhan dasar manusia di lingkungan sekitar guna memahami kondisi keterbatasan alat pemuas kebutuhan.',
-      targetHint: 'Foto air minum, makanan pokok, pakaian, atau alat pemuas kebutuhan primer.',
+      desc: 'Cari dan foto situasi atau benda di sekitarmu yang merupakan kebutuhan paling dasar manusia (seperti air minum, makanan pokok, atau pakaian) untuk melihat apa saja barang yang penting bagi kehidupan sehari-hari.',
+      targetHint: 'Air minum, makanan pokok, pakaian, atau barang primer lainnya.',
       taskId: 'wants-t4'
     },
     {
@@ -61,8 +61,8 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
       accentColor: 'emerald',
       badgeBg: 'bg-emerald-100 text-emerald-800 border-emerald-200',
       cardBorderHover: 'hover:border-emerald-400',
-      desc: 'Sesuai dengan Misi 1: Foto Objek Sumber Daya Alam, pindai kekayaan alam lokal di sekitarmu (seperti tanah, tanaman pangan, air, atau bebatuan alam).',
-      targetHint: 'Foto tanaman pangan, tanah subur, sumber air, atau bebatuan alam.',
+      desc: 'Jelajahi lingkungan sekitar dan foto kekayaan alam yang ada di sekitarmu.',
+      targetHint: 'Tanaman pangan, tanah yang subur, sumber air, atau bebatuan alami.',
       taskId: 'res-t4'
     },
     {
@@ -74,22 +74,9 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
       accentColor: 'sky',
       badgeBg: 'bg-sky-100 text-sky-800 border-sky-200',
       cardBorderHover: 'hover:border-sky-400',
-      desc: 'Sesuai dengan Misi 2: Foto Logistik / Warung Sekitar, pindai sarana atau aktivitas penyaluran barang (seperti kurir paket, truk angkut, warung klontong, atau minimarket).',
-      targetHint: 'Foto kurir paket, truk ekspedisi, warung kelontong, atau minimarket.',
+      desc: 'Cari dan foto hal-hal yang berkaitan dengan penyaluran atau pengiriman barang dari satu tempat ke tempat lain.',
+      targetHint: 'Kurir paket yang sedang mengantar barang, truk ekspedisi, warung kelontong, atau minimarket.',
       taskId: 'trade-t3'
-    },
-    {
-      id: 'konsumsi',
-      islandKey: 'marketplace',
-      locationName: 'MISI PASAR',
-      title: 'Misi Pola Konsumen & Pasar',
-      icon: Store,
-      accentColor: 'amber',
-      badgeBg: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-      cardBorderHover: 'hover:border-amber-400',
-      desc: 'Sesuai dengan Misi 4: Aktivitas / Benda Konsumsi, foto barang yang sedang kamu pakai atau konsumsi (seperti makanan, minuman, buku IPS, atau sepatu sekolah) untuk melihat pola kebiasaan konsumen.',
-      targetHint: 'Foto barang konsumsi harian seperti buku IPS, makanan, atau sepatu sekolah.',
-      taskId: 'mkt-t4'
     },
     {
       id: 'kayu-mebel',
@@ -100,9 +87,22 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
       accentColor: 'teal',
       badgeBg: 'bg-teal-100 text-teal-800 border-teal-200',
       cardBorderHover: 'hover:border-teal-400',
-      desc: 'Sesuai dengan Misi 3: Scan Produk Olahan Kayu, pindai barang olahan kayu hasil hutan (seperti meja belajar, kursi, pensil kayu, bingkai, atau furnitur) untuk mempelajari pemanfaatan dan pelestarian bahan baku.',
-      targetHint: 'Foto meja belajar kayu, kursi kayu, pensil kayu, atau bingkai kayu.',
+      desc: 'Cari barang-barang di sekitarmu yang terbuat dari kayu hasil hutan untuk melihat bagaimana bahan baku dimanfaatkan.',
+      targetHint: 'Meja belajar kayu, kursi kayu, pensil kayu, atau bingkai foto dari kayu.',
       taskId: 'fst-t4'
+    },
+    {
+      id: 'konsumsi',
+      islandKey: 'marketplace',
+      locationName: 'MISI PASAR',
+      title: 'Misi Pola Konsumen & Pasar',
+      icon: Store,
+      accentColor: 'amber',
+      badgeBg: 'bg-yellow-100 text-yellow-800 border-yellow-200',
+      cardBorderHover: 'hover:border-amber-400',
+      desc: 'Foto benda atau makanan yang sedang kamu pakai atau konsumsi saat ini untuk melihat kebiasaan kita sebagai konsumen.',
+      targetHint: 'Buku pelajaran IPS, makanan, minuman, atau sepatu sekolah yang kamu pakai.',
+      taskId: 'mkt-t4'
     },
     {
       id: 'modal-keuangan',
@@ -113,8 +113,8 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
       accentColor: 'indigo',
       badgeBg: 'bg-indigo-100 text-indigo-800 border-indigo-200',
       cardBorderHover: 'hover:border-indigo-400',
-      desc: 'Pindai benda-benda penunjang kegiatan ekonomi yang berfungsi sebagai modal (seperti peralatan kerja, mesin, atau perangkat pendukung produktivitas lainnya).',
-      targetHint: 'Foto peralatan kerja, mesin, laptop/komputer, atau alat produktivitas.',
+      desc: 'Cari benda-benda yang biasanya dipakai untuk membantu bekerja atau belajar agar lebih produktif.',
+      targetHint: 'Peralatan kerja, mesin, laptop/komputer, atau alat produktivitas lainnya.',
       taskId: 'inv-t4'
     },
     {
@@ -126,8 +126,8 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
       accentColor: 'purple',
       badgeBg: 'bg-purple-100 text-purple-800 border-purple-200',
       cardBorderHover: 'hover:border-purple-400',
-      desc: 'Sesuai dengan instruksi Scan Bebas Deteksi Ekonomi, ambil foto dari salah satu objek di sekitarmu yang merupakan hasil produksi barang/jasa (contoh: pakaian, makanan kemasan, atau barang elektronik) agar dapat dianalisis oleh mesin AI.',
-      targetHint: 'Foto satu objek nyata yang menunjukkan hasil produksi barang/jasa.',
+      desc: 'Ambil foto satu saja benda di sekitarmu yang merupakan hasil buatan pabrik atau jasa (barang jadi).',
+      targetHint: 'Pakaian, makanan kemasan, atau barang elektronik.',
       taskId: 'ent-t4'
     }
   ];
@@ -336,9 +336,8 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
       {/* ========================================================================= */}
       <div className="space-y-4">
         <div className="flex items-center justify-between px-1">
-          <h3 className="text-xl font-black text-slate-900 flex items-center gap-2">
-            <Compass className="w-6 h-6 text-emerald-600" />
-            <span>Daftar 7 Misi Foto Pulau Kegiatan Ekonomi</span>
+          <h3 className="text-xl font-black text-slate-900">
+            Daftar 7 Misi Foto Pulau Kegiatan Ekonomi
           </h3>
           <span className="text-xs font-extrabold px-3 py-1 rounded-full bg-slate-100 text-slate-700 border border-slate-200">
             Klik Misi untuk Buka Pop-Up Scanner
@@ -390,9 +389,14 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
                   </h4>
 
                   {/* Task Description */}
-                  <p className="text-xs text-slate-600 leading-relaxed line-clamp-3">
-                    {mission.desc}
-                  </p>
+                  <div className="space-y-2 text-xs">
+                    <p className="text-slate-600 leading-relaxed line-clamp-3">
+                      <strong className="text-slate-900 font-bold">Tugas:</strong> {mission.desc}
+                    </p>
+                    <p className="text-[11px] text-emerald-900 font-medium bg-emerald-50/80 p-2 rounded-xl border border-emerald-200 leading-snug">
+                      <strong className="text-emerald-800 font-bold">💡 Yang harus difoto:</strong> {mission.targetHint}
+                    </p>
+                  </div>
                 </div>
 
                 {/* Bottom Action Button */}
@@ -439,19 +443,19 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
             </div>
 
             {/* Mission Task Explanation Banner */}
-            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-5 space-y-2">
-              <div className="flex items-center gap-2 text-xs font-bold text-slate-500 uppercase tracking-wider">
-                <FileSearch className="w-4 h-4 text-emerald-600" />
-                <span>Instruksi Tugas Pemindaian Misi</span>
+            <div className="bg-emerald-50/70 border border-emerald-200 rounded-2xl p-4 sm:p-5 space-y-3">
+              <div className="space-y-1">
+                <p className="text-xs sm:text-sm text-slate-800 leading-relaxed font-medium">
+                  <strong className="text-emerald-800 font-extrabold text-sm sm:text-base block mb-1">Tugas:</strong>
+                  {activeModalMission.desc}
+                </p>
               </div>
-              <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
-                {activeModalMission.desc}
-              </p>
-              <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-200/80">
-                <span className="text-xs text-emerald-700 font-bold">
-                  💡 Target Objek: {activeModalMission.targetHint}
-                </span>
-                <span className="text-xs font-extrabold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pt-2.5 border-t border-emerald-200/80">
+                <div className="text-xs sm:text-sm text-slate-800 font-medium">
+                  <span className="font-bold text-amber-700">💡 Yang harus difoto:</span>{' '}
+                  <span className="text-slate-800 font-semibold">{activeModalMission.targetHint}</span>
+                </div>
+                <span className="text-xs font-extrabold text-amber-700 bg-amber-100/90 px-3 py-1 rounded-lg border border-amber-300 shrink-0 self-start sm:self-auto shadow-sm">
                   Imbalan: +40 Koin & +35 XP
                 </span>
               </div>

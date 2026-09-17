@@ -35,7 +35,7 @@ export const MISSIONS_DATA = [
         id: 'wants-t3',
         text: 'Menyelesaikan Misi Foto: Misi Pengenalan Kebutuhan & Kelangkaan',
         type: 'ai-scan',
-        detail: 'Pindai objek alat pemuas kebutuhan dasar manusia dengan AI Scanner.',
+        detail: 'Cari dan foto kebutuhan paling dasar manusia (air minum, makanan pokok, pakaian).',
         rewardCoins: 40,
         rewardXp: 35
       }
@@ -77,7 +77,7 @@ export const MISSIONS_DATA = [
         id: 'res-t3',
         text: 'Menyelesaikan Misi Foto: Misi Eksplorasi Faktor Alam',
         type: 'ai-scan',
-        detail: 'Pindai kekayaan alam lokal (tanah, tanaman, air, bebatuan) dengan AI Scanner.',
+        detail: 'Jelajahi dan foto kekayaan alam di sekitarmu (tanaman pangan, tanah subur, sumber air, bebatuan).',
         rewardCoins: 40,
         rewardXp: 35
       }
@@ -119,7 +119,7 @@ export const MISSIONS_DATA = [
         id: 'trade-t3',
         text: 'Menyelesaikan Misi Foto: Misi Perdagangan & Distribusi',
         type: 'ai-scan',
-        detail: 'Pindai aktivitas kurir, truk logistik, atau warung kelontong dengan AI Scanner.',
+        detail: 'Cari dan foto penyaluran barang (kurir paket, truk ekspedisi, warung kelontong, minimarket).',
         rewardCoins: 40,
         rewardXp: 35
       }
@@ -161,7 +161,7 @@ export const MISSIONS_DATA = [
         id: 'mkt-t3',
         text: 'Menyelesaikan Misi Foto: Misi Pola Konsumen & Pasar',
         type: 'ai-scan',
-        detail: 'Foto barang konsumsi harian seperti buku IPS, makanan, atau sepatu dengan AI Scanner.',
+        detail: 'Foto benda atau makanan yang sedang dipakai/dikonsumsi (buku IPS, makanan, minuman, sepatu sekolah).',
         rewardCoins: 40,
         rewardXp: 35
       }
@@ -203,7 +203,7 @@ export const MISSIONS_DATA = [
         id: 'fst-t3',
         text: 'Menyelesaikan Misi Foto: Misi Konservasi & Bahan Baku',
         type: 'ai-scan',
-        detail: 'Pindai meja kayu, kursi, pensil, atau produk olahan kayu dengan AI Scanner.',
+        detail: 'Cari dan foto barang dari kayu hasil hutan (meja belajar, kursi, pensil, bingkai foto kayu).',
         rewardCoins: 40,
         rewardXp: 35
       }
@@ -245,7 +245,7 @@ export const MISSIONS_DATA = [
         id: 'inv-t3',
         text: 'Menyelesaikan Misi Foto: Misi Pengelolaan Modal & Keuangan',
         type: 'ai-scan',
-        detail: 'Pindai benda penunjang modal (peralatan kerja/mesin) dengan AI Scanner.',
+        detail: 'Cari dan foto benda pembantu kerja atau belajar (peralatan kerja, mesin, laptop/komputer).',
         rewardCoins: 40,
         rewardXp: 35
       }
@@ -287,7 +287,7 @@ export const MISSIONS_DATA = [
         id: 'ent-t3',
         text: 'Menyelesaikan Misi Foto: Misi Keahlian & Jenis Produksi',
         type: 'ai-scan',
-        detail: 'Pindai hasil proses produksi barang/jasa dengan AI Scanner.',
+        detail: 'Ambil foto satu benda hasil buatan pabrik atau jasa (pakaian, makanan kemasan, barang elektronik).',
         rewardCoins: 40,
         rewardXp: 35
       }

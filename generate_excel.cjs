@@ -50,7 +50,7 @@ const accounts = [
     no: 5,
     username: 'user4',
     password: 'user4',
-    name: "Jami'atul Afifah",
+    name: "Ambatuskul",
     role: 'Siswa',
     classInfo: 'Kelas 7A - SMP Negeri 1',
     initialCoins: 0,

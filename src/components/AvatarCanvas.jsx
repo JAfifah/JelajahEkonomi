@@ -21,9 +21,18 @@ export default function AvatarCanvas({
   const activeEquipped = { ...(equipped || {}) };
   if (previewItem) {
     activeEquipped[previewItem.category] = previewItem.id;
+    if (previewItem.category === 'bottoms') {
+      activeEquipped.bottom = previewItem.id;
+      activeEquipped.bottoms = previewItem.id;
+    }
+    if (previewItem.category === 'tops') {
+      activeEquipped.top = previewItem.id;
+      activeEquipped.tops = previewItem.id;
+    }
     if (previewItem.category === 'accessories') {
       activeEquipped.accessory = previewItem.id;
       activeEquipped.hairstyle = previewItem.id;
+      activeEquipped.accessories = previewItem.id;
     }
   }
 
@@ -155,7 +164,7 @@ export default function AvatarCanvas({
           <ellipse cx="146" cy="305" rx="5" ry="3" fill="#f43f5e" opacity="0.25" />
 
           {/* --- BOTTOMS (SHORTS / SKIRT / PANTS) --- */}
-          {renderBottoms(activeEquipped.bottom)}
+          {renderBottoms(activeEquipped.bottoms || activeEquipped.bottom)}
 
           {/* --- SHOES --- */}
           {renderShoes(activeEquipped.shoes)}
@@ -196,7 +205,7 @@ export default function AvatarCanvas({
           )}
 
           {/* --- TOPS (WHITE T-SHIRT / UNIFORM / JACKET) --- */}
-          {renderTops(activeEquipped.top, wavingActive)}
+          {renderTops(activeEquipped.tops || activeEquipped.top, wavingActive)}
 
           {/* --- ANIMATED WAVING FOREARM & HAND (Proportional & Natural) --- */}
           {wavingActive && (
@@ -421,23 +430,99 @@ function renderBottoms(bottomId) {
   switch (bottomId) {
     case 'bottom-rok-smp':
       return (
-        <g>
-          {/* Blue Pleated Skirt */}
-          <path d="M 80 205 L 160 205 L 178 275 L 62 275 Z" fill="#1e3a8a" stroke="#172554" strokeWidth="1.5" />
-          <line x1="95" y1="205" x2="88" y2="275" stroke="#172554" strokeWidth="2" />
-          <line x1="120" y1="205" x2="120" y2="275" stroke="#172554" strokeWidth="2" />
-          <line x1="145" y1="205" x2="152" y2="275" stroke="#172554" strokeWidth="2" />
+        <g id="bottom-rok-smp">
+          {/* Blue Pleated Skirt (Panjang Sopan Khas Seragam SMP) */}
+          <path 
+            d="M 76 206 
+               L 164 206 
+               L 184 310 
+               C 184 313 181 315 177 315 
+               L 63 315 
+               C 59 315 56 313 56 310 Z" 
+            fill="#1e3a8a" 
+            stroke="#172554" 
+            strokeWidth="1.5" 
+            strokeLinejoin="round"
+          />
+          {/* Skirt pleat lines (Lipatan Rok Rempel SMP) */}
+          <line x1="82" y1="206" x2="68" y2="315" stroke="#172554" strokeWidth="1.5" />
+          <line x1="98" y1="206" x2="92" y2="315" stroke="#172554" strokeWidth="1.5" />
+          <line x1="114" y1="206" x2="114" y2="315" stroke="#172554" strokeWidth="1.5" />
+          <line x1="126" y1="206" x2="126" y2="315" stroke="#172554" strokeWidth="1.5" />
+          <line x1="142" y1="206" x2="148" y2="315" stroke="#172554" strokeWidth="1.5" />
+          <line x1="158" y1="206" x2="172" y2="315" stroke="#172554" strokeWidth="1.5" />
+          
+          {/* Subtle Highlight & Soft Shadow on Pleats */}
+          <path d="M 114 206 L 126 206 L 126 314 L 114 314 Z" fill="#2563eb" opacity="0.18" />
+          <path d="M 98 206 L 114 206 L 114 314 L 92 314 Z" fill="#172554" opacity="0.12" />
+          
+          {/* Bottom Hem Stitch Line */}
+          <line x1="60" y1="311" x2="180" y2="311" stroke="#2563eb" strokeWidth="1" strokeDasharray="3 2" opacity="0.4" />
+        </g>
+      );
+
+    case 'bottom-celana-smp':
+      return (
+        <g id="bottom-celana-smp">
+          {/* SMP Blue Long Uniform Pants */}
+          <path d="M 78 208 L 118 208 L 114 340 L 78 340 Z" fill="#1e3a8a" stroke="#172554" strokeWidth="1.5" />
+          <path d="M 122 208 L 162 208 L 162 340 L 126 340 Z" fill="#1e3a8a" stroke="#172554" strokeWidth="1.5" />
+          <line x1="96" y1="214" x2="96" y2="336" stroke="#172554" strokeWidth="1.2" opacity="0.6" />
+          <line x1="144" y1="214" x2="144" y2="336" stroke="#172554" strokeWidth="1.2" opacity="0.6" />
         </g>
       );
 
     case 'bottom-celana-cargo':
       return (
-        <g>
-          {/* Dark Grey Cargo Pants */}
-          <path d="M 82 208 L 118 208 L 114 300 L 86 300 Z" fill="#374151" stroke="#1f2937" strokeWidth="1" />
-          <path d="M 122 208 L 158 208 L 154 300 L 126 300 Z" fill="#374151" stroke="#1f2937" strokeWidth="1" />
-          <rect x="84" y="245" width="18" height="24" rx="3" fill="#1f2937" />
-          <rect x="138" y="245" width="18" height="24" rx="3" fill="#1f2937" />
+        <g id="bottom-celana-cargo">
+          {/* Dark Charcoal Tactical Cargo Pants - Full Length matching SMP pants */}
+          {/* Left Leg */}
+          <path 
+            d="M 78 208 L 118 208 L 114 340 L 78 340 Z" 
+            fill="#374151" 
+            stroke="#1f2937" 
+            strokeWidth="1.5" 
+            strokeLinejoin="round" 
+          />
+          {/* Right Leg */}
+          <path 
+            d="M 122 208 L 162 208 L 162 340 L 126 340 Z" 
+            fill="#374151" 
+            stroke="#1f2937" 
+            strokeWidth="1.5" 
+            strokeLinejoin="round" 
+          />
+
+          {/* Waist & Front Fly Seams */}
+          <path d="M 120 208 L 120 234 Q 123 238 120 244" stroke="#1f2937" strokeWidth="1.5" fill="none" />
+          
+          {/* Upper Slash Hand Pockets */}
+          <path d="M 82 210 Q 94 225 80 232" stroke="#1f2937" strokeWidth="1.5" fill="none" />
+          <path d="M 158 210 Q 146 225 160 232" stroke="#1f2937" strokeWidth="1.5" fill="none" />
+
+          {/* Left Side Cargo Pocket with 3D Flap */}
+          <rect x="76" y="254" width="22" height="28" rx="2" fill="#2e3846" stroke="#1f2937" strokeWidth="1.2" />
+          <line x1="87" y1="255" x2="87" y2="281" stroke="#1f2937" strokeWidth="1" strokeDasharray="2 2" opacity="0.6" />
+          {/* Left Flap */}
+          <path d="M 75 250 L 99 250 L 99 257 L 87 261 L 75 257 Z" fill="#1f2937" stroke="#111827" strokeWidth="1" strokeLinejoin="round" />
+          <circle cx="87" cy="256" r="1.5" fill="#94a3b8" />
+
+          {/* Right Side Cargo Pocket with 3D Flap */}
+          <rect x="142" y="254" width="22" height="28" rx="2" fill="#2e3846" stroke="#1f2937" strokeWidth="1.2" />
+          <line x1="153" y1="255" x2="153" y2="281" stroke="#1f2937" strokeWidth="1" strokeDasharray="2 2" opacity="0.6" />
+          {/* Right Flap */}
+          <path d="M 141 250 L 165 250 L 165 257 L 153 261 L 141 257 Z" fill="#1f2937" stroke="#111827" strokeWidth="1" strokeLinejoin="round" />
+          <circle cx="153" cy="256" r="1.5" fill="#94a3b8" />
+
+          {/* Knee Reinforcement Panels (Tactical Seams) */}
+          <path d="M 80 297 L 112 297" stroke="#1f2937" strokeWidth="1.2" strokeDasharray="3 1.5" opacity="0.7" />
+          <path d="M 80 311 L 112 311" stroke="#1f2937" strokeWidth="1.2" strokeDasharray="3 1.5" opacity="0.7" />
+          <path d="M 128 297 L 160 297" stroke="#1f2937" strokeWidth="1.2" strokeDasharray="3 1.5" opacity="0.7" />
+          <path d="M 128 311 L 160 311" stroke="#1f2937" strokeWidth="1.2" strokeDasharray="3 1.5" opacity="0.7" />
+
+          {/* Ankle Cuffs at Bottom */}
+          <rect x="78" y="335" width="36" height="5" rx="1" fill="#1f2937" stroke="#111827" strokeWidth="1" />
+          <rect x="126" y="335" width="36" height="5" rx="1" fill="#1f2937" stroke="#111827" strokeWidth="1" />
         </g>
       );
 
