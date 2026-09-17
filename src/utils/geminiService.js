@@ -68,12 +68,19 @@ export async function test9RouterConnection(apiKey, customUrl = '') {
   const activeKey = (apiKey && apiKey.trim().length > 5) ? apiKey.trim() : DEFAULT_API_KEY;
   const savedUrl = customUrl || (typeof localStorage !== 'undefined' ? localStorage.getItem('kebutuhanquest_9router_url') : '') || '';
   const cleanUrl = savedUrl.trim().replace(/\/+$/, '');
+  const cleanBase = cleanUrl.replace(/\/v1\/?$/, '');
+
+  const isPublicWeb = typeof window !== 'undefined' && window.location.protocol === 'https:' && !['localhost', '127.0.0.1'].includes(window.location.hostname);
 
   const endpoints = [
-    ...(cleanUrl ? [`${cleanUrl}/v1/chat/completions`] : []),
+    ...(cleanBase ? [`${cleanBase}/v1/chat/completions`] : []),
+    'https://rxnfg29.abc-tunnel.us/v1/chat/completions',
     '/v1/chat/completions',
-    'http://192.168.100.70:20128/v1/chat/completions',
-    'http://localhost:20128/v1/chat/completions'
+    // Only probe local LAN IPs if running locally to avoid browser "Access other devices on your local network" prompt
+    ...(!isPublicWeb ? [
+      'http://192.168.100.70:20128/v1/chat/completions',
+      'http://localhost:20128/v1/chat/completions'
+    ] : [])
   ];
 
   for (const endpoint of endpoints) {
@@ -97,7 +104,7 @@ export async function test9RouterConnection(apiKey, customUrl = '') {
       // try next
     }
   }
-  return { success: false, message: 'Tidak dapat tersambung ke server 9Router. Periksa apakah laptop server aktif di jaringan WiFi.' };
+  return { success: false, message: 'Tidak dapat tersambung ke server 9Router. Periksa apakah laptop server aktif di jaringan WiFi atau tunnel masih aktif.' };
 }
 
 async function call9RouterAPI({ imageBase64, mimeType, missionType, apiKey }) {
@@ -110,13 +117,19 @@ async function call9RouterAPI({ imageBase64, mimeType, missionType, apiKey }) {
 
   const savedUrl = typeof localStorage !== 'undefined' ? (localStorage.getItem('kebutuhanquest_9router_url') || '') : '';
   const cleanUrl = savedUrl.trim().replace(/\/+$/, '');
+  const cleanBase = cleanUrl.replace(/\/v1\/?$/, '');
+
+  const isPublicWeb = typeof window !== 'undefined' && window.location.protocol === 'https:' && !['localhost', '127.0.0.1'].includes(window.location.hostname);
 
   const endpoints = [
-    ...(cleanUrl ? [`${cleanUrl}/v1/chat/completions`] : []),
+    ...(cleanBase ? [`${cleanBase}/v1/chat/completions`] : []),
+    'https://rxnfg29.abc-tunnel.us/v1/chat/completions',
     '/v1/chat/completions',
-    'http://192.168.100.70:20128/v1/chat/completions',
-    'http://localhost:20128/v1/chat/completions',
-    'http://127.0.0.1:20128/v1/chat/completions'
+    ...(!isPublicWeb ? [
+      'http://192.168.100.70:20128/v1/chat/completions',
+      'http://localhost:20128/v1/chat/completions',
+      'http://127.0.0.1:20128/v1/chat/completions'
+    ] : [])
   ];
 
   const models = [

@@ -6,7 +6,7 @@ import { test9RouterConnection } from '../utils/geminiService';
 export default function ApiKeyModal({ isOpen, onClose, student, updateStudentData }) {
   const [apiKeyInput, setApiKeyInput] = useState(student.geminiApiKey || '');
   const [serverUrlInput, setServerUrlInput] = useState(() => {
-    return localStorage.getItem('kebutuhanquest_9router_url') || 'http://192.168.100.70:20128';
+    return localStorage.getItem('kebutuhanquest_9router_url') || 'https://rxnfg29.abc-tunnel.us';
   });
   const [testStatus, setTestStatus] = useState(null);
   const [isTesting, setIsTesting] = useState(false);
@@ -109,12 +109,12 @@ export default function ApiKeyModal({ isOpen, onClose, student, updateStudentDat
                 type="text"
                 value={serverUrlInput}
                 onChange={(e) => setServerUrlInput(e.target.value)}
-                placeholder="http://192.168.100.70:20128"
+                placeholder="https://rxnfg29.abc-tunnel.us"
                 className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-indigo-500 font-mono"
               />
             </div>
             <p className="text-[10px] text-slate-500">
-              IP Laptop server saat ini: <code className="font-bold text-indigo-600">http://192.168.100.70:20128</code>
+              URL Tunnel Publik aktif: <code className="font-bold text-indigo-600">https://rxnfg29.abc-tunnel.us</code>
             </p>
           </div>
 
