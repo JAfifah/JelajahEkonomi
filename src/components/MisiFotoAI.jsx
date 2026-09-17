@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { analyzeEconomicImage } from '../utils/geminiService';
+import { analyzeEconomicImage, compressImage } from '../utils/geminiService';
 import { soundFx } from '../utils/audio';
 import { logActivityApi } from '../utils/apiService';
 import confetti from 'canvas-confetti';
@@ -175,20 +175,28 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
     setAnalysisResult(null);
   };
 
-  // Handle File Upload
-  const handleFileChange = (e) => {
+  // Handle File Upload with mobile image compression
+  const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
     soundFx.playClick();
-    setMimeType(file.type || 'image/jpeg');
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      setImagePreview(reader.result);
+    try {
+      const compressed = await compressImage(file, 1024, 0.8);
+      setImagePreview(compressed.dataUrl);
+      setMimeType(compressed.mimeType);
       setAnalysisResult(null);
-    };
-    reader.readAsDataURL(file);
+    } catch (err) {
+      console.warn('Image compression fallback:', err);
+      setMimeType(file.type || 'image/jpeg');
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImagePreview(reader.result);
+        setAnalysisResult(null);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   // Start Camera
@@ -215,13 +223,24 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
     if (!videoRef.current) return;
     soundFx.playClick();
 
-    const canvas = document.createElement('canvas');
-    canvas.width = videoRef.current.videoWidth || 640;
-    canvas.height = videoRef.current.videoHeight || 480;
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+    let width = videoRef.current.videoWidth || 640;
+    let height = videoRef.current.videoHeight || 480;
+    const maxDim = 1024;
+    if (width > height && width > maxDim) {
+      height = Math.round((height * maxDim) / width);
+      width = maxDim;
+    } else if (height > maxDim) {
+      width = Math.round((width * maxDim) / height);
+      height = maxDim;
+    }
 
-    const dataUrl = canvas.toDataURL('image/jpeg');
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(videoRef.current, 0, 0, width, height);
+
+    const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
     setImagePreview(dataUrl);
     setMimeType('image/jpeg');
 

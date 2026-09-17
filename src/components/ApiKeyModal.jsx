@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { Key, X, CheckCircle2, Sparkles, ExternalLink, ShieldCheck, Wifi, Loader2, AlertCircle } from 'lucide-react';
 import { soundFx } from '../utils/audio';
-import { test9RouterConnection } from '../utils/geminiService';
+import { test9RouterConnection, DEFAULT_API_KEY, DEFAULT_TUNNEL_URL } from '../utils/geminiService';
 
 export default function ApiKeyModal({ isOpen, onClose, student, updateStudentData }) {
-  const [apiKeyInput, setApiKeyInput] = useState(student.geminiApiKey || '');
+  const [apiKeyInput, setApiKeyInput] = useState(student.geminiApiKey || DEFAULT_API_KEY);
   const [serverUrlInput, setServerUrlInput] = useState(() => {
-    return localStorage.getItem('kebutuhanquest_9router_url') || 'https://rxnfg29.abc-tunnel.us';
+    const saved = localStorage.getItem('kebutuhanquest_9router_url');
+    // Sanitize if previously saved local IP
+    if (!saved || saved.includes('192.168.') || saved.includes('localhost')) {
+      return DEFAULT_TUNNEL_URL;
+    }
+    return saved;
   });
   const [testStatus, setTestStatus] = useState(null);
   const [isTesting, setIsTesting] = useState(false);
@@ -43,7 +48,7 @@ export default function ApiKeyModal({ isOpen, onClose, student, updateStudentDat
 
   const handleRemoveKey = () => {
     soundFx.playClick();
-    setApiKeyInput('');
+    setApiKeyInput(DEFAULT_API_KEY);
     updateStudentData({
       ...student,
       geminiApiKey: ''
@@ -70,30 +75,24 @@ export default function ApiKeyModal({ isOpen, onClose, student, updateStudentDat
 
         {/* Modal Header */}
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-600 border border-amber-200 flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 border border-emerald-200 flex items-center justify-center shrink-0">
             <Key className="w-5 h-5" />
           </div>
           <div>
             <h3 className="text-lg font-black text-slate-900">Pengaturan 9Router Gateway</h3>
-            <p className="text-[11px] text-slate-500">Integrasi AI Router untuk Misi Foto AI</p>
+            <p className="text-[11px] text-slate-500">Integrasi AI Router & Tunnel Publik</p>
           </div>
         </div>
 
         {/* Status Indicator */}
-        <div className={`p-3 rounded-xl border text-xs flex items-center gap-2.5 ${
-          student.geminiApiKey 
-            ? 'bg-emerald-50 border-emerald-200 text-emerald-800' 
-            : 'bg-amber-50 border-amber-200 text-amber-800'
-        }`}>
-          <ShieldCheck className="w-5 h-5 shrink-0" />
+        <div className="p-3 rounded-xl border text-xs flex items-center gap-2.5 bg-emerald-50 border-emerald-200 text-emerald-800">
+          <ShieldCheck className="w-5 h-5 shrink-0 text-emerald-600" />
           <div>
             <p className="font-bold text-xs">
-              Status: {student.geminiApiKey ? 'Terhubung dengan 9Router API' : 'Mode Smart Vision Engine (Aktif Tambahan)'}
+              Status: Terhubung dengan 9Router AI Tunnel (Aktif)
             </p>
             <p className="text-[10px] opacity-90 mt-0.5">
-              {student.geminiApiKey
-                ? 'Semua foto akan dianalisis melalui 9Router API (Server Laptop).'
-                : 'Aplikasi siap digunakan 100%! Key default 9Router telah diaktifkan.'}
+              API Key 9Router bawaan aktif. Foto misi akan dianalisis melalui AI Vision.
             </p>
           </div>
         </div>

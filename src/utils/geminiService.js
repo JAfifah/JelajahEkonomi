@@ -3,7 +3,47 @@
  * With Strict Object Verification & Smart Vision Inspection
  */
 
-const DEFAULT_API_KEY = 'sk-04ded80af82184d6-xji11m-80ccc120';
+export const DEFAULT_API_KEY = 'sk-04ded80af82184d6-xji11m-80ccc120';
+export const DEFAULT_TUNNEL_URL = 'https://rxnfg29.abc-tunnel.us';
+
+/**
+ * Client-side image compressor to prevent payload-size issues on mobile devices
+ */
+export function compressImage(file, maxDimension = 1024, quality = 0.8) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        let width = img.width;
+        let height = img.height;
+        if (width > height) {
+          if (width > maxDimension) {
+            height = Math.round((height * maxDimension) / width);
+            width = maxDimension;
+          }
+        } else {
+          if (height > maxDimension) {
+            width = Math.round((width * maxDimension) / height);
+            height = maxDimension;
+          }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve({
+          dataUrl: canvas.toDataURL('image/jpeg', quality),
+          mimeType: 'image/jpeg'
+        });
+      };
+      img.onerror = () => resolve({ dataUrl: e.target.result, mimeType: file.type || 'image/jpeg' });
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
 
 export async function analyzeEconomicImage({ imageBase64, mimeType, missionType, apiKey }) {
   const activeKey = (apiKey && apiKey.trim().length > 10) ? apiKey.trim() : DEFAULT_API_KEY;
@@ -64,24 +104,36 @@ OUTPUTKAN HANYA JSON MURNI TANPA MARKDOWN (TIDAK BOLEH ADA \`\`\`json ATAU TEKS 
 `;
 }
 
-export async function test9RouterConnection(apiKey, customUrl = '') {
-  const activeKey = (apiKey && apiKey.trim().length > 5) ? apiKey.trim() : DEFAULT_API_KEY;
-  const savedUrl = customUrl || (typeof localStorage !== 'undefined' ? localStorage.getItem('kebutuhanquest_9router_url') : '') || '';
-  const cleanUrl = savedUrl.trim().replace(/\/+$/, '');
+function getSanitizedEndpoints(customUrl) {
+  const isPublicWeb = typeof window !== 'undefined' && window.location.protocol === 'https:' && !['localhost', '127.0.0.1'].includes(window.location.hostname);
+  let savedUrl = customUrl || (typeof localStorage !== 'undefined' ? localStorage.getItem('kebutuhanquest_9router_url') : '') || '';
+
+  // If on public HTTPS and savedUrl is a local LAN address or invalid, reset to public tunnel
+  if (isPublicWeb && (!savedUrl || savedUrl.includes('192.168.') || savedUrl.includes('localhost') || savedUrl.includes('127.0.0.1') || savedUrl.startsWith('http:'))) {
+    savedUrl = DEFAULT_TUNNEL_URL;
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('kebutuhanquest_9router_url', DEFAULT_TUNNEL_URL);
+    }
+  }
+
+  const cleanUrl = (savedUrl || DEFAULT_TUNNEL_URL).trim().replace(/\/+$/, '');
   const cleanBase = cleanUrl.replace(/\/v1\/?$/, '');
 
-  const isPublicWeb = typeof window !== 'undefined' && window.location.protocol === 'https:' && !['localhost', '127.0.0.1'].includes(window.location.hostname);
-
-  const endpoints = [
+  return [
     ...(cleanBase ? [`${cleanBase}/v1/chat/completions`] : []),
-    'https://rxnfg29.abc-tunnel.us/v1/chat/completions',
+    `${DEFAULT_TUNNEL_URL}/v1/chat/completions`,
     '/v1/chat/completions',
-    // Only probe local LAN IPs if running locally to avoid browser "Access other devices on your local network" prompt
     ...(!isPublicWeb ? [
       'http://192.168.100.70:20128/v1/chat/completions',
-      'http://localhost:20128/v1/chat/completions'
+      'http://localhost:20128/v1/chat/completions',
+      'http://127.0.0.1:20128/v1/chat/completions'
     ] : [])
   ];
+}
+
+export async function test9RouterConnection(apiKey, customUrl = '') {
+  const activeKey = (apiKey && apiKey.trim().length > 5) ? apiKey.trim() : DEFAULT_API_KEY;
+  const endpoints = getSanitizedEndpoints(customUrl);
 
   for (const endpoint of endpoints) {
     try {
@@ -104,7 +156,7 @@ export async function test9RouterConnection(apiKey, customUrl = '') {
       // try next
     }
   }
-  return { success: false, message: 'Tidak dapat tersambung ke server 9Router. Periksa apakah laptop server aktif di jaringan WiFi atau tunnel masih aktif.' };
+  return { success: false, message: 'Tidak dapat tersambung ke server 9Router. Pastikan tunnel aktif di laptop server.' };
 }
 
 async function call9RouterAPI({ imageBase64, mimeType, missionType, apiKey }) {
@@ -114,23 +166,7 @@ async function call9RouterAPI({ imageBase64, mimeType, missionType, apiKey }) {
     : `data:${mimeType || 'image/jpeg'};base64,${cleanBase64}`;
 
   const promptText = getPromptText(missionType);
-
-  const savedUrl = typeof localStorage !== 'undefined' ? (localStorage.getItem('kebutuhanquest_9router_url') || '') : '';
-  const cleanUrl = savedUrl.trim().replace(/\/+$/, '');
-  const cleanBase = cleanUrl.replace(/\/v1\/?$/, '');
-
-  const isPublicWeb = typeof window !== 'undefined' && window.location.protocol === 'https:' && !['localhost', '127.0.0.1'].includes(window.location.hostname);
-
-  const endpoints = [
-    ...(cleanBase ? [`${cleanBase}/v1/chat/completions`] : []),
-    'https://rxnfg29.abc-tunnel.us/v1/chat/completions',
-    '/v1/chat/completions',
-    ...(!isPublicWeb ? [
-      'http://192.168.100.70:20128/v1/chat/completions',
-      'http://localhost:20128/v1/chat/completions',
-      'http://127.0.0.1:20128/v1/chat/completions'
-    ] : [])
-  ];
+  const endpoints = getSanitizedEndpoints();
 
   const models = [
     'ag/gemini-3-flash',
