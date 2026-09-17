@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import AvatarCanvas from './AvatarCanvas';
 import { fetchLeaderboardApi, fetchAdminActivitiesApi, resetAllStudentsApi } from '../utils/apiService';
+import { getLocalLeaderboard, getLocalActivities, resetAllLocalStudents } from '../utils/storage';
 import { soundFx } from '../utils/audio';
 
 export default function LeaderboardAdmin({ currentUser }) {
@@ -27,50 +28,122 @@ export default function LeaderboardAdmin({ currentUser }) {
   const [sortBy, setSortBy] = useState('points'); // 'points', 'level', 'coins', 'quizzes'
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
+  const [dataSource, setDataSource] = useState('checking'); // 'mysql' | 'local'
+  const [lastSyncTime, setLastSyncTime] = useState(null);
   const [isResetting, setIsResetting] = useState(false);
   const [showResetModal, setShowResetModal] = useState(false);
   const [data, setData] = useState({ leaderboard: [], summary: {} });
   const [activities, setActivities] = useState([]);
   const [activityFilter, setActivityFilter] = useState('all');
 
-  const loadLeaderboardData = async () => {
-    setLoading(true);
+  const loadLeaderboardData = async (options = { silent: false }) => {
+    if (!options.silent) {
+      setLoading(true);
+    }
     try {
-      const res = await fetchLeaderboardApi(sortBy);
-      if (res && res.success) {
-        setData(res);
+      let loadedFromApi = false;
+      try {
+        const res = await fetchLeaderboardApi(sortBy);
+        if (res && res.success && Array.isArray(res.leaderboard) && res.leaderboard.length > 0) {
+          setData(res);
+          setDataSource('mysql');
+          loadedFromApi = true;
+        }
+      } catch (e) {
+        // API offline or unreachable
       }
-      const acts = await fetchAdminActivitiesApi(100);
-      setActivities(acts);
+
+      // Fallback ke penyimpanan lokal untuk siswa user1-4 jika server MySQL mati atau kosong
+      if (!loadedFromApi) {
+        const localData = getLocalLeaderboard(sortBy);
+        setData(localData);
+        setDataSource('local');
+      }
+
+      // Log Aktivitas
+      let loadedActs = false;
+      try {
+        const acts = await fetchAdminActivitiesApi(100);
+        if (acts && acts.length > 0) {
+          setActivities(acts);
+          loadedActs = true;
+        }
+      } catch (e) {
+        // ignore
+      }
+
+      if (!loadedActs) {
+        setActivities(getLocalActivities(100));
+      }
+
+      setLastSyncTime(new Date());
     } catch (err) {
-      console.error('Error loading admin leaderboard:', err);
+      console.error('Error loading admin leaderboard, falling back to local:', err);
+      const localData = getLocalLeaderboard(sortBy);
+      setData(localData);
+      setDataSource('local');
+      setActivities(getLocalActivities(100));
+      setLastSyncTime(new Date());
     } finally {
-      setLoading(false);
+      if (!options.silent) {
+        setLoading(false);
+      }
     }
   };
 
   useEffect(() => {
-    loadLeaderboardData();
+    // Muat data awal
+    loadLeaderboardData({ silent: false });
+
+    // 1. Realtime Polling Timer (setiap 2.5 detik tanpa flicker spinner)
+    const intervalTimer = setInterval(() => {
+      loadLeaderboardData({ silent: true });
+    }, 2500);
+
+    // 2. Realtime sinkronisasi antar tab saat ada localStorage berubah
+    const handleStorageChange = (e) => {
+      if (!e || !e.key || e.key.includes('kebutuhanquest')) {
+        loadLeaderboardData({ silent: true });
+      }
+    };
+
+    // 3. Realtime event saat siswa menyelesaikan aksi di tab yang sama
+    const handleLocalDataUpdate = () => {
+      loadLeaderboardData({ silent: true });
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('jelajah_data_updated', handleLocalDataUpdate);
+
+    return () => {
+      clearInterval(intervalTimer);
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('jelajah_data_updated', handleLocalDataUpdate);
+    };
   }, [sortBy]);
 
   const handleRefresh = () => {
     soundFx.playClick();
-    loadLeaderboardData();
+    loadLeaderboardData({ silent: false });
   };
 
   const handleResetAllStudents = async () => {
     setIsResetting(true);
     soundFx.playClick();
     try {
-      const res = await resetAllStudentsApi();
-      if (res && res.success) {
-        soundFx.playCorrect();
-        await loadLeaderboardData();
-        setShowResetModal(false);
-      } else {
-        soundFx.playWrong();
-        alert('Gagal mereset: ' + (res?.message || 'Server error'));
+      // 1. Coba reset database MySQL jika terhubung
+      try {
+        await resetAllStudentsApi();
+      } catch (e) {
+        console.warn('Reset MySQL dilewati (server offline):', e);
       }
+
+      // 2. Reset penyimpanan lokal untuk user1-4
+      resetAllLocalStudents();
+
+      soundFx.playCorrect();
+      await loadLeaderboardData({ silent: false });
+      setShowResetModal(false);
     } catch (err) {
       console.error('Reset students error:', err);
       soundFx.playWrong();
@@ -109,18 +182,30 @@ export default function LeaderboardAdmin({ currentUser }) {
         <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-sky-400/10 rounded-full blur-xl pointer-events-none" />
 
         <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <div className="space-y-1">
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/10 backdrop-blur-md text-sky-200 text-[11px] font-bold border border-white/15">
+          <div className="space-y-1.5">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-sky-200 text-[11px] font-bold border border-white/15">
               <Crown className="w-3.5 h-3.5 text-amber-300" />
               <span>Panel Pemantauan Guru / Admin</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-1" />
+              <span className="inline-flex items-center gap-1 ml-1 px-1.5 py-0.2 rounded-full bg-emerald-400/20 text-emerald-300 text-[10px]">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span>Realtime Aktif</span>
+              </span>
             </div>
             
-            <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white flex items-center gap-2.5">
+            <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white flex items-center gap-2.5 flex-wrap">
               <span>Papan Peringkat Siswa</span>
-              <span className="text-[11px] px-2.5 py-0.5 rounded-lg bg-sky-500/30 text-sky-200 border border-sky-400/40 font-semibold">
-                Live Data
+              <span className={`text-[11px] px-2.5 py-0.5 rounded-lg border font-bold ${
+                dataSource === 'mysql'
+                  ? 'bg-emerald-500/20 text-emerald-200 border-emerald-400/40'
+                  : 'bg-amber-500/20 text-amber-200 border-amber-400/40'
+              }`}>
+                {dataSource === 'mysql' ? '⚡ Database MySQL' : '💾 Penyimpanan Siswa (user1-4)'}
               </span>
+              {lastSyncTime && (
+                <span className="text-[10px] text-sky-200/70 font-normal">
+                  (Sinkron {lastSyncTime.toLocaleTimeString('id-ID')})
+                </span>
+              )}
             </h1>
           </div>
 
@@ -197,6 +282,18 @@ export default function LeaderboardAdmin({ currentUser }) {
           </div>
         </div>
       </div>
+
+      {/* Mode notice banner */}
+      {dataSource === 'local' && (
+        <div className="bg-sky-50/80 border border-sky-200/80 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between gap-3 text-xs text-sky-950 shadow-sm">
+          <div className="flex items-start sm:items-center gap-2.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-amber-400 shrink-0 mt-1 sm:mt-0 animate-pulse" />
+            <div className="leading-relaxed">
+              <strong className="text-sky-900">Mode Realtime Lokal Aktif:</strong> Memantau progres <strong className="text-slate-900">user1 s/d user4</strong> secara otomatis dari peramban ini. <em>(Untuk sinkronisasi database multi-perangkat via MySQL, pastikan backend berjalan: <code className="bg-white px-1.5 py-0.5 rounded border border-sky-300 font-mono text-[11px] font-bold text-sky-800">npm run server</code>).</em>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Main Switcher: Leaderboard vs Activity Logs */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-200 pb-4">
@@ -535,10 +632,10 @@ export default function LeaderboardAdmin({ currentUser }) {
             {/* Footer Summary */}
             <div className="p-4 bg-slate-50 border-t border-slate-200 text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2">
               <p>
-                Menampilkan <strong>{filteredLeaderboard.length}</strong> siswa dari database MySQL.
+                Menampilkan <strong>{filteredLeaderboard.length}</strong> siswa dari {dataSource === 'mysql' ? 'database MySQL (Live Sync)' : 'penyimpanan data siswa (user1 s/d user4)'}.
               </p>
               <p className="text-[11px] text-slate-400">
-                Pembaruan terinkrementasi setiap kali siswa menyelesaikan kuis atau misi foto AI.
+                Pembaruan realtime aktif (polling otomatis & sinkronisasi instan saat ada aktivitas kuis/misi).
               </p>
             </div>
           </div>

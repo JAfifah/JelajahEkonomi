@@ -51,6 +51,29 @@ export async function saveStudentDataApi(data, username) {
 
 export async function logActivityApi({ username, studentName, activityType, title, xpEarned, coinsEarned, pointsEarned, details }) {
   try {
+    const raw = localStorage.getItem('kebutuhanquest_admin_activities_v1');
+    const list = raw ? JSON.parse(raw) : [];
+    const item = {
+      id: 'act-' + Date.now() + '-' + Math.random().toString(36).substring(2, 6),
+      username,
+      student_name: studentName,
+      activity_type: activityType,
+      title,
+      xp_earned: xpEarned || 0,
+      coins_earned: coinsEarned || 0,
+      points_earned: pointsEarned || xpEarned || 0,
+      details,
+      created_at: new Date().toISOString()
+    };
+    localStorage.setItem('kebutuhanquest_admin_activities_v1', JSON.stringify([item, ...list].slice(0, 100)));
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('jelajah_data_updated', { detail: { type: 'activity', activity: item } }));
+    }
+  } catch (e) {
+    // ignore
+  }
+
+  try {
     await fetch(`${BASE_URL}/api/activities/log`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

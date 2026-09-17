@@ -1,7 +1,9 @@
-import { saveStudentDataApi, logActivityApi } from './apiService';
+import { saveStudentDataApi, logActivityApi } from './apiService.js';
+import { DEFAULT_ACCOUNTS } from '../data/accountsData.js';
 
 const STORAGE_KEY = 'kebutuhanquest_student_data_v4';
 const AUTH_USER_KEY = 'kebutuhanquest_auth_user_v1';
+const LOCAL_ACTIVITIES_KEY = 'kebutuhanquest_admin_activities_v1';
 
 export function getCurrentAuthUser() {
   try {
@@ -223,6 +225,9 @@ export function saveStudentData(data, targetUser = null) {
   try {
     const key = getUserStorageKey(targetUser);
     localStorage.setItem(key, JSON.stringify(data));
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('jelajah_data_updated', { detail: { targetUser, data } }));
+    }
   } catch (e) {
     console.error('Failed to save student data locally:', e);
   }
@@ -240,6 +245,126 @@ export function resetStudentData(targetUser = null) {
   const initial = buildInitialDataForUser(targetUser || getCurrentAuthUser());
   saveStudentData(initial, targetUser);
   return initial;
+}
+
+export function getLocalActivities(limit = 50) {
+  try {
+    const raw = localStorage.getItem(LOCAL_ACTIVITIES_KEY);
+    if (!raw) return [];
+    const list = JSON.parse(raw);
+    return Array.isArray(list) ? list.slice(0, limit) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+export function saveLocalActivity(activity) {
+  try {
+    const existing = getLocalActivities(100);
+    const newEntry = {
+      id: 'act-' + Date.now() + '-' + Math.random().toString(36).substring(2, 6),
+      created_at: new Date().toISOString(),
+      ...activity
+    };
+    const updated = [newEntry, ...existing].slice(0, 100);
+    localStorage.setItem(LOCAL_ACTIVITIES_KEY, JSON.stringify(updated));
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('jelajah_data_updated', { detail: { type: 'activity', activity: newEntry } }));
+    }
+  } catch (e) {
+    console.warn('Failed to save local activity:', e);
+  }
+}
+
+export function resetAllLocalStudents() {
+  const studentAccounts = DEFAULT_ACCOUNTS.filter(a => a.role === 'siswa');
+  studentAccounts.forEach(account => {
+    resetStudentData(account);
+  });
+  try {
+    localStorage.removeItem(LOCAL_ACTIVITIES_KEY);
+  } catch (e) {
+    // ignore
+  }
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new Event('storage'));
+    window.dispatchEvent(new CustomEvent('jelajah_data_updated', { detail: { type: 'reset' } }));
+  }
+}
+
+export function getLocalLeaderboard(sortBy = 'points') {
+  const studentAccounts = DEFAULT_ACCOUNTS.filter(a => a.role === 'siswa');
+
+  const rawList = studentAccounts.map(account => {
+    const studentData = loadStudentData(account);
+    return {
+      id: account.id || studentData.id || `acc-${account.username}`,
+      username: account.username,
+      name: studentData.name || account.name,
+      role: 'siswa',
+      schoolClass: studentData.schoolClass || account.schoolClass || '',
+      level: Number(studentData.level) || 1,
+      xp: Number(studentData.xp) || 0,
+      xpToNextLevel: Number(studentData.xpToNextLevel) || 1000,
+      coins: Number(studentData.coins) || 0,
+      points: Number(studentData.points) || 0,
+      dailyStreak: Number(studentData.dailyStreak) || 1,
+      lastLogin: studentData.lastLogin || new Date().toISOString(),
+      stats: {
+        quizzesCompleted: Number(studentData.stats?.quizzesCompleted) || 0,
+        quizScoreSum: Number(studentData.stats?.quizScoreSum) || 0,
+        aiScansVerified: Number(studentData.stats?.aiScansVerified) || 0,
+        itemsBought: Number(studentData.stats?.itemsBought) || 0
+      },
+      equipped: studentData.equipped || account.avatar || {},
+      inventory: studentData.inventory || [],
+      badges: studentData.badges || [],
+      completedTasks: studentData.completedTasks || []
+    };
+  });
+
+  // Sort according to criteria
+  rawList.sort((a, b) => {
+    if (sortBy === 'level') {
+      return (b.level - a.level) || (b.points - a.points) || (b.xp - a.xp);
+    }
+    if (sortBy === 'coins') {
+      return (b.coins - a.coins) || (b.points - a.points);
+    }
+    if (sortBy === 'quizzes') {
+      return ((b.stats?.quizzesCompleted || 0) - (a.stats?.quizzesCompleted || 0)) || (b.points - a.points);
+    }
+    // default 'points'
+    return (b.points - a.points) || (b.level - a.level) || (b.xp - a.xp);
+  });
+
+  const leaderboard = rawList.map((st, idx) => ({
+    ...st,
+    rank: idx + 1
+  }));
+
+  const totalStudents = leaderboard.length;
+  const maxPoints = totalStudents > 0 ? Math.max(...leaderboard.map(s => s.points)) : 0;
+  const maxLevel = totalStudents > 0 ? Math.max(...leaderboard.map(s => s.level)) : 1;
+  const totalCoins = leaderboard.reduce((sum, s) => sum + (s.coins || 0), 0);
+  const totalQuizzes = leaderboard.reduce((sum, s) => sum + (s.stats?.quizzesCompleted || 0), 0);
+  const totalAiScans = leaderboard.reduce((sum, s) => sum + (s.stats?.aiScansVerified || 0), 0);
+  const avgLevel = totalStudents > 0 ? Number((leaderboard.reduce((sum, s) => sum + (s.level || 1), 0) / totalStudents).toFixed(1)) : 1;
+
+  return {
+    success: true,
+    isLocal: true,
+    summary: {
+      totalStudents,
+      maxPoints,
+      maxLevel,
+      totalCoins,
+      avgLevel,
+      totalQuizzes,
+      totalAiScans
+    },
+    leaderboard
+  };
 }
 
 /**
