@@ -1,6 +1,8 @@
 import React from 'react';
 import RambutAnakLakiLaki from './RambutAnakLakiLaki';
 import RambutPerempuanPendek from './RambutPerempuanPendek';
+import RambutPerempuanPanjang from './RambutPerempuanPanjang';
+import RambutMohawk from './RambutMohawk';
 
 /**
  * High-Precision Vector SVG Avatar Component (.jsx)
@@ -126,6 +128,9 @@ export default function AvatarCanvas({
           
           {/* --- BACK ACCESSORIES (e.g. Backpack / Cape) --- */}
           {renderBackAccessory(activeEquipped.accessory, activeEquipped.top)}
+
+          {/* --- BACK HAIR (e.g. for flowing long hair behind torso) --- */}
+          {renderBackHair(activeEquipped.accessories || activeEquipped.accessory || activeEquipped.hairstyle, hairColor)}
 
           {/* --- LEGS & BARE FEET BASE --- */}
           {/* Left Leg & Foot */}
@@ -306,10 +311,11 @@ export default function AvatarCanvas({
         </g>
       </svg>
 
-      {/* Preview Tag */}
+      {/* Preview Tag (Rapi, Simetris di Tengah, & Tidak Miring) */}
       {previewItem && (
-        <span className="absolute -top-4 right-0 bg-amber-500 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow animate-pulse z-20 whitespace-nowrap">
-          PREVIEW: {previewItem.name}
+        <span className="absolute -top-7 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-xs font-bold px-3.5 py-1 rounded-full shadow-md z-20 whitespace-nowrap flex items-center gap-1.5 border border-amber-300">
+          <span className="w-2 h-2 rounded-full bg-white inline-block" />
+          Preview: {previewItem.name}
         </span>
       )}
     </div>
@@ -465,112 +471,184 @@ function renderShoes(shoesId) {
   switch (shoesId) {
     case 'shoes-hitam-sekolah':
       return (
-        <g>
-          {/* Black School Shoes pointing outward */}
+        <g id="shoes-hitam-sekolah">
+          {/* Balanced Black School Loafers */}
           <path
-            d="M 76 334 C 74 350 58 355 46 359 C 40 362 40 374 46 374 L 108 374 C 112 374 112 354 110 334 Q 93 342 76 334 Z"
-            fill="#111827"
-            stroke="#030712"
+            d="M 80 339 C 78 350 64 356 49 360 C 43 362 43 369 47 369 L 106 369 C 109 369 109 354 107 339 Q 93 345 80 339 Z"
+            fill="#1e293b"
+            stroke="#0f172a"
             strokeWidth="1.2"
+            strokeLinejoin="round"
           />
           <path
-            d="M 130 334 C 128 354 128 374 132 374 L 194 374 C 200 374 200 362 194 359 C 182 355 166 350 164 334 Q 147 342 130 334 Z"
-            fill="#111827"
-            stroke="#030712"
+            d="M 133 339 C 131 354 131 369 134 369 L 193 369 C 197 369 197 362 191 360 C 176 356 162 350 160 339 Q 147 345 133 339 Z"
+            fill="#1e293b"
+            stroke="#0f172a"
             strokeWidth="1.2"
+            strokeLinejoin="round"
           />
+          {/* Leather Shine Accent */}
+          <path d="M 58 363 Q 75 357 92 363" stroke="#475569" strokeWidth="1.2" fill="none" opacity="0.6" />
+          <path d="M 148 363 Q 165 357 182 363" stroke="#475569" strokeWidth="1.2" fill="none" opacity="0.6" />
           {/* Soles */}
-          <rect x="42" y="370" width="68" height="5" rx="2" fill="#374151" />
-          <rect x="130" y="370" width="68" height="5" rx="2" fill="#374151" />
+          <rect x="43" y="367.5" width="65" height="5" rx="2" fill="#334155" />
+          <rect x="132" y="367.5" width="65" height="5" rx="2" fill="#334155" />
         </g>
       );
 
     case 'shoes-boots-lapangan':
       return (
-        <g>
-          {/* Brown Field Boots pointing outward with higher collar */}
+        <g id="shoes-boots-lapangan">
+          {/* Balanced Brown Field Boots */}
           <path
-            d="M 76 326 C 74 346 58 352 44 357 C 38 360 38 376 44 376 L 108 376 C 112 376 112 350 110 326 Q 93 336 76 326 Z"
+            d="M 79 333 C 77 348 63 354 47 358 C 41 361 41 369 46 369 L 107 369 C 110 369 110 352 108 333 Q 93 340 79 333 Z"
             fill="#78350f"
             stroke="#451a03"
             strokeWidth="1.2"
+            strokeLinejoin="round"
           />
           <path
-            d="M 130 326 C 128 350 128 376 132 376 L 196 376 C 202 376 202 360 196 357 C 182 352 166 346 164 326 Q 147 336 130 326 Z"
+            d="M 132 333 C 130 352 130 369 133 369 L 194 369 C 199 369 199 361 193 358 C 177 354 163 348 161 333 Q 147 340 132 333 Z"
             fill="#78350f"
             stroke="#451a03"
             strokeWidth="1.2"
+            strokeLinejoin="round"
           />
-          {/* Heavy Soles */}
-          <rect x="40" y="370" width="72" height="7" rx="2" fill="#1c1917" />
-          <rect x="128" y="370" width="72" height="7" rx="2" fill="#1c1917" />
+          {/* Boot Straps */}
+          <line x1="80" y1="343" x2="106" y2="343" stroke="#b45309" strokeWidth="2.2" strokeLinecap="round" />
+          <line x1="134" y1="343" x2="160" y2="343" stroke="#b45309" strokeWidth="2.2" strokeLinecap="round" />
+          {/* Heavy Lug Soles */}
+          <rect x="42" y="368" width="67" height="5.5" rx="2" fill="#1c1917" />
+          <rect x="131" y="368" width="67" height="5.5" rx="2" fill="#1c1917" />
         </g>
       );
 
     case 'shoes-sepatu-terbang':
       return (
-        <g>
-          {/* Sky Blue Flying Sneakers pointing outward */}
+        <g id="shoes-sepatu-terbang">
+          {/* Balanced Sky Blue Flying Sneakers */}
           <path
-            d="M 76 334 C 74 350 58 355 46 359 C 40 362 40 374 46 374 L 108 374 C 112 374 112 354 110 334 Q 93 342 76 334 Z"
+            d="M 80 339 C 78 350 64 356 49 360 C 43 362 43 369 47 369 L 106 369 C 109 369 109 354 107 339 Q 93 345 80 339 Z"
             fill="#0284c7"
             stroke="#0369a1"
             strokeWidth="1.2"
+            strokeLinejoin="round"
           />
           <path
-            d="M 130 334 C 128 354 128 374 132 374 L 194 374 C 200 374 200 362 194 359 C 182 355 166 350 164 334 Q 147 342 130 334 Z"
+            d="M 133 339 C 131 354 131 369 134 369 L 193 369 C 197 369 197 362 191 360 C 176 356 162 350 160 339 Q 147 345 133 339 Z"
             fill="#0284c7"
             stroke="#0369a1"
             strokeWidth="1.2"
+            strokeLinejoin="round"
           />
-          {/* Glowing Wing accent */}
-          <path d="M 78 348 L 60 344 L 70 356 Z" fill="#bae6fd" />
-          <path d="M 162 348 L 180 344 L 170 356 Z" fill="#bae6fd" />
+          {/* Yellow Lightning Bolt Accents (Petir Kuning Kilat Lebih Besar & Tegas) */}
+          {/* Left Lightning Bolt */}
+          <path
+            d="M 82 344 L 66 353 L 74 353 L 53 364 L 69 355 L 61 355 Z"
+            fill="#facc15"
+            stroke="#b45309"
+            strokeWidth="1.2"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M 79 346 L 68 352 L 73 352 L 58 361 L 68 356 L 63 356 Z"
+            fill="#fef08a"
+          />
+
+          {/* Right Lightning Bolt */}
+          <path
+            d="M 158 344 L 174 353 L 166 353 L 187 364 L 171 355 L 179 355 Z"
+            fill="#facc15"
+            stroke="#b45309"
+            strokeWidth="1.2"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M 161 346 L 172 352 L 167 352 L 182 361 L 172 356 L 177 356 Z"
+            fill="#fef08a"
+          />
           {/* Soles */}
-          <rect x="42" y="370" width="68" height="5" rx="2" fill="#38bdf8" />
-          <rect x="130" y="370" width="68" height="5" rx="2" fill="#38bdf8" />
+          <rect x="43" y="367.5" width="65" height="5" rx="2" fill="#38bdf8" />
+          <rect x="132" y="367.5" width="65" height="5" rx="2" fill="#38bdf8" />
         </g>
       );
 
     case 'shoes-sneakers-putih':
     default:
       return (
-        <g>
-          {/* Blue & White Canvas Sneakers with seamless 3D collar opening */}
+        <g id="shoes-sneakers-putih">
+          {/* Left Sneaker (Balanced Clean White Sneaker) */}
           {/* Left Shoe Upper Body */}
           <path
-            d="M 76 334 C 74 350 58 355 46 359 C 40 362 40 374 46 374 L 108 374 C 112 374 112 354 110 334 Q 93 342 76 334 Z"
-            fill="#3b82f6"
-            stroke="#1d4ed8"
+            d="M 80 339 C 78 350 64 356 49 360 C 43 362 43 369 47 369 L 106 369 C 109 369 109 354 107 339 Q 93 345 80 339 Z"
+            fill="#ffffff"
+            stroke="#94a3b8"
             strokeWidth="1.2"
             strokeLinejoin="round"
           />
-          {/* White Rubber Toe Cap on left tip */}
-          <path d="M 46 359 C 40 362 40 374 46 374 L 60 374 C 60 364 53 360 46 359 Z" fill="#ffffff" stroke="#cbd5e1" strokeWidth="1" />
-          {/* White Rubber Sole */}
-          <rect x="40" y="370" width="70" height="6" rx="3" fill="#ffffff" stroke="#cbd5e1" strokeWidth="1" />
-          {/* Yellow Laces on Instep */}
-          <line x1="64" y1="352" x2="78" y2="344" stroke="#fef08a" strokeWidth="3" strokeLinecap="round" />
-          <line x1="68" y1="358" x2="82" y2="350" stroke="#fef08a" strokeWidth="3" strokeLinecap="round" />
+          {/* Left Subtle Shading */}
+          <path
+            d="M 80 339 C 78 350 64 356 49 360 L 53 369 L 106 369 C 109 369 109 354 107 339 Z"
+            fill="#f8fafc"
+            opacity="0.8"
+          />
+          {/* Left Toe Bumper */}
+          <path
+            d="M 49 360 C 43 362 43 369 47 369 L 61 369 C 61 362 54 360 49 360 Z"
+            fill="#f1f5f9"
+            stroke="#cbd5e1"
+            strokeWidth="1"
+          />
+          {/* Left Rubber Sole */}
+          <rect x="43" y="367.5" width="65" height="5" rx="2.5" fill="#ffffff" stroke="#94a3b8" strokeWidth="1.1" />
+          <line x1="45" y1="370" x2="106" y2="370" stroke="#cbd5e1" strokeWidth="0.9" />
+          {/* Laces */}
+          <line x1="66" y1="353" x2="78" y2="346" stroke="#cbd5e1" strokeWidth="2.5" strokeLinecap="round" />
+          <line x1="66" y1="353" x2="78" y2="346" stroke="#ffffff" strokeWidth="1.6" strokeLinecap="round" />
+          <line x1="70" y1="359" x2="82" y2="352" stroke="#cbd5e1" strokeWidth="2.5" strokeLinecap="round" />
+          <line x1="70" y1="359" x2="82" y2="352" stroke="#ffffff" strokeWidth="1.6" strokeLinecap="round" />
 
+          {/* Right Sneaker (Balanced Clean White Sneaker) */}
           {/* Right Shoe Upper Body */}
           <path
-            d="M 130 334 C 128 354 128 374 132 374 L 194 374 C 200 374 200 362 194 359 C 182 355 166 350 164 334 Q 147 342 130 334 Z"
-            fill="#3b82f6"
-            stroke="#1d4ed8"
+            d="M 133 339 C 131 354 131 369 134 369 L 193 369 C 197 369 197 362 191 360 C 176 356 162 350 160 339 Q 147 345 133 339 Z"
+            fill="#ffffff"
+            stroke="#94a3b8"
             strokeWidth="1.2"
             strokeLinejoin="round"
           />
-          {/* White Rubber Toe Cap on right tip */}
-          <path d="M 194 359 C 200 362 200 374 194 374 L 180 374 C 180 364 187 360 194 359 Z" fill="#ffffff" stroke="#cbd5e1" strokeWidth="1" />
-          {/* White Rubber Sole */}
-          <rect x="130" y="370" width="70" height="6" rx="3" fill="#ffffff" stroke="#cbd5e1" strokeWidth="1" />
-          {/* Yellow Laces on Instep */}
-          <line x1="176" y1="352" x2="162" y2="344" stroke="#fef08a" strokeWidth="3" strokeLinecap="round" />
-          <line x1="172" y1="358" x2="158" y2="350" stroke="#fef08a" strokeWidth="3" strokeLinecap="round" />
+          {/* Right Subtle Shading */}
+          <path
+            d="M 133 339 C 131 354 131 369 134 369 L 187 369 L 191 360 C 176 356 162 350 160 339 Z"
+            fill="#f8fafc"
+            opacity="0.8"
+          />
+          {/* Right Toe Bumper */}
+          <path
+            d="M 191 360 C 197 362 197 369 193 369 L 179 369 C 179 362 186 360 191 360 Z"
+            fill="#f1f5f9"
+            stroke="#cbd5e1"
+            strokeWidth="1"
+          />
+          {/* Right Rubber Sole */}
+          <rect x="132" y="367.5" width="65" height="5" rx="2.5" fill="#ffffff" stroke="#94a3b8" strokeWidth="1.1" />
+          <line x1="134" y1="370" x2="195" y2="370" stroke="#cbd5e1" strokeWidth="0.9" />
+          {/* Laces */}
+          <line x1="174" y1="353" x2="162" y2="346" stroke="#cbd5e1" strokeWidth="2.5" strokeLinecap="round" />
+          <line x1="174" y1="353" x2="162" y2="346" stroke="#ffffff" strokeWidth="1.6" strokeLinecap="round" />
+          <line x1="170" y1="359" x2="158" y2="352" stroke="#cbd5e1" strokeWidth="2.5" strokeLinecap="round" />
+          <line x1="170" y1="359" x2="158" y2="352" stroke="#ffffff" strokeWidth="1.6" strokeLinecap="round" />
         </g>
       );
   }
+}
+
+function renderBackHair(style, color) {
+  if (!style || style === 'none' || style === 'hair-gundul-bebas' || style === 'bald') return null;
+  if (style === 'hair-perempuan-panjang' || style === 'girl-long') {
+    return <RambutPerempuanPanjang layer="back" asGroup color={color} />;
+  }
+  return null;
 }
 
 function renderHair(style, color) {
@@ -587,69 +665,13 @@ function renderHair(style, color) {
 
     case 'hair-perempuan-panjang':
     case 'girl-long':
-      return (
-        <g id="hair-perempuan-panjang">
-          {/* Long Back Hair Flowing Down Behind Shoulders */}
-          <path
-            d="M 62 170 C 58 100 70 20 120 8 C 170 20 182 100 178 170 C 166 170 162 120 162 70 C 162 30 142 14 120 12 C 98 14 78 30 78 70 C 78 120 74 170 62 170 Z"
-            fill="url(#hairGradient)"
-          />
-          {/* Long Front Hair Strands Over Shoulders */}
-          <path
-            d="M 74 62 C 72 32 90 14 120 12 C 150 14 166 32 166 62
-               C 170 100 168 150 158 150
-               C 152 135 152 90 146 54
-               C 134 42 106 42 94 54
-               C 88 90 88 135 82 150
-               C 72 150 70 100 74 62 Z"
-            fill="url(#hairGradient)"
-            stroke={adjustColor(color, -25)}
-            strokeWidth="1.2"
-            strokeLinejoin="round"
-          />
-          {/* Elegant Side-Swept Bangs */}
-          <path
-            d="M 82 46 Q 106 34 130 48 Q 112 40 82 46 Z"
-            fill="url(#hairGradient)"
-          />
-          <path
-            d="M 116 42 Q 138 34 158 48 Q 138 40 116 42 Z"
-            fill="url(#hairGradient)"
-          />
-          {/* Specular Highlight */}
-          <ellipse cx="120" cy="18" rx="32" ry="5" fill="#ffffff" opacity="0.22" />
-        </g>
-      );
+      return <RambutPerempuanPanjang layer="front" asGroup color={color} />;
 
+    case 'hair-mohawk':
+    case 'mohawk':
     case 'hair-hijab-sekolah':
     case 'hijab':
-      return (
-        <g id="hair-hijab">
-          {/* White Student Hijab Draping Head & Shoulders */}
-          <path
-            d="M 58 148 C 52 95 66 12 120 10 C 174 12 188 95 182 148 C 162 152 138 156 120 156 C 102 156 78 152 58 148 Z"
-            fill="#ffffff"
-            stroke="#cbd5e1"
-            strokeWidth="1.5"
-            filter="url(#softShadow)"
-          />
-          {/* Inner Face Oval Frame (Lingkar Muka Hijab) */}
-          <path
-            d="M 82 42 C 92 32 148 32 158 42 C 164 62 162 92 152 104 C 140 114 100 114 88 104 C 78 92 76 62 82 42 Z"
-            fill="none"
-            stroke="#94a3b8"
-            strokeWidth="2"
-          />
-          {/* Blue Inner Ciput Cap at forehead */}
-          <path
-            d="M 86 40 Q 120 30 154 40 Q 120 35 86 40 Z"
-            fill="#2563eb"
-          />
-          {/* Hijab Folds */}
-          <path d="M 96 114 Q 120 128 144 114" stroke="#cbd5e1" strokeWidth="1.5" fill="none" />
-          <path d="M 84 128 Q 120 145 156 128" stroke="#cbd5e1" strokeWidth="1.5" fill="none" />
-        </g>
-      );
+      return <RambutMohawk asGroup color={color} />;
 
     default:
       return null;

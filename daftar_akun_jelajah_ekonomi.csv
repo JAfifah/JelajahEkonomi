@@ -1,0 +1,6 @@
+﻿No,Username,Password,Nama Lengkap,Peran,Kelas / Keterangan,Koin Awal,Keterangan
+1,admin,admin,"Administrator (Penguji/Guru)",Admin (Tester),"Penguji Sistem & Guru Pembina",5000,"Akun pengujian dengan saldo koin & level tinggi untuk testing fitur"
+2,user1,user1,"Budi Pratama",Siswa,"Kelas 7A - SMP Negeri 1",0,"Akun siswa mulai dari awal (0 koin, level 1, 0 XP, misi belum dimulai)"
+3,user2,user2,"Citra Lestari",Siswa,"Kelas 7B - SMP Negeri 1",0,"Akun siswa mulai dari awal (0 koin, level 1, 0 XP, avatar perempuan)"
+4,user3,user3,"Dimas Anggara",Siswa,"Kelas 7C - SMP Negeri 1",0,"Akun siswa mulai dari awal (0 koin, level 1, 0 XP, misi belum dimulai)"
+5,user4,user4,"Jami'atul Afifah",Siswa,"Kelas 7A - SMP Negeri 1",0,"Akun siswa mulai dari awal (0 koin, level 1, 0 XP, misi belum dimulai)"

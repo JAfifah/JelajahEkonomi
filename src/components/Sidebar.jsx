@@ -5,13 +5,12 @@ import {
   Camera, 
   ShoppingBag, 
   Trophy,
-  Sparkles,
-  MapPin,
-  Compass
+  LogOut,
+  User
 } from 'lucide-react';
 import { soundFx } from '../utils/audio';
 
-export default function Sidebar({ activeTab, setActiveTab }) {
+export default function Sidebar({ activeTab, setActiveTab, currentUser, onLogout }) {
   const navItems = [
     { id: 'dashboard', label: 'My Map', icon: Home, color: 'text-sky-600' },
     { id: 'materi', label: 'Course Hub', icon: BookOpen, color: 'text-blue-600' },
@@ -23,6 +22,13 @@ export default function Sidebar({ activeTab, setActiveTab }) {
   const handleTabClick = (id) => {
     soundFx.playClick();
     setActiveTab(id);
+  };
+
+  const handleLogoutClick = () => {
+    soundFx.playClick();
+    if (window.confirm('Apakah kamu yakin ingin keluar dari akun?')) {
+      onLogout?.();
+    }
   };
 
   return (
@@ -67,14 +73,43 @@ export default function Sidebar({ activeTab, setActiveTab }) {
         </nav>
       </div>
 
-      {/* Footer Tag */}
-      <div className="hidden md:block pt-6 border-t border-sky-300/40 text-center">
-        <p className="text-xs font-semibold text-white/90">
-          Media Pembelajaran IPS SMP
-        </p>
-        <p className="text-[10px] text-white/70">
-          Kegiatan Ekonomi
-        </p>
+      {/* User Info & Footer Tag */}
+      <div className="pt-4 border-t border-sky-300/40 space-y-3">
+        {currentUser && (
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-3 shadow-md flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="w-8 h-8 rounded-xl bg-sky-100 flex items-center justify-center shrink-0 text-sky-700">
+                <User className="w-4 h-4" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-xs font-black text-slate-800 truncate">
+                  {currentUser.username}
+                </p>
+                <p className="text-[10px] font-bold text-sky-600 uppercase">
+                  {currentUser.role === 'admin' ? 'Admin Tester' : 'Siswa'}
+                </p>
+              </div>
+            </div>
+            {onLogout && (
+              <button
+                onClick={handleLogoutClick}
+                className="p-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 transition-colors"
+                title="Keluar / Ganti Akun"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+        )}
+
+        <div className="hidden md:block text-center">
+          <p className="text-xs font-semibold text-white/90">
+            Media Pembelajaran IPS SMP
+          </p>
+          <p className="text-[10px] text-white/70">
+            Kegiatan Ekonomi
+          </p>
+        </div>
       </div>
 
     </aside>

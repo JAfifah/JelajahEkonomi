@@ -186,7 +186,7 @@ export const AVATAR_SHOP_ITEMS = [
     }
   },
 
-  // --- ACCESSORIES (AKSESORIS / RAMBUT & HIJAB) ---
+  // --- ACCESSORIES (AKSESORIS / GAYA RAMBUT) ---
   {
     id: 'hair-rambut-laki',
     name: 'Rambut Anak Laki-Laki',
@@ -205,8 +205,8 @@ export const AVATAR_SHOP_ITEMS = [
     id: 'hair-perempuan-pendek',
     name: 'Rambut Perempuan Pendek',
     category: 'accessories',
-    priorityCategory: 'Primer',
-    priceCoins: 50,
+    priorityCategory: 'Sekunder',
+    priceCoins: 45,
     pricePoints: 25,
     description: 'Gaya rambut pendek bob manis dan rapi untuk perempuan.',
     unlockedByDefault: false,
@@ -230,17 +230,17 @@ export const AVATAR_SHOP_ITEMS = [
     }
   },
   {
-    id: 'hair-hijab-sekolah',
-    name: 'Hijab Sekolah Rapi',
+    id: 'hair-mohawk',
+    name: 'Rambut Mohawk Keren',
     category: 'accessories',
-    priorityCategory: 'Primer',
+    priorityCategory: 'Sekunder',
     priceCoins: 60,
     pricePoints: 30,
-    description: 'Hijab putih bersih dengan ciput biru khas siswi seragam sekolah.',
+    description: 'Gaya rambut mohawk punk modern yang keren, trendi, dan penuh percaya diri.',
     unlockedByDefault: false,
     styleProps: {
-      type: 'hijab',
-      id: 'hair-hijab-sekolah'
+      type: 'hair',
+      id: 'hair-mohawk'
     }
   }
 ];

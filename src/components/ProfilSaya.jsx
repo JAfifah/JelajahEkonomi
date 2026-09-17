@@ -4,25 +4,52 @@ import { AVATAR_SHOP_ITEMS } from '../data/shopData';
 import { soundFx } from '../utils/audio';
 import { resetStudentData } from '../utils/storage';
 import { 
-  User, 
-  Trophy, 
   Award, 
   BookOpen, 
   Camera, 
   Coins, 
-  Sparkles, 
   CheckCircle2, 
-  RotateCcw,
-  ShieldCheck,
-  Package
+  RotateCcw, 
+  ShieldCheck, 
+  Package,
+  LogOut,
+  ShieldAlert,
+  Zap
 } from 'lucide-react';
 
-export default function ProfilSaya({ student, updateStudentData }) {
+export default function ProfilSaya({ student, updateStudentData, currentUser, onLogout }) {
+  const isAdmin = currentUser?.role === 'admin';
+
   const handleResetData = () => {
     soundFx.playClick();
     if (window.confirm('Apakah kamu yakin ingin mereset seluruh data game ke posisi awal? (Tindakan ini tidak dapat dibatalkan)')) {
-      const initial = resetStudentData();
+      const initial = resetStudentData(currentUser);
       updateStudentData(initial);
+    }
+  };
+
+  const handleAdminAddCoins = () => {
+    soundFx.playCoin();
+    updateStudentData({
+      ...student,
+      coins: (student.coins || 0) + 1000,
+      points: (student.points || 0) + 500
+    });
+  };
+
+  const handleAdminUnlockBadges = () => {
+    soundFx.playLevelUp();
+    const allUnlocked = (student.badges || []).map(b => ({ ...b, unlocked: true }));
+    updateStudentData({
+      ...student,
+      badges: allUnlocked
+    });
+  };
+
+  const handleLogoutClick = () => {
+    soundFx.playClick();
+    if (window.confirm('Apakah kamu yakin ingin keluar dari akun?')) {
+      onLogout?.();
     }
   };
 
@@ -46,22 +73,79 @@ export default function ProfilSaya({ student, updateStudentData }) {
               <span>{student.schoolClass} • Level {student.level}</span>
             </div>
             <h2 className="text-3xl font-black text-slate-900">{student.name}</h2>
-            <p className="text-xs sm:text-sm text-slate-600 font-medium">
-              Gelar Pembelajar: <span className="text-amber-600 font-bold">Master Kegiatan Ekonomi IPS</span>
-            </p>
+            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-0.5">
+              <span className="text-xs text-slate-600 font-medium">
+                Username: <strong className="text-slate-800 font-mono">@{currentUser?.username || student.username || 'user'}</strong>
+              </span>
+              <span className="text-slate-300">•</span>
+              <span className={`text-xs font-extrabold px-2 py-0.5 rounded-md ${isAdmin ? 'bg-rose-100 text-rose-700' : 'bg-sky-100 text-sky-700'}`}>
+                {isAdmin ? 'ADMIN PENGUJI' : 'AKUN SISWA'}
+              </span>
+            </div>
           </div>
         </div>
 
-        {/* Reset Button */}
-        <button
-          onClick={handleResetData}
-          className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-rose-50 border border-slate-200 hover:border-rose-300 text-slate-600 hover:text-rose-600 font-bold text-xs flex items-center gap-2 transition-all"
-        >
-          <RotateCcw className="w-4 h-4" />
-          <span>Reset Data Game</span>
-        </button>
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row items-center gap-2">
+          {/* Reset Button */}
+          <button
+            onClick={handleResetData}
+            className="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-rose-50 border border-slate-200 hover:border-rose-300 text-slate-600 hover:text-rose-600 font-bold text-xs flex items-center gap-1.5 transition-all"
+            title="Reset data game akun ini"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+            <span>Reset Data</span>
+          </button>
+
+          {/* Logout Button */}
+          {onLogout && (
+            <button
+              onClick={handleLogoutClick}
+              className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs flex items-center gap-1.5 transition-all shadow-md active:scale-95 cursor-pointer"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              <span>Keluar Akun</span>
+            </button>
+          )}
+        </div>
 
       </div>
+
+      {/* Admin Quick Tools (Only Visible to Admin) */}
+      {isAdmin && (
+        <div className="bg-gradient-to-r from-rose-50 via-amber-50 to-orange-50 border border-rose-200 p-5 rounded-3xl shadow-sm space-y-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <ShieldAlert className="w-5 h-5 text-rose-600" />
+              <h3 className="text-sm font-black text-slate-900">
+                Menu Khusus Administrator (Testing Peran)
+              </h3>
+            </div>
+            <span className="text-[11px] font-bold text-rose-700 bg-rose-100 px-2 py-0.5 rounded-full">
+              Khusus Akun Admin
+            </span>
+          </div>
+          <p className="text-xs text-slate-600">
+            Gunakan tombol pintas di bawah untuk memudahkan pengujian semua fitur game:
+          </p>
+          <div className="flex flex-wrap items-center gap-2.5 pt-1">
+            <button
+              onClick={handleAdminAddCoins}
+              className="px-3 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-500 text-slate-900 font-black text-xs flex items-center gap-1.5 shadow-sm active:scale-95 transition-all"
+            >
+              <Zap className="w-3.5 h-3.5" />
+              +1,000 Koin Edukasi
+            </button>
+            <button
+              onClick={handleAdminUnlockBadges}
+              className="px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-black text-xs flex items-center gap-1.5 shadow-sm active:scale-95 transition-all"
+            >
+              <Award className="w-3.5 h-3.5" />
+              Buka Semua Lencana
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Grid: Stats Summary & Badges Gallery */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">

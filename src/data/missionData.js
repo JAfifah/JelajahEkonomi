@@ -20,7 +20,7 @@ export const MISSIONS_DATA = [
         text: 'Menyelesaikan Materi',
         type: 'materi',
         detail: 'Pelajari modul Pengenalan Kebutuhan & Kelangkaan hingga titik terbawah.',
-        rewardCoins: 25,
+        rewardCoins: 5,
         rewardXp: 20
       },
       {
@@ -62,7 +62,7 @@ export const MISSIONS_DATA = [
         text: 'Menyelesaikan Materi',
         type: 'materi',
         detail: 'Pelajari modul Eksplorasi Faktor Alam hingga titik terbawah.',
-        rewardCoins: 25,
+        rewardCoins: 5,
         rewardXp: 20
       },
       {
@@ -104,7 +104,7 @@ export const MISSIONS_DATA = [
         text: 'Menyelesaikan Materi',
         type: 'materi',
         detail: 'Pelajari modul Perdagangan & Distribusi hingga titik terbawah.',
-        rewardCoins: 25,
+        rewardCoins: 5,
         rewardXp: 20
       },
       {
@@ -146,7 +146,7 @@ export const MISSIONS_DATA = [
         text: 'Menyelesaikan Materi',
         type: 'materi',
         detail: 'Pelajari modul Pola Konsumen & Pasar hingga titik terbawah.',
-        rewardCoins: 25,
+        rewardCoins: 5,
         rewardXp: 20
       },
       {
@@ -188,7 +188,7 @@ export const MISSIONS_DATA = [
         text: 'Menyelesaikan Materi',
         type: 'materi',
         detail: 'Pelajari modul Konservasi & Bahan Baku hingga titik terbawah.',
-        rewardCoins: 25,
+        rewardCoins: 5,
         rewardXp: 20
       },
       {
@@ -230,7 +230,7 @@ export const MISSIONS_DATA = [
         text: 'Menyelesaikan Materi',
         type: 'materi',
         detail: 'Pelajari modul Pengelolaan Modal & Keuangan hingga titik terbawah.',
-        rewardCoins: 25,
+        rewardCoins: 5,
         rewardXp: 20
       },
       {
@@ -272,7 +272,7 @@ export const MISSIONS_DATA = [
         text: 'Menyelesaikan Materi',
         type: 'materi',
         detail: 'Pelajari modul Keahlian & Jenis Produksi hingga titik terbawah.',
-        rewardCoins: 25,
+        rewardCoins: 5,
         rewardXp: 20
       },
       {

@@ -146,7 +146,7 @@ export default function TokoKarakter({ student, updateStudentData }) {
           </span>
 
           {/* SVG Avatar with dynamic preview item */}
-          <div className="my-2">
+          <div className="my-2 pt-3">
             <AvatarCanvas 
               equipped={student.equipped} 
               previewItem={previewItem}

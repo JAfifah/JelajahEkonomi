@@ -195,14 +195,26 @@ export default function MateriKuis({
     let newXp = student.xp;
     let newPoints = student.points;
 
+    let coinsAwarded = 0;
     tasksToComplete.forEach(task => {
       if (!updatedCompleted.includes(task.id)) {
         updatedCompleted.push(task.id);
-        newCoins += task.rewardCoins || 25;
+        const reward = task.rewardCoins !== undefined ? task.rewardCoins : 5;
+        newCoins += reward;
+        coinsAwarded += reward;
         newXp += task.rewardXp || 20;
         newPoints += task.rewardXp || 20;
       }
     });
+
+    // Pastikan selalu mendapatkan minimal 5 koin saat menyelesaikan materi
+    if (coinsAwarded === 0) {
+      newCoins += 5;
+      newXp += 10;
+      newPoints += 10;
+    }
+
+    soundFx.playCoin();
 
     let newLevel = student.level;
     let newXpToNext = student.xpToNextLevel;
@@ -695,10 +707,15 @@ export default function MateriKuis({
                 <div className="pt-6 border-t border-slate-200 space-y-4">
                   {/* Syarat Aktifnya Tombol Box */}
                   <div className="bg-slate-50 p-4 sm:p-5 rounded-2xl border border-slate-200 space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs sm:text-sm font-extrabold text-slate-800">
-                        Syarat Kelengkapan Modul Ini:
-                      </span>
+                    <div className="flex items-center justify-between flex-wrap gap-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs sm:text-sm font-extrabold text-slate-800">
+                          Syarat Kelengkapan Modul Ini:
+                        </span>
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-black bg-amber-100 text-amber-800 border border-amber-300">
+                          🪙 +5 Koin
+                        </span>
+                      </div>
                       <span className={`text-xs font-black px-2.5 py-1 rounded-full border ${
                         isModuleCompleted 
                           ? 'bg-emerald-100 text-emerald-800 border-emerald-300' 
@@ -754,10 +771,10 @@ export default function MateriKuis({
                     <CheckCircle2 className="w-5 h-5" />
                     <span>
                       {isModuleCompleted 
-                        ? 'Materi Ini Telah Diselesaikan! (Misi Tercentang Otomatis ✔)' 
+                        ? 'Materi Ini Telah Diselesaikan! (+5 Koin Didapatkan ✔)' 
                         : isReadyToFinish 
-                        ? 'Selesaikan Materi ✨' 
-                        : 'Selesaikan Materi (Terkunci 🔒)'}
+                        ? 'Selesaikan Materi ✨ (+5 Koin)' 
+                        : 'Selesaikan Materi (Terkunci 🔒 • Hadiah +5 Koin)'}
                     </span>
                   </button>
                 </div>

@@ -5,8 +5,8 @@ export const QUIZ_LEVELS = [
     description: 'Uji pemahaman mengenai situasi kebutuhan manusia, kelangkaan, dan alokasi sumber daya.',
     badge: 'Detektif Kelangkaan',
     unlockedAtLevel: 1,
-    rewardCoins: 50,
-    rewardXp: 40,
+    rewardCoins: 15,
+    rewardXp: 20,
     questions: [
       {
         id: 'qk1-1',
@@ -146,8 +146,8 @@ export const QUIZ_LEVELS = [
     description: 'Uji pemahaman mengenai pemanfaatan dan kedudukan faktor produksi alam.',
     badge: 'Penyelidik Alam',
     unlockedAtLevel: 1,
-    rewardCoins: 50,
-    rewardXp: 40,
+    rewardCoins: 15,
+    rewardXp: 20,
     questions: [
       {
         id: 'qk2-1',
@@ -287,8 +287,8 @@ export const QUIZ_LEVELS = [
     description: 'Uji pemahaman mengenai alur distribusi langsung, semilangsung, dan tidak langsung.',
     badge: 'Ahli Logistik',
     unlockedAtLevel: 1,
-    rewardCoins: 50,
-    rewardXp: 40,
+    rewardCoins: 15,
+    rewardXp: 20,
     questions: [
       {
         id: 'qk3-1',
@@ -428,8 +428,8 @@ export const QUIZ_LEVELS = [
     description: 'Uji pemahaman mengenai tujuan konsumsi, faktor internal/eksternal, dan kebutuhan rohani/estetika.',
     badge: 'Analis Pasar',
     unlockedAtLevel: 1,
-    rewardCoins: 50,
-    rewardXp: 40,
+    rewardCoins: 15,
+    rewardXp: 20,
     questions: [
       {
         id: 'qk4-1',
@@ -569,8 +569,8 @@ export const QUIZ_LEVELS = [
     description: 'Uji pemahaman mengenai proses produksi, nilai guna, dan pentingnya konservasi.',
     badge: 'Pahlawan Konservasi',
     unlockedAtLevel: 1,
-    rewardCoins: 50,
-    rewardXp: 40,
+    rewardCoins: 15,
+    rewardXp: 20,
     questions: [
       {
         id: 'qk5-1',
@@ -710,8 +710,8 @@ export const QUIZ_LEVELS = [
     description: 'Uji pemahaman mengenai fungsi faktor modal, sarana pendukung produksi, dan efisiensi.',
     badge: 'Manajer Keuangan',
     unlockedAtLevel: 1,
-    rewardCoins: 50,
-    rewardXp: 40,
+    rewardCoins: 15,
+    rewardXp: 20,
     questions: [
       {
         id: 'qk6-1',
@@ -851,8 +851,8 @@ export const QUIZ_LEVELS = [
     description: 'Uji pemahaman mengenai faktor keahlian wirausaha, jenis produksi barang/jasa, dan integrasi faktor produksi.',
     badge: 'Master Ekonomi',
     unlockedAtLevel: 1,
-    rewardCoins: 100,
-    rewardXp: 80,
+    rewardCoins: 15,
+    rewardXp: 20,
     questions: [
       {
         id: 'qk7-1',

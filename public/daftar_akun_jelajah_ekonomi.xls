@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+  <Title>Daftar Akun Jelajah Ekonomi</Title>
+  <Subject>Akun Media Pembelajaran IPS Jelajah Ekonomi</Subject>
+  <Author>Jelajah Ekonomi IPS</Author>
+ </DocumentProperties>
+ <Styles>
+  <Style ss:ID="Default" ss:Name="Normal">
+   <Alignment ss:Vertical="Center"/>
+   <Borders/>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="11" ss:Color="#1E293B"/>
+   <Interior/>
+   <NumberFormat/>
+   <Protection/>
+  </Style>
+  <Style ss:ID="TitleStyle">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Font ss:FontName="Calibri" ss:Size="16" ss:Bold="1" ss:Color="#0284C7"/>
+  </Style>
+  <Style ss:ID="SubtitleStyle">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Font ss:FontName="Calibri" ss:Size="11" ss:Italic="1" ss:Color="#64748B"/>
+  </Style>
+  <Style ss:ID="HeaderStyle">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center" ss:WrapText="1"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2" ss:Color="#0284C7"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#CBD5E1"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#CBD5E1"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#CBD5E1"/>
+   </Borders>
+   <Font ss:FontName="Calibri" ss:Size="11" ss:Bold="1" ss:Color="#FFFFFF"/>
+   <Interior ss:Color="#0284C7" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="AdminRow">
+   <Alignment ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+   </Borders>
+   <Font ss:FontName="Calibri" ss:Size="11" ss:Bold="1" ss:Color="#BE123C"/>
+   <Interior ss:Color="#FFF1F2" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="DataRow">
+   <Alignment ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+   </Borders>
+   <Font ss:FontName="Calibri" ss:Size="11" ss:Color="#1E293B"/>
+  </Style>
+  <Style ss:ID="CenterData">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+   </Borders>
+   <Font ss:FontName="Calibri" ss:Size="11" ss:Color="#1E293B"/>
+  </Style>
+  <Style ss:ID="PasswordData">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+   </Borders>
+   <Font ss:FontName="Courier New" ss:Size="11" ss:Bold="1" ss:Color="#0369A1"/>
+   <Interior ss:Color="#F0F9FF" ss:Pattern="Solid"/>
+  </Style>
+ </Styles>
+ <Worksheet ss:Name="Daftar Akun">
+  <Table ss:ExpandedColumnCount="8" ss:DefaultRowHeight="22">
+   <Column ss:Width="40"/>
+   <Column ss:Width="110"/>
+   <Column ss:Width="110"/>
+   <Column ss:Width="180"/>
+   <Column ss:Width="120"/>
+   <Column ss:Width="190"/>
+   <Column ss:Width="90"/>
+   <Column ss:Width="300"/>
+
+   <Row ss:Height="30">
+    <Cell ss:MergeAcross="7" ss:StyleID="TitleStyle">
+     <Data ss:Type="String">DAFTAR AKUN PENGGUNA - JELAJAH EKONOMI</Data>
+    </Cell>
+   </Row>
+   <Row ss:Height="20">
+    <Cell ss:MergeAcross="7" ss:StyleID="SubtitleStyle">
+     <Data ss:Type="String">Catatan: Username dan Password sama persis untuk memudahkan pengujian sistem.</Data>
+    </Cell>
+   </Row>
+   <Row ss:Index="4" ss:Height="26">
+    <Cell ss:StyleID="HeaderStyle"><Data ss:Type="String">No</Data></Cell>
+    <Cell ss:StyleID="HeaderStyle"><Data ss:Type="String">Username</Data></Cell>
+    <Cell ss:StyleID="HeaderStyle"><Data ss:Type="String">Password</Data></Cell>
+    <Cell ss:StyleID="HeaderStyle"><Data ss:Type="String">Nama Lengkap</Data></Cell>
+    <Cell ss:StyleID="HeaderStyle"><Data ss:Type="String">Peran (Role)</Data></Cell>
+    <Cell ss:StyleID="HeaderStyle"><Data ss:Type="String">Kelas / Keterangan</Data></Cell>
+    <Cell ss:StyleID="HeaderStyle"><Data ss:Type="String">Koin Awal</Data></Cell>
+    <Cell ss:StyleID="HeaderStyle"><Data ss:Type="String">Keterangan Akun</Data></Cell>
+   </Row>
+   
+   <Row ss:Height="24">
+    <Cell ss:StyleID="CenterData"><Data ss:Type="Number">1</Data></Cell>
+    <Cell ss:StyleID="AdminRow"><Data ss:Type="String">admin</Data></Cell>
+    <Cell ss:StyleID="PasswordData"><Data ss:Type="String">admin</Data></Cell>
+    <Cell ss:StyleID="AdminRow"><Data ss:Type="String">Administrator (Penguji/Guru)</Data></Cell>
+    <Cell ss:StyleID="CenterData"><Data ss:Type="String">Admin (Tester)</Data></Cell>
+    <Cell ss:StyleID="AdminRow"><Data ss:Type="String">Penguji Sistem & Guru Pembina</Data></Cell>
+    <Cell ss:StyleID="CenterData"><Data ss:Type="Number">5000</Data></Cell>
+    <Cell ss:StyleID="AdminRow"><Data ss:Type="String">Akun pengujian dengan saldo koin & level tinggi untuk testing fitur</Data></Cell>
+   </Row>
+   <Row ss:Height="24">
+    <Cell ss:StyleID="CenterData"><Data ss:Type="Number">2</Data></Cell>
+    <Cell ss:StyleID="DataRow"><Data ss:Type="String">user1</Data></Cell>
+    <Cell ss:StyleID="PasswordData"><Data ss:Type="String">user1</Data></Cell>
+    <Cell ss:StyleID="DataRow"><Data ss:Type="String">Budi Pratama</Data></Cell>
+    <Cell ss:StyleID="CenterData"><Data ss:Type="String">Siswa</Data></Cell>
+    <Cell ss:StyleID="DataRow"><Data ss:Type="String">Kelas 7A - SMP Negeri 1</Data></Cell>
+    <Cell ss:StyleID="CenterData"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="DataRow"><Data ss:Type="String">Akun siswa mulai dari awal (0 koin, level 1, 0 XP, misi belum dimulai)</Data></Cell>
+   </Row>
+   <Row ss:Height="24">
+    <Cell ss:StyleID="CenterData"><Data ss:Type="Number">3</Data></Cell>
+    <Cell ss:StyleID="DataRow"><Data ss:Type="String">user2</Data></Cell>
+    <Cell ss:StyleID="PasswordData"><Data ss:Type="String">user2</Data></Cell>
+    <Cell ss:StyleID="DataRow"><Data ss:Type="String">Citra Lestari</Data></Cell>
+    <Cell ss:StyleID="CenterData"><Data ss:Type="String">Siswa</Data></Cell>
+    <Cell ss:StyleID="DataRow"><Data ss:Type="String">Kelas 7B - SMP Negeri 1</Data></Cell>
+    <Cell ss:StyleID="CenterData"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="DataRow"><Data ss:Type="String">Akun siswa mulai dari awal (0 koin, level 1, 0 XP, avatar perempuan)</Data></Cell>
+   </Row>
+   <Row ss:Height="24">
+    <Cell ss:StyleID="CenterData"><Data ss:Type="Number">4</Data></Cell>
+    <Cell ss:StyleID="DataRow"><Data ss:Type="String">user3</Data></Cell>
+    <Cell ss:StyleID="PasswordData"><Data ss:Type="String">user3</Data></Cell>
+    <Cell ss:StyleID="DataRow"><Data ss:Type="String">Dimas Anggara</Data></Cell>
+    <Cell ss:StyleID="CenterData"><Data ss:Type="String">Siswa</Data></Cell>
+    <Cell ss:StyleID="DataRow"><Data ss:Type="String">Kelas 7C - SMP Negeri 1</Data></Cell>
+    <Cell ss:StyleID="CenterData"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="DataRow"><Data ss:Type="String">Akun siswa mulai dari awal (0 koin, level 1, 0 XP, misi belum dimulai)</Data></Cell>
+   </Row>
+   <Row ss:Height="24">
+    <Cell ss:StyleID="CenterData"><Data ss:Type="Number">5</Data></Cell>
+    <Cell ss:StyleID="DataRow"><Data ss:Type="String">user4</Data></Cell>
+    <Cell ss:StyleID="PasswordData"><Data ss:Type="String">user4</Data></Cell>
+    <Cell ss:StyleID="DataRow"><Data ss:Type="String">Jami'atul Afifah</Data></Cell>
+    <Cell ss:StyleID="CenterData"><Data ss:Type="String">Siswa</Data></Cell>
+    <Cell ss:StyleID="DataRow"><Data ss:Type="String">Kelas 7A - SMP Negeri 1</Data></Cell>
+    <Cell ss:StyleID="CenterData"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="DataRow"><Data ss:Type="String">Akun siswa mulai dari awal (0 koin, level 1, 0 XP, misi belum dimulai)</Data></Cell>
+   </Row>
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <Selected/>
+   <Panes>
+    <Pane>
+     <Number>3</Number>
+     <ActiveRow>4</ActiveRow>
+    </Pane>
+   </Panes>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+ </Worksheet>
+</Workbook>
