@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { DEFAULT_ACCOUNTS, authenticateUser } from '../data/accountsData';
 import { soundFx } from '../utils/audio';
+import jelakomLogo from '../assets/jelakom.png';
 
 export default function LoginPage({ onLogin }) {
   const [username, setUsername] = useState('');
@@ -87,8 +88,8 @@ export default function LoginPage({ onLogin }) {
             </div>
 
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-amber-400 text-slate-900 flex items-center justify-center shadow-lg transform -rotate-3 hover:rotate-0 transition-transform">
-                <Compass className="w-7 h-7 text-sky-950 stroke-[2.5]" />
+              <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-white/95 p-1.5 shadow-xl transform -rotate-3 hover:rotate-0 transition-transform flex items-center justify-center border border-white/40">
+                <img src={jelakomLogo} alt="Logo Jelajah Ekonomi" className="w-full h-full object-contain drop-shadow" />
               </div>
               <div>
                 <h1 className="text-2xl sm:text-3xl font-black tracking-tight leading-none text-white drop-shadow">

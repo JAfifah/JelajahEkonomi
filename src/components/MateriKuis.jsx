@@ -527,9 +527,9 @@ export default function MateriKuis({
               </button>
             </div>
 
-            {/* Summary Box */}
+             {/* Summary Box */}
             <div className="bg-amber-50 border border-amber-200 p-4 sm:p-5 rounded-2xl text-slate-800 text-sm leading-relaxed">
-              <p className="font-medium">📌 <span className="font-bold text-amber-800">Inti Konsep:</span> {currentMateri.summary}</p>
+              <p className="font-medium">📌 <span className="font-bold text-amber-800">Inti Konsep:</span> <span dangerouslySetInnerHTML={{ __html: currentMateri.summary?.replace(/\*\*(.*?)\*\*/g, '<strong class="text-amber-950 font-bold">$1</strong>') }} /></p>
             </div>
 
             {/* Sections Loop */}
@@ -561,7 +561,7 @@ export default function MateriKuis({
                     {sec.typeCards.map((tc, tcIdx) => (
                       <div key={tcIdx} className="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
                         <h5 className="font-bold text-indigo-700 text-base">{tc.title}</h5>
-                        <p className="text-xs text-slate-600">{tc.desc}</p>
+                        <p className="text-xs text-slate-600" dangerouslySetInnerHTML={{ __html: tc.desc?.replace(/\*\*(.*?)\*\*/g, '<strong class="text-slate-800 font-bold">$1</strong>') }} />
                         <div className="bg-amber-50 p-2.5 rounded-xl text-[11px] text-amber-800 font-medium border border-amber-200">
                           <strong>Contoh:</strong> {tc.examples}
                         </div>
@@ -576,7 +576,7 @@ export default function MateriKuis({
                     {sec.bullets.map((b, bIdx) => (
                       <li key={bIdx} className="flex items-start gap-2">
                         <span className="text-amber-600 font-bold">•</span>
-                        <span>{b}</span>
+                        <span dangerouslySetInnerHTML={{ __html: b.replace(/\*\*(.*?)\*\*/g, '<strong class="text-slate-900 font-bold">$1</strong>') }} />
                       </li>
                     ))}
                   </ul>
@@ -591,7 +591,7 @@ export default function MateriKuis({
                           <h5 className="font-bold text-slate-900 text-sm">{f.name}</h5>
                           <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-100 text-indigo-700 border border-indigo-200">{f.type}</span>
                         </div>
-                        <p className="text-xs text-slate-600 leading-relaxed">{f.desc}</p>
+                        <p className="text-xs text-slate-600 leading-relaxed" dangerouslySetInnerHTML={{ __html: f.desc?.replace(/\*\*(.*?)\*\*/g, '<strong class="text-slate-800 font-bold">$1</strong>') }} />
                       </div>
                     ))}
                   </div>
@@ -608,7 +608,7 @@ export default function MateriKuis({
                             {ch.badge}
                           </span>
                         </div>
-                        <p className="text-xs text-slate-600">{ch.desc}</p>
+                        <p className="text-xs text-slate-600" dangerouslySetInnerHTML={{ __html: ch.desc?.replace(/\*\*(.*?)\*\*/g, '<strong class="text-slate-800 font-bold">$1</strong>') }} />
                         <p className="text-xs text-emerald-700 italic">Contoh: {ch.example}</p>
                       </div>
                     ))}
@@ -640,7 +640,7 @@ export default function MateriKuis({
                     {sec.priorities.map((pr, prIdx) => (
                       <div key={prIdx} className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
                         <span className="font-bold text-xs text-amber-800">{pr.label}</span>
-                        <span className="text-xs text-slate-600">{pr.desc}</span>
+                        <span className="text-xs text-slate-600" dangerouslySetInnerHTML={{ __html: pr.desc?.replace(/\*\*(.*?)\*\*/g, '<strong class="text-slate-900 font-bold">$1</strong>') }} />
                       </div>
                     ))}
                   </div>

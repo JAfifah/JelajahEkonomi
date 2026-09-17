@@ -14,6 +14,7 @@ import {
   Flame
 } from 'lucide-react';
 import { soundFx } from '../utils/audio';
+import jelakomLogo from '../assets/jelakom.png';
 
 export default function Navbar({ 
   student, 
@@ -51,10 +52,8 @@ export default function Navbar({
             onClick={() => handleTabClick('dashboard')}
             className="flex items-center gap-3 cursor-pointer group select-none"
           >
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-tr from-amber-400 via-sky-500 to-indigo-600 p-0.5 shadow-md group-hover:scale-105 transition-transform">
-              <div className="w-full h-full bg-white rounded-[14px] flex items-center justify-center">
-                <Sparkles className="w-6 h-6 text-amber-500 animate-pulse" />
-              </div>
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-white p-1 shadow-md group-hover:scale-105 transition-transform flex items-center justify-center border border-slate-200">
+              <img src={jelakomLogo} alt="Logo Jelajah Ekonomi" className="w-full h-full object-contain" />
             </div>
             <div>
               <h1 className="text-xl sm:text-2xl font-black bg-gradient-to-r from-sky-600 via-indigo-600 to-amber-600 bg-clip-text text-transparent tracking-tight">
