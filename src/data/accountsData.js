@@ -36,13 +36,13 @@ export const DEFAULT_ACCOUNTS = [
     dailyStreak: 1,
     avatar: {
       skinTone: '#f5c396',
-      hairstyle: 'hair-rambut-laki',
+      hairstyle: 'hair-gundul-bebas',
       hairColor: '#2b2b2b',
       top: 'top-kaos-ips',
       bottom: 'bottom-jeans-biru',
       shoes: 'shoes-sneakers-putih',
-      accessory: 'hair-rambut-laki',
-      accessories: 'hair-rambut-laki'
+      accessory: 'hair-gundul-bebas',
+      accessories: 'hair-gundul-bebas'
     }
   },
   {
@@ -59,13 +59,13 @@ export const DEFAULT_ACCOUNTS = [
     dailyStreak: 1,
     avatar: {
       skinTone: '#ffd9b3',
-      hairstyle: 'hair-perempuan-pendek',
+      hairstyle: 'hair-gundul-bebas',
       hairColor: '#4a2c11',
       top: 'top-kaos-ips',
       bottom: 'bottom-jeans-biru',
       shoes: 'shoes-sneakers-putih',
-      accessory: 'hair-perempuan-pendek',
-      accessories: 'hair-perempuan-pendek'
+      accessory: 'hair-gundul-bebas',
+      accessories: 'hair-gundul-bebas'
     }
   },
   {
@@ -82,13 +82,13 @@ export const DEFAULT_ACCOUNTS = [
     dailyStreak: 1,
     avatar: {
       skinTone: '#e0ac69',
-      hairstyle: 'hair-rambut-laki',
+      hairstyle: 'hair-gundul-bebas',
       hairColor: '#171717',
       top: 'top-kaos-ips',
       bottom: 'bottom-jeans-biru',
       shoes: 'shoes-sneakers-putih',
-      accessory: 'hair-rambut-laki',
-      accessories: 'hair-rambut-laki'
+      accessory: 'hair-gundul-bebas',
+      accessories: 'hair-gundul-bebas'
     }
   },
   {
@@ -105,13 +105,13 @@ export const DEFAULT_ACCOUNTS = [
     dailyStreak: 1,
     avatar: {
       skinTone: '#fcd3b6',
-      hairstyle: 'hair-perempuan-pendek',
+      hairstyle: 'hair-gundul-bebas',
       hairColor: '#332014',
       top: 'top-kaos-ips',
       bottom: 'bottom-jeans-biru',
       shoes: 'shoes-sneakers-putih',
-      accessory: 'hair-perempuan-pendek',
-      accessories: 'hair-perempuan-pendek'
+      accessory: 'hair-gundul-bebas',
+      accessories: 'hair-gundul-bebas'
     }
   }
 ];

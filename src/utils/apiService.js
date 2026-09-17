@@ -93,3 +93,18 @@ export async function fetchAdminActivitiesApi(limit = 50) {
     return [];
   }
 }
+
+export async function resetAllStudentsApi() {
+  try {
+    const res = await fetch(`${BASE_URL}/api/admin/reset-students`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    });
+    if (!res.ok) throw new Error('Network response was not ok');
+    const json = await res.json();
+    return json;
+  } catch (err) {
+    console.error('Failed to reset students in MySQL:', err);
+    return { success: false, message: err.message };
+  }
+}

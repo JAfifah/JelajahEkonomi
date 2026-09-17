@@ -14,10 +14,12 @@ import {
   Camera, 
   Calendar,
   TrendingUp,
-  Zap
+  Zap,
+  RotateCcw,
+  X
 } from 'lucide-react';
 import AvatarCanvas from './AvatarCanvas';
-import { fetchLeaderboardApi, fetchAdminActivitiesApi } from '../utils/apiService';
+import { fetchLeaderboardApi, fetchAdminActivitiesApi, resetAllStudentsApi } from '../utils/apiService';
 import { soundFx } from '../utils/audio';
 
 export default function LeaderboardAdmin({ currentUser }) {
@@ -25,6 +27,8 @@ export default function LeaderboardAdmin({ currentUser }) {
   const [sortBy, setSortBy] = useState('points'); // 'points', 'level', 'coins', 'quizzes'
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
+  const [isResetting, setIsResetting] = useState(false);
+  const [showResetModal, setShowResetModal] = useState(false);
   const [data, setData] = useState({ leaderboard: [], summary: {} });
   const [activities, setActivities] = useState([]);
   const [activityFilter, setActivityFilter] = useState('all');
@@ -54,6 +58,27 @@ export default function LeaderboardAdmin({ currentUser }) {
     loadLeaderboardData();
   };
 
+  const handleResetAllStudents = async () => {
+    setIsResetting(true);
+    soundFx.playClick();
+    try {
+      const res = await resetAllStudentsApi();
+      if (res && res.success) {
+        soundFx.playCorrect();
+        await loadLeaderboardData();
+        setShowResetModal(false);
+      } else {
+        soundFx.playWrong();
+        alert('Gagal mereset: ' + (res?.message || 'Server error'));
+      }
+    } catch (err) {
+      console.error('Reset students error:', err);
+      soundFx.playWrong();
+    } finally {
+      setIsResetting(false);
+    }
+  };
+
   // Filter students based on search query
   const filteredLeaderboard = (data.leaderboard || []).filter(student => {
     const q = searchQuery.toLowerCase().trim();
@@ -76,17 +101,17 @@ export default function LeaderboardAdmin({ currentUser }) {
   });
 
   return (
-    <div className="space-y-5 sm:space-y-6 pb-8 animate-fade-in">
+    <div className="space-y-4 pb-8 animate-fade-in">
       
-      {/* Top Banner & Header */}
-      <div className="bg-gradient-to-r from-sky-900 via-indigo-900 to-slate-900 rounded-2xl p-4 sm:p-5 text-white shadow-xl relative overflow-hidden border border-sky-700/50">
-        <div className="absolute top-0 right-0 translate-x-8 -translate-y-8 w-64 h-64 bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-1/3 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+      {/* Top Banner */}
+      <div className="bg-gradient-to-r from-sky-600 via-sky-700 to-indigo-800 rounded-2xl p-4 sm:p-5 shadow-sm text-white relative overflow-hidden">
+        <div className="absolute -top-12 -right-12 w-48 h-48 bg-white/5 rounded-full blur-2xl pointer-events-none" />
+        <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-sky-400/10 rounded-full blur-xl pointer-events-none" />
 
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="space-y-2">
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 text-[11px] font-bold border border-amber-400/30">
-              <Crown className="w-3 h-3 text-amber-400" />
+        <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/10 backdrop-blur-md text-sky-200 text-[11px] font-bold border border-white/15">
+              <Crown className="w-3.5 h-3.5 text-amber-300" />
               <span>Panel Pemantauan Guru / Admin</span>
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-1" />
             </div>
@@ -99,8 +124,17 @@ export default function LeaderboardAdmin({ currentUser }) {
             </h1>
           </div>
 
-          {/* Refresh Action */}
-          <div className="flex items-center shrink-0">
+          {/* Action Buttons */}
+          <div className="flex items-center gap-2 shrink-0 flex-wrap">
+            <button
+              onClick={() => { soundFx.playClick(); setShowResetModal(true); }}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 border border-rose-400/30 font-bold text-xs shadow-sm transition-all active:scale-95 cursor-pointer"
+              title="Reset seluruh progres akun siswa (user1-4) kembali ke 0"
+            >
+              <RotateCcw className="w-3.5 h-3.5 text-rose-300" />
+              <span>Reset Siswa (0 Poin)</span>
+            </button>
+
             <button
               onClick={handleRefresh}
               disabled={loading}
@@ -704,6 +738,57 @@ export default function LeaderboardAdmin({ currentUser }) {
             </table>
           </div>
 
+        </div>
+      )}
+
+      {/* Pop-up Dialog: Konfirmasi Reset Seluruh Siswa */}
+      {showResetModal && (
+        <div 
+          onClick={() => setShowResetModal(false)}
+          className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in"
+        >
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white rounded-2xl border-2 border-slate-200 shadow-xl max-w-xs sm:max-w-sm w-full p-5 sm:p-6 relative animate-scale-up space-y-4 text-center"
+          >
+            <button
+              onClick={() => setShowResetModal(false)}
+              className="absolute top-3.5 right-3.5 p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+              title="Batal"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            <div className="w-12 h-12 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center mx-auto shadow-inner border border-rose-200">
+              <RotateCcw className="w-6 h-6" />
+            </div>
+
+            <div className="space-y-1.5">
+              <h3 className="text-lg font-black text-slate-900">
+                Reset Semua Siswa?
+              </h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Apakah kamu yakin ingin mereset seluruh akun siswa (<strong className="text-slate-800">user1, user2, user3, user4</strong>) kembali ke baseline awal 0 poin & 0 koin?
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2 pt-1">
+              <button
+                onClick={() => setShowResetModal(false)}
+                disabled={isResetting}
+                className="w-full py-2 px-3 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-700 font-bold text-xs transition-colors cursor-pointer disabled:opacity-50"
+              >
+                Batal
+              </button>
+              <button
+                onClick={handleResetAllStudents}
+                disabled={isResetting}
+                className="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-extrabold text-xs shadow-sm transition-all cursor-pointer disabled:opacity-50"
+              >
+                {isResetting ? 'Mereset...' : 'Ya, Reset 0'}
+              </button>
+            </div>
+          </div>
         </div>
       )}
 

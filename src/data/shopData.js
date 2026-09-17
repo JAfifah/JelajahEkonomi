@@ -202,6 +202,20 @@ export const AVATAR_SHOP_ITEMS = [
 
   // --- ACCESSORIES (AKSESORIS / GAYA RAMBUT) ---
   {
+    id: 'hair-gundul-bebas',
+    name: 'Gaya Botak / Plontos',
+    category: 'accessories',
+    priorityCategory: 'Primer',
+    priceCoins: 0,
+    pricePoints: 0,
+    description: 'Tampilan kepala plontos bersih tanpa rambut. Tampil natural sejak awal permainan.',
+    unlockedByDefault: true,
+    styleProps: {
+      type: 'hair',
+      id: 'hair-gundul-bebas'
+    }
+  },
+  {
     id: 'hair-rambut-laki',
     name: 'Rambut Anak Laki-Laki',
     category: 'accessories',

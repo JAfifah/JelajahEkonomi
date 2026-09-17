@@ -1,6 +1,6 @@
 import { saveStudentDataApi, logActivityApi } from './apiService';
 
-const STORAGE_KEY = 'kebutuhanquest_student_data_v2';
+const STORAGE_KEY = 'kebutuhanquest_student_data_v4';
 const AUTH_USER_KEY = 'kebutuhanquest_auth_user_v1';
 
 export function getCurrentAuthUser() {
@@ -66,19 +66,19 @@ export const INITIAL_STUDENT_DATA = {
   lastLogin: new Date().toISOString(),
   equipped: {
     skinTone: '#f5c396',
-    hairstyle: 'hair-rambut-laki',
+    hairstyle: 'hair-gundul-bebas',
     hairColor: '#2b2b2b',
     top: 'top-kaos-ips',
     bottom: 'bottom-jeans-biru',
     shoes: 'shoes-sneakers-putih',
-    accessory: 'hair-rambut-laki',
-    accessories: 'hair-rambut-laki'
+    accessory: 'hair-gundul-bebas',
+    accessories: 'hair-gundul-bebas'
   },
   inventory: [
     'top-kaos-ips',
     'bottom-jeans-biru',
     'shoes-sneakers-putih',
-    'hair-rambut-laki'
+    'hair-gundul-bebas'
   ],
   stats: {
     quizzesCompleted: 0,
@@ -96,7 +96,7 @@ export function buildInitialDataForUser(user) {
   if (!user) return INITIAL_STUDENT_DATA;
 
   const isAdmin = user.role === 'admin';
-  const defaultHair = user.avatar?.hairstyle || 'hair-rambut-laki';
+  const defaultHair = user.avatar?.hairstyle || (isAdmin ? 'hair-rambut-laki' : 'hair-gundul-bebas');
 
   // Jika admin: sediakan saldo koin & level untuk testing
   if (isAdmin) {
@@ -183,10 +183,10 @@ export function loadStudentData(targetUser = null) {
     };
 
     // Jika belum ada aksesori/rambut yang dipasang, gunakan default
-    if (!equipped.accessories && !equipped.accessory && (equipped.hairstyle === 'none' || !equipped.hairstyle)) {
-      equipped.accessories = baseInitial.equipped.accessories || 'hair-rambut-laki';
-      equipped.accessory = baseInitial.equipped.accessory || 'hair-rambut-laki';
-      equipped.hairstyle = baseInitial.equipped.hairstyle || 'hair-rambut-laki';
+    if (!equipped.accessories && !equipped.accessory && !equipped.hairstyle) {
+      equipped.accessories = baseInitial.equipped.accessories || 'hair-gundul-bebas';
+      equipped.accessory = baseInitial.equipped.accessory || 'hair-gundul-bebas';
+      equipped.hairstyle = baseInitial.equipped.hairstyle || 'hair-gundul-bebas';
     }
 
     const savedKey = parsed.geminiApiKey;

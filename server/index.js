@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { pool, initDatabase } from './db.js';
+import { resetAllStudents } from './reset_users.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -291,6 +292,17 @@ app.get('/api/admin/activities', async (req, res) => {
     res.json({ success: true, activities: formatted });
   } catch (err) {
     console.error('Admin activities error:', err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// 8. Admin Reset All Students (user1 - user4)
+app.post('/api/admin/reset-students', async (req, res) => {
+  try {
+    await resetAllStudents();
+    res.json({ success: true, message: 'Seluruh akun siswa (user1-4) berhasil direset ke baseline awal 0' });
+  } catch (err) {
+    console.error('Reset students error:', err);
     res.status(500).json({ success: false, message: err.message });
   }
 });

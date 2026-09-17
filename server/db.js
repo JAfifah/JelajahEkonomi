@@ -134,15 +134,15 @@ export async function initDatabase() {
         items_bought: 0,
         equipped: {
           skinTone: '#f5c396',
-          hairstyle: 'hair-rambut-laki',
+          hairstyle: 'hair-gundul-bebas',
           hairColor: '#2b2b2b',
           top: 'top-kaos-ips',
           bottom: 'bottom-jeans-biru',
           shoes: 'shoes-sneakers-putih',
-          accessory: 'hair-rambut-laki',
-          accessories: 'hair-rambut-laki'
+          accessory: 'hair-gundul-bebas',
+          accessories: 'hair-gundul-bebas'
         },
-        inventory: ['top-kaos-ips', 'bottom-jeans-biru', 'shoes-sneakers-putih', 'hair-rambut-laki'],
+        inventory: ['top-kaos-ips', 'bottom-jeans-biru', 'shoes-sneakers-putih', 'hair-gundul-bebas'],
         badges: defaultBadges,
         completed_tasks: []
       },
@@ -163,15 +163,15 @@ export async function initDatabase() {
         items_bought: 0,
         equipped: {
           skinTone: '#fce3cf',
-          hairstyle: 'hair-rambut-panjang',
+          hairstyle: 'hair-gundul-bebas',
           hairColor: '#4a2e18',
           top: 'top-kaos-ips',
           bottom: 'bottom-rok-biru',
           shoes: 'shoes-sneakers-putih',
-          accessory: 'hair-rambut-panjang',
-          accessories: 'hair-rambut-panjang'
+          accessory: 'hair-gundul-bebas',
+          accessories: 'hair-gundul-bebas'
         },
-        inventory: ['top-kaos-ips', 'bottom-rok-biru', 'shoes-sneakers-putih', 'hair-rambut-panjang'],
+        inventory: ['top-kaos-ips', 'bottom-rok-biru', 'shoes-sneakers-putih', 'hair-gundul-bebas'],
         badges: defaultBadges,
         completed_tasks: []
       },
@@ -192,15 +192,15 @@ export async function initDatabase() {
         items_bought: 0,
         equipped: {
           skinTone: '#d99768',
-          hairstyle: 'hair-rambut-pendek',
+          hairstyle: 'hair-gundul-bebas',
           hairColor: '#1a1a1a',
           top: 'top-kaos-ips',
           bottom: 'bottom-jeans-biru',
           shoes: 'shoes-sneakers-putih',
-          accessory: 'hair-rambut-pendek',
-          accessories: 'hair-rambut-pendek'
+          accessory: 'hair-gundul-bebas',
+          accessories: 'hair-gundul-bebas'
         },
-        inventory: ['top-kaos-ips', 'bottom-jeans-biru', 'shoes-sneakers-putih', 'hair-rambut-pendek'],
+        inventory: ['top-kaos-ips', 'bottom-jeans-biru', 'shoes-sneakers-putih', 'hair-gundul-bebas'],
         badges: defaultBadges,
         completed_tasks: []
       },
@@ -221,15 +221,15 @@ export async function initDatabase() {
         items_bought: 0,
         equipped: {
           skinTone: '#c68642',
-          hairstyle: 'hair-rambut-mohawk',
+          hairstyle: 'hair-gundul-bebas',
           hairColor: '#000000',
           top: 'top-kaos-ips',
           bottom: 'bottom-jeans-biru',
           shoes: 'shoes-sneakers-putih',
-          accessory: 'hair-rambut-mohawk',
-          accessories: 'hair-rambut-mohawk'
+          accessory: 'hair-gundul-bebas',
+          accessories: 'hair-gundul-bebas'
         },
-        inventory: ['top-kaos-ips', 'bottom-jeans-biru', 'shoes-sneakers-putih', 'hair-rambut-mohawk'],
+        inventory: ['top-kaos-ips', 'bottom-jeans-biru', 'shoes-sneakers-putih', 'hair-gundul-bebas'],
         badges: defaultBadges,
         completed_tasks: []
       }
