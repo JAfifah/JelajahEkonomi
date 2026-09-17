@@ -12,10 +12,10 @@ import { soundFx } from '../utils/audio';
 
 export default function Sidebar({ activeTab, setActiveTab, currentUser, onLogout }) {
   const navItems = [
-    { id: 'dashboard', label: 'My Map', icon: Home, color: 'text-sky-600' },
-    { id: 'materi', label: 'Course Hub', icon: BookOpen, color: 'text-blue-600' },
-    { id: 'ai-mission', label: 'Photo Missions', icon: Camera, color: 'text-cyan-600' },
-    { id: 'shop', label: 'Avatar Wardrobe', icon: ShoppingBag, color: 'text-orange-500' },
+    { id: 'dashboard', label: 'Jelajah Peta', icon: Home, color: 'text-sky-600' },
+    { id: 'materi', label: 'Pusat Belajar', icon: BookOpen, color: 'text-blue-600' },
+    { id: 'ai-mission', label: 'Misi Foto', icon: Camera, color: 'text-cyan-600' },
+    { id: 'shop', label: 'Lemari Avatar', icon: ShoppingBag, color: 'text-orange-500' },
     { id: 'profile', label: 'Profil', icon: Trophy, color: 'text-amber-500' }
   ];
 

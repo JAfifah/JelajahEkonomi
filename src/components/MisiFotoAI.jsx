@@ -339,9 +339,6 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
           <h3 className="text-xl font-black text-slate-900">
             Daftar 7 Misi Foto Pulau Kegiatan Ekonomi
           </h3>
-          <span className="text-xs font-extrabold px-3 py-1 rounded-full bg-slate-100 text-slate-700 border border-slate-200">
-            Klik Misi untuk Buka Pop-Up Scanner
-          </span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -420,11 +417,11 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
       {/* POP-UP MODAL: MISSION DETAIL & AI SCANNER INTERFACE */}
       {/* ========================================================================= */}
       {activeModalMission && (
-        <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto animate-fade-in">
-          <div className="bg-white rounded-3xl border border-slate-200 shadow-2xl max-w-2xl w-full p-6 sm:p-8 space-y-6 animate-scale-up my-auto max-h-[90vh] overflow-y-auto relative">
+        <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-hidden animate-fade-in">
+          <div className="bg-white rounded-3xl border border-slate-200 shadow-2xl max-w-2xl w-full flex flex-col max-h-[90vh] overflow-hidden relative animate-scale-up my-auto">
             
-            {/* Modal Header */}
-            <div className="flex items-start justify-between border-b border-slate-100 pb-4">
+            {/* Modal Header (Fixed at top inside rounded card) */}
+            <div className="flex items-start justify-between border-b border-slate-100 px-6 sm:px-8 py-5 shrink-0 bg-white z-10">
               <div className="space-y-1">
                 <span className="text-xs font-black uppercase text-emerald-600 tracking-wider">
                   {activeModalMission.locationName}
@@ -442,8 +439,10 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
               </button>
             </div>
 
-            {/* Mission Task Explanation Banner */}
-            <div className="bg-emerald-50/70 border border-emerald-200 rounded-2xl p-4 sm:p-5 space-y-3">
+            {/* Scrollable Modal Body */}
+            <div className="flex-1 overflow-y-auto px-6 sm:px-8 py-6 space-y-6 modal-scrollbar">
+              {/* Mission Task Explanation Banner */}
+              <div className="bg-emerald-50/70 border border-emerald-200 rounded-2xl p-4 sm:p-5 space-y-3">
               <div className="space-y-1">
                 <p className="text-xs sm:text-sm text-slate-800 leading-relaxed font-medium">
                   <strong className="text-emerald-800 font-extrabold text-sm sm:text-base block mb-1">Tugas:</strong>
@@ -637,6 +636,7 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
               </div>
             )}
 
+            </div>
           </div>
         </div>
       )}

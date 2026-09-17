@@ -35,10 +35,10 @@ export default function Navbar({
   };
 
   const navItems = [
-    { id: 'dashboard', label: 'My Map', icon: Map, color: 'text-amber-400' },
-    { id: 'materi', label: 'Course Hub', icon: BookOpen, color: 'text-blue-400' },
-    { id: 'ai-mission', label: 'Photo Missions', icon: Camera, color: 'text-emerald-400' },
-    { id: 'shop', label: 'Avatar Wardrobe', icon: ShoppingBag, color: 'text-purple-400' },
+    { id: 'dashboard', label: 'Jelajah Peta', icon: Map, color: 'text-amber-400' },
+    { id: 'materi', label: 'Pusat Belajar', icon: BookOpen, color: 'text-blue-400' },
+    { id: 'ai-mission', label: 'Misi Foto', icon: Camera, color: 'text-emerald-400' },
+    { id: 'shop', label: 'Lemari Avatar', icon: ShoppingBag, color: 'text-purple-400' },
     { id: 'profile', label: 'Profil', icon: User, color: 'text-pink-400' }
   ];
 
