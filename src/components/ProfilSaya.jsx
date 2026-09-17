@@ -66,9 +66,9 @@ export default function ProfilSaya({ student, updateStudentData, currentUser, on
       <div className="bg-gradient-to-r from-white via-indigo-50/60 to-purple-50/60 border border-slate-200 p-4 sm:p-5 rounded-2xl shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
         
         <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
-          {/* Avatar Preview */}
-          <div className="shrink-0 flex items-center justify-center">
-            <AvatarCanvas equipped={student.equipped} size="sm" animated={true} />
+          {/* Avatar Preview Portrait Frame */}
+          <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-2xl bg-gradient-to-b from-indigo-100/80 via-white to-purple-50 border-2 border-indigo-200/80 overflow-hidden flex items-center justify-center shrink-0 shadow-sm">
+            <AvatarCanvas equipped={student.equipped} size="md" viewMode="half-body" animated={true} />
           </div>
 
           <div className="space-y-1">

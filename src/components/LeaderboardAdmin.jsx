@@ -128,10 +128,10 @@ export default function LeaderboardAdmin({ currentUser }) {
           <div className="flex items-center gap-2 shrink-0 flex-wrap">
             <button
               onClick={() => { soundFx.playClick(); setShowResetModal(true); }}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 border border-rose-400/30 font-bold text-xs shadow-sm transition-all active:scale-95 cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-white hover:bg-rose-50 text-rose-600 border border-white font-black text-xs shadow-md hover:shadow-lg transition-all active:scale-95 cursor-pointer"
               title="Reset seluruh progres akun siswa (user1-4) kembali ke 0"
             >
-              <RotateCcw className="w-3.5 h-3.5 text-rose-300" />
+              <RotateCcw className="w-3.5 h-3.5 text-rose-600" />
               <span>Reset Siswa (0 Poin)</span>
             </button>
 

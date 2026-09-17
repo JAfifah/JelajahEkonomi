@@ -42,17 +42,18 @@ export default function AvatarCanvas({
 
   // Effective view mode: size 'sm' defaults to half-body (head to chest)
   const effectiveViewMode = viewMode || (size === 'sm' ? 'half-body' : 'full');
+  const isHalfBody = effectiveViewMode === 'half-body' || effectiveViewMode === 'bust';
 
   // Size mapping
   const sizeMap = {
     sm: { width: 44, height: 44 },
-    md: { width: 140, height: 250 },
-    lg: { width: 220, height: 390 },
+    md: isHalfBody ? { width: 76, height: 76 } : { width: 140, height: 250 },
+    lg: isHalfBody ? { width: 120, height: 120 } : { width: 220, height: 390 },
     xl: { width: 300, height: 530 }
   };
 
   const { width, height } = sizeMap[size] || sizeMap.lg;
-  const viewBox = (effectiveViewMode === 'half-body' || effectiveViewMode === 'bust')
+  const viewBox = isHalfBody
     ? '25 0 190 190'
     : '0 0 240 420';
 
@@ -62,7 +63,7 @@ export default function AvatarCanvas({
         width={width}
         height={height}
         viewBox={viewBox}
-        className="filter drop-shadow-xl overflow-visible transition-all duration-300"
+        className={`filter drop-shadow-xl ${isHalfBody ? 'overflow-hidden rounded-full' : 'overflow-visible'} transition-all duration-300`}
       >
         <defs>
           <linearGradient id="skinGradient" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -200,15 +201,17 @@ export default function AvatarCanvas({
         </defs>
 
         {/* --- SHADOW BASE ON GROUND --- */}
-        <ellipse 
-          cx="120" 
-          cy="410" 
-          rx="65" 
-          ry="8" 
-          fill="#000000" 
-          opacity="0.16" 
-          style={animated ? { transformOrigin: '120px 410px', animation: 'avatarShadowPulse 2.6s ease-in-out infinite' } : {}}
-        />
+        {!isHalfBody && (
+          <ellipse 
+            cx="120" 
+            cy="410" 
+            rx="65" 
+            ry="8" 
+            fill="#000000" 
+            opacity="0.16" 
+            style={animated ? { transformOrigin: '120px 410px', animation: 'avatarShadowPulse 2.6s ease-in-out infinite' } : {}}
+          />
+        )}
 
         {/* --- ANIMATED CHARACTER BODY (Idle Breathing Float) --- */}
         <g style={animated ? { animation: 'avatarIdleBreath 2.6s ease-in-out infinite' } : {}}>
@@ -220,32 +223,36 @@ export default function AvatarCanvas({
           {renderBackHair(activeEquipped.accessories || activeEquipped.accessory || activeEquipped.hairstyle, hairColor)}
 
           {/* --- LEGS & BARE FEET BASE --- */}
-          {/* Left Leg & Foot */}
-          <path
-            d="M 84 270 L 82 342 C 80 353 64 357 48 361 C 42 363 42 368 48 368 L 104 368 C 108 368 108 356 106 342 L 106 270 Z"
-            fill="url(#skinGradient)"
-            stroke={adjustColor(skinTone, -30)}
-            strokeWidth="1.2"
-            strokeLinejoin="round"
-          />
-          {/* Right Leg & Foot */}
-          <path
-            d="M 134 270 L 134 342 C 132 356 132 368 136 368 L 192 368 C 198 368 198 363 192 361 C 176 357 158 353 156 342 L 156 270 Z"
-            fill="url(#skinGradient)"
-            stroke={adjustColor(skinTone, -30)}
-            strokeWidth="1.2"
-            strokeLinejoin="round"
-          />
-          
-          {/* Knees Shader */}
-          <ellipse cx="94" cy="305" rx="5" ry="3" fill="#f43f5e" opacity="0.25" />
-          <ellipse cx="146" cy="305" rx="5" ry="3" fill="#f43f5e" opacity="0.25" />
+          {!isHalfBody && (
+            <>
+              {/* Left Leg & Foot */}
+              <path
+                d="M 84 270 L 82 342 C 80 353 64 357 48 361 C 42 363 42 368 48 368 L 104 368 C 108 368 108 356 106 342 L 106 270 Z"
+                fill="url(#skinGradient)"
+                stroke={adjustColor(skinTone, -30)}
+                strokeWidth="1.2"
+                strokeLinejoin="round"
+              />
+              {/* Right Leg & Foot */}
+              <path
+                d="M 134 270 L 134 342 C 132 356 132 368 136 368 L 192 368 C 198 368 198 363 192 361 C 176 357 158 353 156 342 L 156 270 Z"
+                fill="url(#skinGradient)"
+                stroke={adjustColor(skinTone, -30)}
+                strokeWidth="1.2"
+                strokeLinejoin="round"
+              />
+              
+              {/* Knees Shader */}
+              <ellipse cx="94" cy="305" rx="5" ry="3" fill="#f43f5e" opacity="0.25" />
+              <ellipse cx="146" cy="305" rx="5" ry="3" fill="#f43f5e" opacity="0.25" />
 
-          {/* --- BOTTOMS (SHORTS / SKIRT / PANTS) --- */}
-          {renderBottoms(activeEquipped.bottoms || activeEquipped.bottom)}
+              {/* --- BOTTOMS (SHORTS / SKIRT / PANTS) --- */}
+              {renderBottoms(activeEquipped.bottoms || activeEquipped.bottom)}
 
-          {/* --- SHOES --- */}
-          {renderShoes(activeEquipped.shoes)}
+              {/* --- SHOES --- */}
+              {renderShoes(activeEquipped.shoes)}
+            </>
+          )}
 
           {/* --- ARMS BASE --- */}
           {/* Left Arm (Relaxed) */}
