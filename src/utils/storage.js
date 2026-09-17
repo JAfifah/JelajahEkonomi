@@ -86,7 +86,7 @@ export const INITIAL_STUDENT_DATA = {
   },
   badges: BASE_BADGES.map(b => ({ ...b, unlocked: false })),
   completedTasks: [],
-  geminiApiKey: 'sk-aba05541f9164d44-bhi1xh-a5e4130e'
+  geminiApiKey: 'sk-04ded80af82184d6-xji11m-80ccc120'
 };
 
 export function buildInitialDataForUser(user) {
@@ -184,7 +184,7 @@ export function loadStudentData(targetUser = null) {
     }
 
     const savedKey = parsed.geminiApiKey;
-    const finalApiKey = (!savedKey || savedKey.startsWith('AQ.') || savedKey.startsWith('AIza')) 
+    const finalApiKey = (!savedKey || savedKey.startsWith('AQ.') || savedKey.startsWith('AIza') || savedKey === 'sk-aba05541f9164d44-bhi1xh-a5e4130e') 
       ? baseInitial.geminiApiKey 
       : savedKey;
 

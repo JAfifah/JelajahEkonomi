@@ -556,7 +556,7 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
               <div className={`p-6 rounded-3xl space-y-4 animate-fade-in shadow-sm border ${
                 analysisResult.isValid ? 'bg-emerald-50/70 border-emerald-300' : 'bg-rose-50/70 border-rose-300'
               }`}>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between gap-2 flex-wrap">
                   <div className="flex items-center gap-2 font-black text-sm">
                     {analysisResult.isValid ? (
                       <>
@@ -570,6 +570,13 @@ export default function MisiFotoAI({ student, updateStudentData, onOpenApiKeyMod
                       </>
                     )}
                   </div>
+                  <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full border shrink-0 ${
+                    analysisResult.isRealAi 
+                      ? 'bg-indigo-50 border-indigo-200 text-indigo-700' 
+                      : 'bg-amber-50 border-amber-200 text-amber-700'
+                  }`}>
+                    {analysisResult.isRealAi ? '🤖 9Router AI Terhubung' : '⚡ Mode Simulasi Offline'}
+                  </span>
                 </div>
 
                 <div className="space-y-2 border-t border-b border-slate-200/80 py-4">

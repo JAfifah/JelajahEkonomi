@@ -3,7 +3,7 @@
  * With Strict Object Verification & Smart Vision Inspection
  */
 
-const DEFAULT_API_KEY = 'sk-aba05541f9164d44-bhi1xh-a5e4130e';
+const DEFAULT_API_KEY = 'sk-04ded80af82184d6-xji11m-80ccc120';
 
 export async function analyzeEconomicImage({ imageBase64, mimeType, missionType, apiKey }) {
   const activeKey = (apiKey && apiKey.trim().length > 10) ? apiKey.trim() : DEFAULT_API_KEY;
@@ -64,6 +64,42 @@ OUTPUTKAN HANYA JSON MURNI TANPA MARKDOWN (TIDAK BOLEH ADA \`\`\`json ATAU TEKS 
 `;
 }
 
+export async function test9RouterConnection(apiKey, customUrl = '') {
+  const activeKey = (apiKey && apiKey.trim().length > 5) ? apiKey.trim() : DEFAULT_API_KEY;
+  const savedUrl = customUrl || (typeof localStorage !== 'undefined' ? localStorage.getItem('kebutuhanquest_9router_url') : '') || '';
+  const cleanUrl = savedUrl.trim().replace(/\/+$/, '');
+
+  const endpoints = [
+    ...(cleanUrl ? [`${cleanUrl}/v1/chat/completions`] : []),
+    '/v1/chat/completions',
+    'http://192.168.100.70:20128/v1/chat/completions',
+    'http://localhost:20128/v1/chat/completions'
+  ];
+
+  for (const endpoint of endpoints) {
+    try {
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${activeKey}`
+        },
+        body: JSON.stringify({
+          model: 'ag/gemini-3-flash',
+          messages: [{ role: 'user', content: 'Ping' }],
+          max_tokens: 5
+        })
+      });
+      if (res.ok) {
+        return { success: true, endpoint, message: `Sukses terhubung ke 9Router di ${endpoint}` };
+      }
+    } catch (e) {
+      // try next
+    }
+  }
+  return { success: false, message: 'Tidak dapat tersambung ke server 9Router. Periksa apakah laptop server aktif di jaringan WiFi.' };
+}
+
 async function call9RouterAPI({ imageBase64, mimeType, missionType, apiKey }) {
   const cleanBase64 = imageBase64.replace(/^data:image\/\w+;base64,/, '');
   const fullBase64 = imageBase64.startsWith('data:') 
@@ -72,19 +108,24 @@ async function call9RouterAPI({ imageBase64, mimeType, missionType, apiKey }) {
 
   const promptText = getPromptText(missionType);
 
+  const savedUrl = typeof localStorage !== 'undefined' ? (localStorage.getItem('kebutuhanquest_9router_url') || '') : '';
+  const cleanUrl = savedUrl.trim().replace(/\/+$/, '');
+
   const endpoints = [
+    ...(cleanUrl ? [`${cleanUrl}/v1/chat/completions`] : []),
     '/v1/chat/completions',
+    'http://192.168.100.70:20128/v1/chat/completions',
     'http://localhost:20128/v1/chat/completions',
     'http://127.0.0.1:20128/v1/chat/completions'
   ];
 
   const models = [
-    'ag/gemini-3.6-flash-high',
-    'ag/gemini-3.8-flash',
-    'ag/gemini-3.7-flash-high',
-    'ag/gemini-3.5-flash-high',
     'ag/gemini-3-flash',
-    'cx/gpt-5.4-mini'
+    'cx/gpt-5.4-mini',
+    'ag/gemini-3.8-flash',
+    'ag/gemini-3.6-flash-high',
+    'ag/gemini-3.7-flash-high',
+    'ag/gemini-3.5-flash-high'
   ];
 
   for (const endpoint of endpoints) {
@@ -118,7 +159,7 @@ async function call9RouterAPI({ imageBase64, mimeType, missionType, apiKey }) {
           const responseText = await response.text();
           let finalContentText = '';
 
-          if (responseText.includes('data: {')) {
+          if (responseText.includes('data:')) {
             const lines = responseText.split('\n');
             for (const line of lines) {
               if (line.startsWith('data: ') && !line.includes('[DONE]')) {

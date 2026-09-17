@@ -12,7 +12,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/v1': {
-        target: 'http://localhost:20128',
+        target: 'http://192.168.100.70:20128',
         changeOrigin: true,
         secure: false,
       }
