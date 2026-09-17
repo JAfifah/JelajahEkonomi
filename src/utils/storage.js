@@ -1,3 +1,5 @@
+import { saveStudentDataApi, logActivityApi } from './apiService';
+
 const STORAGE_KEY = 'kebutuhanquest_student_data_v2';
 const AUTH_USER_KEY = 'kebutuhanquest_auth_user_v1';
 
@@ -51,10 +53,10 @@ export const BASE_BADGES = [
 ];
 
 export const INITIAL_STUDENT_DATA = {
-  name: "Budi Pratama",
+  name: "Kelompok 1",
   username: "user1",
   role: "siswa",
-  schoolClass: 'Kelas 7A - SMP Negeri 1',
+  schoolClass: '',
   level: 1,
   xp: 0,
   xpToNextLevel: 1000,
@@ -86,6 +88,7 @@ export const INITIAL_STUDENT_DATA = {
   },
   badges: BASE_BADGES.map(b => ({ ...b, unlocked: false })),
   completedTasks: [],
+  completedIslands: [],
   geminiApiKey: 'sk-04ded80af82184d6-xji11m-80ccc120'
 };
 
@@ -121,7 +124,9 @@ export function buildInitialDataForUser(user) {
         'bottom-jeans-biru',
         'shoes-sneakers-putih',
         defaultHair
-      ]
+      ],
+      completedTasks: [],
+      completedIslands: []
     };
   }
 
@@ -146,6 +151,7 @@ export function buildInitialDataForUser(user) {
     },
     badges: BASE_BADGES.map(b => ({ ...b, unlocked: false })),
     completedTasks: [],
+    completedIslands: [],
     equipped: user.avatar ? { ...INITIAL_STUDENT_DATA.equipped, ...user.avatar } : INITIAL_STUDENT_DATA.equipped,
     inventory: [
       'top-kaos-ips',
@@ -188,16 +194,22 @@ export function loadStudentData(targetUser = null) {
       ? baseInitial.geminiApiKey 
       : savedKey;
 
+    const legacyNames = ['Budi Pratama', 'Citra Lestari', 'Dimas Anggara', 'Ambatuskul'];
+    const currentName = (legacyNames.includes(parsed.name) || !parsed.name)
+      ? (targetUser?.name || baseInitial.name)
+      : parsed.name;
+
     return {
       ...baseInitial,
       ...parsed,
-      name: parsed.name || baseInitial.name,
+      name: currentName,
       username: baseInitial.username,
       role: baseInitial.role,
       schoolClass: parsed.schoolClass || baseInitial.schoolClass,
       inventory: Array.from(inventorySet),
       equipped,
       completedTasks: parsed.completedTasks || baseInitial.completedTasks,
+      completedIslands: parsed.completedIslands || [],
       geminiApiKey: finalApiKey,
       stats: { ...baseInitial.stats, ...(parsed.stats || {}) }
     };
@@ -212,7 +224,15 @@ export function saveStudentData(data, targetUser = null) {
     const key = getUserStorageKey(targetUser);
     localStorage.setItem(key, JSON.stringify(data));
   } catch (e) {
-    console.error('Failed to save student data:', e);
+    console.error('Failed to save student data locally:', e);
+  }
+
+  // Asynchronously persist to MySQL database
+  const uname = targetUser?.username || data?.username;
+  if (uname) {
+    saveStudentDataApi(data, uname).catch(err => {
+      console.warn('Background sync to MySQL failed:', err);
+    });
   }
 }
 
@@ -222,42 +242,67 @@ export function resetStudentData(targetUser = null) {
   return initial;
 }
 
-export function toggleTaskCompletion(student, taskObj) {
+/**
+ * Menyelesaikan satu task individu dengan proteksi reward satu kali.
+ * Jika task sudah selesai sebelumnya, koin dan XP TIDAK AKAN bertambah lagi.
+ */
+export function completeIndividualTask(student, taskObj, parentMission = null) {
+  if (!student || !taskObj) return { updatedStudent: student, isNew: false };
   const currentCompleted = student.completedTasks || [];
-  const isAlreadyDone = currentCompleted.includes(taskObj.id);
 
-  let updatedCompleted;
-  let newCoins = student.coins;
-  let newXp = student.xp;
-  let newPoints = student.points;
-
-  if (isAlreadyDone) {
-    // Uncheck task
-    updatedCompleted = currentCompleted.filter(id => id !== taskObj.id);
-  } else {
-    // Check task & reward
-    updatedCompleted = [...currentCompleted, taskObj.id];
-    newCoins += taskObj.rewardCoins !== undefined ? taskObj.rewardCoins : 5;
-    newXp += taskObj.rewardXp || 20;
-    newPoints += taskObj.rewardXp || 20;
+  // Proteksi: Jangan beri reward ganda jika sudah tercatat selesai
+  if (currentCompleted.includes(taskObj.id)) {
+    return { updatedStudent: student, isNew: false };
   }
 
-  // Check Master Badge
-  let newLevel = student.level;
-  let newXpToNext = student.xpToNextLevel;
-  if (newXp >= newXpToNext) {
+  const updatedCompleted = [...currentCompleted, taskObj.id];
+  const rewardCoins = taskObj.rewardCoins !== undefined ? taskObj.rewardCoins : 10;
+  const rewardXp = taskObj.rewardXp !== undefined ? taskObj.rewardXp : 25;
+
+  let newCoins = (student.coins || 0) + rewardCoins;
+  let newXp = (student.xp || 0) + rewardXp;
+  let newPoints = (student.points || 0) + rewardXp;
+  let newLevel = student.level || 1;
+  let newXpToNext = student.xpToNextLevel || 1000;
+
+  while (newXp >= newXpToNext) {
     newLevel += 1;
     newXpToNext += 100;
   }
 
+  // Cek apakah dengan selesainya task ini, seluruh task pulau juga tuntas
+  let updatedCompletedIslands = [...(student.completedIslands || [])];
+  let islandBonusAwarded = false;
+  let completedIslandInfo = null;
+
+  if (parentMission && parentMission.tasks) {
+    const isAllIslandTasksDone = parentMission.tasks.every(t => updatedCompleted.includes(t.id));
+    if (isAllIslandTasksDone && !updatedCompletedIslands.includes(parentMission.id)) {
+      updatedCompletedIslands.push(parentMission.id);
+      const ISLAND_BONUS_COINS = 50;
+      const ISLAND_BONUS_XP = 50;
+      newCoins += ISLAND_BONUS_COINS;
+      newXp += ISLAND_BONUS_XP;
+      newPoints += ISLAND_BONUS_XP;
+
+      while (newXp >= newXpToNext) {
+        newLevel += 1;
+        newXpToNext += 100;
+      }
+      islandBonusAwarded = true;
+      completedIslandInfo = parentMission;
+    }
+  }
+
+  // Lencana master jika semua 21 tugas selesai
   const updatedBadges = (student.badges || []).map(b => {
-    if (b.id === 'b7' && updatedCompleted.length >= 28) {
+    if (b.id === 'b7' && updatedCompleted.length >= 21) {
       return { ...b, unlocked: true };
     }
     return b;
   });
 
-  return {
+  const updatedStudent = {
     ...student,
     coins: newCoins,
     xp: newXp,
@@ -265,7 +310,116 @@ export function toggleTaskCompletion(student, taskObj) {
     level: newLevel,
     xpToNextLevel: newXpToNext,
     completedTasks: updatedCompleted,
+    completedIslands: updatedCompletedIslands,
     badges: updatedBadges
   };
+
+  saveStudentData(updatedStudent);
+
+  // Log ke MySQL
+  logActivityApi({
+    username: student.username,
+    studentName: student.name,
+    activityType: 'task',
+    title: `Selesai Tugas: ${taskObj.text}`,
+    xpEarned: rewardXp,
+    coinsEarned: rewardCoins,
+    pointsEarned: rewardXp,
+    details: { taskId: taskObj.id, parentMissionId: parentMission?.id }
+  });
+
+  if (islandBonusAwarded && completedIslandInfo) {
+    logActivityApi({
+      username: student.username,
+      studentName: student.name,
+      activityType: 'island_completed',
+      title: `Tuntas 100% Seluruh Misi: ${completedIslandInfo.locationName || completedIslandInfo.title}`,
+      xpEarned: 50,
+      coinsEarned: 50,
+      pointsEarned: 50,
+      details: { islandId: completedIslandInfo.id }
+    });
+  }
+
+  return { updatedStudent, isNew: true, islandBonusAwarded, completedIslandInfo };
+}
+
+/**
+ * Pengecekan otomatis jika ada pulau yang seluruh task-nya sudah selesai
+ * namun bonus penyelesaian pulau belum tercatat (proteksi reward 1x per pulau).
+ */
+export function checkAndAwardCompletedIslands(student, missionsList = []) {
+  if (!student || !missionsList || missionsList.length === 0) {
+    return { updatedStudent: student, newlyCompletedIslands: [] };
+  }
+
+  const currentCompleted = student.completedTasks || [];
+  let updatedCompletedIslands = [...(student.completedIslands || [])];
+  let newCoins = student.coins || 0;
+  let newXp = student.xp || 0;
+  let newPoints = student.points || 0;
+  let newLevel = student.level || 1;
+  let newXpToNext = student.xpToNextLevel || 1000;
+  const newlyCompletedIslands = [];
+
+  missionsList.forEach(mission => {
+    const mTasks = mission.tasks || [];
+    if (mTasks.length > 0 && mTasks.every(t => currentCompleted.includes(t.id))) {
+      if (!updatedCompletedIslands.includes(mission.id)) {
+        updatedCompletedIslands.push(mission.id);
+        const ISLAND_BONUS_COINS = 50;
+        const ISLAND_BONUS_XP = 50;
+        newCoins += ISLAND_BONUS_COINS;
+        newXp += ISLAND_BONUS_XP;
+        newPoints += ISLAND_BONUS_XP;
+
+        while (newXp >= newXpToNext) {
+          newLevel += 1;
+          newXpToNext += 100;
+        }
+
+        newlyCompletedIslands.push(mission);
+      }
+    }
+  });
+
+  if (newlyCompletedIslands.length === 0) {
+    return { updatedStudent: student, newlyCompletedIslands: [] };
+  }
+
+  const updatedStudent = {
+    ...student,
+    coins: newCoins,
+    xp: newXp,
+    points: newPoints,
+    level: newLevel,
+    xpToNextLevel: newXpToNext,
+    completedIslands: updatedCompletedIslands
+  };
+
+  saveStudentData(updatedStudent);
+
+  newlyCompletedIslands.forEach(mission => {
+    logActivityApi({
+      username: student.username,
+      studentName: student.name,
+      activityType: 'island_completed',
+      title: `Tuntas 100% Seluruh Misi: ${mission.locationName || mission.title}`,
+      xpEarned: 50,
+      coinsEarned: 50,
+      pointsEarned: 50,
+      details: { islandId: mission.id }
+    });
+  });
+
+  return { updatedStudent, newlyCompletedIslands };
+}
+
+/**
+ * Backward compatibility untuk toggleTaskCompletion dengan proteksi tidak berulang
+ */
+export function toggleTaskCompletion(student, taskObj) {
+  const result = completeIndividualTask(student, taskObj);
+  return result.updatedStudent;
 }
 

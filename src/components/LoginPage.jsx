@@ -10,6 +10,8 @@ import {
 } from 'lucide-react';
 import { authenticateUser } from '../data/accountsData';
 import { soundFx } from '../utils/audio';
+import { loginUserApi } from '../utils/apiService';
+import { saveStudentData } from '../utils/storage';
 import loginBg from '../assets/login_bg.jpg';
 import loginIslands from '../assets/login_islands.jpg';
 
@@ -21,7 +23,7 @@ export default function LoginPage({ onLogin }) {
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e?.preventDefault();
     setErrorMessage('');
     
@@ -34,7 +36,26 @@ export default function LoginPage({ onLogin }) {
     setIsLoading(true);
     soundFx.playClick();
 
-    setTimeout(() => {
+    try {
+      // 1. Try MySQL Database authentication first
+      const apiResult = await loginUserApi(username.trim(), password.trim());
+      if (apiResult && apiResult.success) {
+        soundFx.playCorrect();
+        if (apiResult.studentData) {
+          saveStudentData(apiResult.studentData, apiResult.user);
+        }
+        onLogin(apiResult.user, rememberMe);
+        return;
+      }
+
+      if (apiResult && apiResult.success === false && apiResult.message) {
+        soundFx.playWrong();
+        setErrorMessage(apiResult.message);
+        setIsLoading(false);
+        return;
+      }
+
+      // 2. Fallback to offline local authentication if server is unreachable
       const result = authenticateUser(username, password);
       if (result.success) {
         soundFx.playCorrect();
@@ -44,7 +65,18 @@ export default function LoginPage({ onLogin }) {
         setErrorMessage('Username atau kata sandi salah. Silakan periksa kembali.');
         setIsLoading(false);
       }
-    }, 250);
+    } catch (err) {
+      console.error('Login error:', err);
+      const result = authenticateUser(username, password);
+      if (result.success) {
+        soundFx.playCorrect();
+        onLogin(result.user, rememberMe);
+      } else {
+        soundFx.playWrong();
+        setErrorMessage('Username atau kata sandi salah. Silakan periksa kembali.');
+        setIsLoading(false);
+      }
+    }
   };
 
   return (

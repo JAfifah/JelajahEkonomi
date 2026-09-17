@@ -4,6 +4,7 @@ import { QUIZ_LEVELS } from '../data/kuisData';
 import { MISSIONS_DATA } from '../data/missionData';
 import { toggleTaskCompletion } from '../utils/storage';
 import { soundFx } from '../utils/audio';
+import { logActivityApi } from '../utils/apiService';
 import confetti from 'canvas-confetti';
 import { 
   BookOpen, 
@@ -241,6 +242,17 @@ export default function MateriKuis({
       completedTasks: updatedCompleted,
       badges: updatedBadges
     });
+
+    logActivityApi({
+      username: student.username,
+      studentName: student.name,
+      activityType: 'materi',
+      title: `Menyelesaikan Modul: ${currentMateri.title}`,
+      xpEarned: newXp - student.xp,
+      coinsEarned: newCoins - student.coins,
+      pointsEarned: newPoints - student.points,
+      details: { materiId: currentMateri.id }
+    });
   };
 
   // Voice Narration handler using Web Speech API
@@ -326,57 +338,127 @@ export default function MateriKuis({
       soundFx.playWrong();
     }
 
+    const updatedUserAnswers = [
+      ...activeQuizState.userAnswers, 
+      { questionId: q.id, selected: activeQuizState.selectedOption, isCorrect }
+    ];
+    const correctCount = updatedUserAnswers.filter(a => a.isCorrect).length;
+    const totalQ = activeQuizState.level.questions.length;
+    const currentPercentage = Math.round((correctCount / totalQ) * 100);
+
     setActiveQuizState(prev => ({
       ...prev,
       showExplanation: true,
-      score: isCorrect ? prev.score + 20 : prev.score,
-      userAnswers: [...prev.userAnswers, { questionId: q.id, selected: prev.selectedOption, isCorrect }]
+      score: currentPercentage,
+      userAnswers: updatedUserAnswers
     }));
   };
 
   const handleNextQuestion = () => {
     soundFx.playClick();
     const nextIdx = activeQuizState.currentQuestionIndex + 1;
-    if (nextIdx >= activeQuizState.level.questions.length) {
-      const finalScore = activeQuizState.score;
-      const rewardCoins = activeQuizState.level.rewardCoins;
-      const rewardXp = activeQuizState.level.rewardXp;
+    const totalQuestions = activeQuizState.level.questions.length;
 
-      const newXp = student.xp + rewardXp;
-      let newLevel = student.level;
-      let newXpToNext = student.xpToNextLevel;
+    if (nextIdx >= totalQuestions) {
+      // Hitung persentase dan jumlah jawaban benar dari total soal
+      const correctAnswersCount = activeQuizState.userAnswers.filter(a => a.isCorrect).length;
+      const minRequiredCorrect = Math.ceil(totalQuestions * 0.6); // 60% dari jumlah soal
+      const percentageCorrect = Math.round((correctAnswersCount / totalQuestions) * 100);
+      const isPassed = correctAnswersCount >= minRequiredCorrect; // Syarat kelulusan: Benar >= 60%
 
-      if (newXp >= newXpToNext) {
-        newLevel += 1;
-        newXpToNext += 100;
-        soundFx.playLevelUp();
-      } else {
-        soundFx.playCoin();
-      }
+      if (isPassed) {
+        // SISWA LULUS (Benar >= 60%): Berikan Koin, XP, dan simpan ke profil / database
+        const rewardCoins = activeQuizState.level.rewardCoins;
+        const rewardXp = activeQuizState.level.rewardXp;
 
-      confetti({
-        particleCount: 80,
-        spread: 70,
-        origin: { y: 0.6 }
-      });
+        const newXp = student.xp + rewardXp;
+        let newLevel = student.level;
+        let newXpToNext = student.xpToNextLevel;
 
-      updateStudentData({
-        ...student,
-        level: newLevel,
-        xp: newXp,
-        xpToNextLevel: newXpToNext,
-        coins: student.coins + rewardCoins,
-        points: student.points + rewardXp,
-        stats: {
-          ...student.stats,
-          quizzesCompleted: student.stats.quizzesCompleted + 1,
-          quizScoreSum: student.stats.quizScoreSum + finalScore
+        if (newXp >= newXpToNext) {
+          newLevel += 1;
+          newXpToNext += 100;
+          soundFx.playLevelUp();
+        } else {
+          soundFx.playCoin();
         }
-      });
+
+        confetti({
+          particleCount: 80,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+
+        // Cek apakah kuis ini menyelesaikan tugas pulau di missions
+        const matchedMission = MISSIONS_DATA.find(m => m.quizId === activeQuizState.level.id);
+        const quizTask = matchedMission?.tasks?.find(t => t.type === 'quiz');
+        let updatedCompletedTasks = [...(student.completedTasks || [])];
+        if (quizTask && !updatedCompletedTasks.includes(quizTask.id)) {
+          updatedCompletedTasks.push(quizTask.id);
+        }
+
+        updateStudentData({
+          ...student,
+          level: newLevel,
+          xp: newXp,
+          xpToNextLevel: newXpToNext,
+          coins: student.coins + rewardCoins,
+          points: student.points + rewardXp,
+          completedTasks: updatedCompletedTasks,
+          stats: {
+            ...student.stats,
+            quizzesCompleted: (student.stats?.quizzesCompleted || 0) + 1,
+            quizScoreSum: (student.stats?.quizScoreSum || 0) + percentageCorrect
+          }
+        });
+
+        logActivityApi({
+          username: student.username,
+          studentName: student.name,
+          activityType: 'quiz',
+          title: `Lulus Kuis: ${activeQuizState.level.title} (${correctAnswersCount}/${totalQuestions} Benar - ${percentageCorrect}%)`,
+          xpEarned: rewardXp,
+          coinsEarned: rewardCoins,
+          pointsEarned: rewardXp,
+          details: { 
+            score: percentageCorrect, 
+            correctAnswers: correctAnswersCount, 
+            totalQuestions, 
+            levelId: activeQuizState.level.id, 
+            isPassed: true 
+          }
+        });
+      } else {
+        // SISWA BELUM LULUS (Benar < 60%): Tidak ada penambahan koin maupun XP!
+        soundFx.playWrong();
+
+        logActivityApi({
+          username: student.username,
+          studentName: student.name,
+          activityType: 'quiz',
+          title: `Belum Lulus Kuis: ${activeQuizState.level.title} (${correctAnswersCount}/${totalQuestions} Benar - ${percentageCorrect}%)`,
+          xpEarned: 0,
+          coinsEarned: 0,
+          pointsEarned: 0,
+          details: { 
+            score: percentageCorrect, 
+            correctAnswers: correctAnswersCount, 
+            totalQuestions, 
+            levelId: activeQuizState.level.id, 
+            isPassed: false 
+          }
+        });
+      }
 
       setActiveQuizState(prev => ({
         ...prev,
-        isFinished: true
+        isFinished: true,
+        isPassed,
+        correctAnswersCount,
+        totalQuestions,
+        minRequiredCorrect,
+        percentageCorrect,
+        score: percentageCorrect
       }));
     } else {
       setActiveQuizState(prev => ({
@@ -864,37 +946,142 @@ export default function MateriKuis({
             <div className="max-w-3xl mx-auto bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 space-y-6 shadow-md">
               {activeQuizState.isFinished ? (
                 <div className="text-center space-y-6 py-6 animate-fade-in">
-                  <div className="w-20 h-20 rounded-full bg-amber-100 border-2 border-amber-400 flex items-center justify-center mx-auto text-amber-600">
-                    <Trophy className="w-10 h-10 animate-bounce" />
-                  </div>
-
-                  <div className="space-y-2">
-                    <h3 className="text-3xl font-black text-slate-900">Kuis Selesai! 🎉</h3>
-                    <p className="text-slate-600 text-sm">
-                      Selamat! Kamu telah menyelesaikan {activeQuizState.level.name}
-                    </p>
-                  </div>
-
-                  <div className="bg-amber-50 border border-amber-200 p-6 rounded-2xl max-w-md mx-auto grid grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-xs text-slate-600 font-semibold">Skor Akhir</p>
-                      <p className="text-3xl font-black text-amber-600">{activeQuizState.score} Pts</p>
+                  
+                  {/* Status Badge */}
+                  {activeQuizState.isPassed && (
+                    <div className="flex justify-center">
+                      <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-100 text-emerald-800 border-2 border-emerald-300 text-sm sm:text-base font-black shadow-sm">
+                        <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                        <span>Lulus 🎉</span>
+                      </span>
                     </div>
-                    <div>
-                      <p className="text-xs text-slate-600 font-semibold">Koin Diperoleh</p>
-                      <p className="text-3xl font-black text-amber-600 flex items-center justify-center gap-1">
-                        <Coins className="w-6 h-6 text-amber-500 fill-amber-500" />
-                        +{activeQuizState.level.rewardCoins}
-                      </p>
+                  )}
+
+                  {/* Trophy or Failed Icon */}
+                  {activeQuizState.isPassed ? (
+                    <div className="w-20 h-20 rounded-full bg-emerald-100 border-2 border-emerald-400 flex items-center justify-center mx-auto text-amber-500 shadow-md">
+                      <Trophy className="w-10 h-10 animate-bounce" />
                     </div>
+                  ) : (
+                    <div className="w-20 h-20 rounded-full bg-rose-100 border-2 border-rose-400 flex items-center justify-center mx-auto text-rose-500 shadow-md">
+                      <XCircle className="w-10 h-10" />
+                    </div>
+                  )}
+
+                  {/* Title & Message */}
+                  <div className="space-y-2 max-w-md mx-auto">
+                    {activeQuizState.isPassed ? (
+                      <>
+                        <h3 className="text-2xl sm:text-3xl font-black text-slate-900">
+                          Selamat, Kamu Lulus Kuis! 🎉
+                        </h3>
+                        <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
+                          Luar biasa! Kamu berhasil menjawab benar <strong>{activeQuizState.correctAnswersCount}</strong> dari <strong>{activeQuizState.totalQuestions}</strong> soal (<strong>{activeQuizState.percentageCorrect}%</strong>), memenuhi syarat kelulusan minimal (&ge; 60% / min. {activeQuizState.minRequiredCorrect} soal).
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        <h3 className="text-2xl sm:text-3xl font-black text-slate-900">
+                          Belum Berhasil, Jangan Menyerah!
+                        </h3>
+                        <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
+                          Syarat kelulusan kuis adalah benar minimal <strong>60% dari jumlah soal yang dikerjakan</strong> (&ge; {activeQuizState.minRequiredCorrect} dari {activeQuizState.totalQuestions} soal). Kamu menjawab benar <strong>{activeQuizState.correctAnswersCount}</strong> soal ({activeQuizState.percentageCorrect}%).
+                        </p>
+                      </>
+                    )}
                   </div>
 
-                  <button
-                    onClick={() => setActiveQuizState(null)}
-                    className="py-3.5 px-8 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md"
-                  >
-                    Kembali ke Daftar Level Kuis
-                  </button>
+                  {/* Result Details: Pass vs Fail */}
+                  {activeQuizState.isPassed ? (
+                    <div className="bg-emerald-50/70 border border-emerald-200 p-6 rounded-3xl max-w-lg mx-auto grid grid-cols-3 gap-3 shadow-inner">
+                      <div className="bg-white p-3 rounded-2xl border border-emerald-100 shadow-sm">
+                        <p className="text-[11px] text-slate-500 font-bold uppercase">Jawaban Benar</p>
+                        <p className="text-xl sm:text-2xl font-black text-emerald-600">
+                          {activeQuizState.correctAnswersCount}/{activeQuizState.totalQuestions}
+                        </p>
+                        <span className="text-[10px] text-emerald-600 font-bold">{activeQuizState.percentageCorrect}% Benar</span>
+                      </div>
+                      <div className="bg-white p-3 rounded-2xl border border-emerald-100 shadow-sm">
+                        <p className="text-[11px] text-slate-500 font-bold uppercase">Koin Diklaim</p>
+                        <p className="text-xl sm:text-2xl font-black text-amber-600 flex items-center justify-center gap-1">
+                          <Coins className="w-5 h-5 text-amber-500 fill-amber-500" />
+                          +{activeQuizState.level.rewardCoins}
+                        </p>
+                        <span className="text-[10px] text-slate-400">Tersimpan</span>
+                      </div>
+                      <div className="bg-white p-3 rounded-2xl border border-emerald-100 shadow-sm">
+                        <p className="text-[11px] text-slate-500 font-bold uppercase">XP Diperoleh</p>
+                        <p className="text-xl sm:text-2xl font-black text-indigo-600 flex items-center justify-center gap-1">
+                          <Sparkles className="w-5 h-5 text-indigo-500" />
+                          +{activeQuizState.level.rewardXp}
+                        </p>
+                        <span className="text-[10px] text-slate-400">Tersimpan</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="max-w-lg mx-auto space-y-4">
+                      <div className="bg-rose-50/80 border border-rose-200 p-5 rounded-3xl grid grid-cols-2 gap-3 items-center">
+                        <div className="bg-white p-3 rounded-2xl border border-rose-100 shadow-sm text-center">
+                          <p className="text-[11px] text-slate-500 font-bold uppercase">Jawaban Benar Kamu</p>
+                          <p className="text-2xl sm:text-3xl font-black text-rose-600">
+                            {activeQuizState.correctAnswersCount}/{activeQuizState.totalQuestions}
+                          </p>
+                          <span className="text-[10px] text-rose-500 font-semibold">{activeQuizState.percentageCorrect}% (&lt; 60%)</span>
+                        </div>
+                        <div className="bg-white p-3 rounded-2xl border border-rose-100 shadow-sm text-center">
+                          <p className="text-[11px] text-slate-500 font-bold uppercase">Syarat Minimal</p>
+                          <p className="text-2xl sm:text-3xl font-black text-slate-700">
+                            Min. {activeQuizState.minRequiredCorrect} Soal
+                          </p>
+                          <span className="text-[10px] text-slate-400">60% dari jumlah soal</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Action Buttons */}
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+                    {!activeQuizState.isPassed ? (
+                      <>
+                        <button
+                          onClick={() => startQuiz(activeQuizState.level)}
+                          className="w-full sm:w-auto py-3.5 px-8 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black text-sm shadow-lg hover:shadow-xl transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-95"
+                        >
+                          <RotateCcw className="w-4 h-4" />
+                          <span>Ulangi Kuis (Coba Lagi)</span>
+                        </button>
+
+                        <button
+                          onClick={() => {
+                            soundFx.playClick();
+                            setActiveQuizState(null);
+                            handleSubTabChange('materi');
+                          }}
+                          className="w-full sm:w-auto py-3.5 px-6 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm border border-slate-200 transition-colors cursor-pointer"
+                        >
+                          Pelajari Materi Dahulu
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          onClick={() => setActiveQuizState(null)}
+                          className="w-full sm:w-auto py-3.5 px-8 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-sm shadow-md hover:shadow-lg transition-all cursor-pointer"
+                        >
+                          Kembali ke Daftar Level Kuis
+                        </button>
+
+                        <button
+                          onClick={() => startQuiz(activeQuizState.level)}
+                          className="w-full sm:w-auto py-3.5 px-6 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm border border-slate-200 transition-colors cursor-pointer flex items-center justify-center gap-2"
+                        >
+                          <RotateCcw className="w-4 h-4" />
+                          <span>Coba Lagi untuk Skor Lebih Tinggi</span>
+                        </button>
+                      </>
+                    )}
+                  </div>
+
                 </div>
               ) : (
                 <>
@@ -1086,8 +1273,14 @@ export default function MateriKuis({
       {/* INTERACTIVE MISSION DETAIL MODAL */}
       {/* ========================================================================= */}
       {selectedMissionModal && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
-          <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 max-w-xl w-full space-y-6 shadow-2xl relative max-h-[90vh] overflow-y-auto no-scrollbar">
+        <div 
+          onClick={() => setSelectedMissionModal(null)}
+          className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in"
+        >
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 max-w-xl w-full space-y-6 shadow-2xl relative max-h-[90vh] overflow-y-auto no-scrollbar"
+          >
             
             <button
               onClick={() => setSelectedMissionModal(null)}
@@ -1171,28 +1364,39 @@ export default function MateriKuis({
             </div>
 
             <div className="pt-2 flex justify-end">
-              <button
-                onClick={() => {
-                  const targetMateriId = selectedMissionModal.materiId;
-                  const currentTargetTab = selectedMissionModal.targetTab;
-                  setSelectedMissionModal(null);
-                  if (currentTargetTab === 'materi') {
-                    handleSubTabChange('materi');
-                    if (targetMateriId) {
-                      const idx = MATERI_KEGIATAN_EKONOMI.findIndex(m => m.id === targetMateriId);
-                      if (idx !== -1) {
-                        setSelectedMateriIndex(idx);
+              {selectedMissionModal.tasks.every(t => completedSet.has(t.id)) ? (
+                <button
+                  disabled={true}
+                  className="py-3 px-6 rounded-2xl bg-slate-100 text-slate-400 border border-slate-200 font-black text-sm flex items-center gap-2 cursor-not-allowed select-none"
+                  title="Seluruh tugas misi di pulau ini telah selesai"
+                >
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                  <span>Misi Selesai ✓</span>
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    const targetMateriId = selectedMissionModal.materiId;
+                    const currentTargetTab = selectedMissionModal.targetTab;
+                    setSelectedMissionModal(null);
+                    if (currentTargetTab === 'materi') {
+                      handleSubTabChange('materi');
+                      if (targetMateriId) {
+                        const idx = MATERI_KEGIATAN_EKONOMI.findIndex(m => m.id === targetMateriId);
+                        if (idx !== -1) {
+                          setSelectedMateriIndex(idx);
+                        }
                       }
+                    } else if (setActiveTab) {
+                      setActiveTab(currentTargetTab);
                     }
-                  } else if (setActiveTab) {
-                    setActiveTab(currentTargetTab);
-                  }
-                }}
-                className="py-3 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-sm flex items-center gap-2 shadow-lg transition-colors"
-              >
-                <span>Buka Modul Pembelajaran Misi Ini</span>
-                <ChevronRight className="w-4 h-4" />
-              </button>
+                  }}
+                  className="py-3 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-sm flex items-center gap-2 shadow-lg transition-colors cursor-pointer"
+                >
+                  <span>Buka Modul Pembelajaran Misi Ini</span>
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              )}
             </div>
 
           </div>

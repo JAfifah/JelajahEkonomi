@@ -8,9 +8,7 @@ export default function HeaderBar({ student, currentUser, onLogout }) {
 
   const handleLogoutClick = () => {
     soundFx.playClick();
-    if (window.confirm(`Apakah kamu yakin ingin keluar dari akun ${student?.name || ''}?`)) {
-      onLogout?.();
-    }
+    onLogout?.();
   };
 
   return (
