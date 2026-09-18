@@ -16,8 +16,8 @@ export default function HeaderBar({ student, currentUser, onLogout }) {
       
       {/* Student Profile Info */}
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-amber-100 border-2 border-amber-300 overflow-hidden flex items-center justify-center shrink-0 shadow-sm">
-          <AvatarCanvas equipped={student.equipped} size="sm" viewMode="half-body" animated={false} />
+        <div className="w-10 h-10 rounded-full bg-gradient-to-b from-amber-50 to-amber-100 border-2 border-amber-400 overflow-hidden flex items-center justify-center shrink-0 shadow-sm">
+          <AvatarCanvas equipped={student.equipped} size="sm" viewMode="bust" animated={false} isWaving={false} />
         </div>
         <div>
           <div className="flex items-center gap-2">

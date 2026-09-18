@@ -159,6 +159,7 @@ export default function App() {
               updateStudentData={handleUpdateStudentData} 
               currentUser={currentUser}
               onLogout={handlePromptLogout}
+              onNavigateToShop={() => setActiveTab('shop')}
             />
           )}
         </main>

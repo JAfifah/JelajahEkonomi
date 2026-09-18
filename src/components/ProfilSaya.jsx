@@ -15,10 +15,11 @@ import {
   LogOut,
   ShieldAlert,
   Zap,
-  X
+  X,
+  ShoppingBag
 } from 'lucide-react';
 
-export default function ProfilSaya({ student, updateStudentData, currentUser, onLogout }) {
+export default function ProfilSaya({ student, updateStudentData, currentUser, onLogout, onNavigateToShop }) {
   const isAdmin = currentUser?.role === 'admin';
   const [showResetConfirm, setShowResetConfirm] = useState(false);
 
@@ -63,15 +64,24 @@ export default function ProfilSaya({ student, updateStudentData, currentUser, on
     <div className="space-y-5 pb-8 animate-fade-in">
       
       {/* Top Banner & Profile Overview */}
-      <div className="bg-gradient-to-r from-white via-indigo-50/60 to-purple-50/60 border border-slate-200 p-4 sm:p-5 rounded-2xl shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="bg-gradient-to-r from-white via-indigo-50/60 to-purple-50/60 border border-slate-200 p-4 sm:p-5 rounded-2xl shadow-sm flex flex-col md:flex-row items-center justify-between gap-5">
         
-        <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
-          {/* Avatar Preview Portrait Frame */}
-          <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-2xl bg-gradient-to-b from-indigo-100/80 via-white to-purple-50 border-2 border-indigo-200/80 overflow-hidden flex items-center justify-center shrink-0 shadow-sm">
-            <AvatarCanvas equipped={student.equipped} size="md" viewMode="half-body" animated={true} />
+        <div className="flex flex-col sm:flex-row items-center gap-5 sm:gap-6 text-center sm:text-left">
+          {/* Full-Body Standing Avatar (Tanpa Card Belakang & Label) */}
+          <div 
+            className={`shrink-0 flex items-center justify-center ${onNavigateToShop ? 'cursor-pointer hover:scale-105 transition-transform' : ''}`}
+            onClick={() => onNavigateToShop && onNavigateToShop()}
+            title={onNavigateToShop ? "Klik untuk mengganti pakaian di Lemari Avatar" : undefined}
+          >
+            <AvatarCanvas 
+              equipped={student.equipped} 
+              size="profile" 
+              viewMode="full" 
+              animated={true} 
+            />
           </div>
 
-          <div className="space-y-1">
+          <div className="space-y-1.5">
             <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 text-[11px] font-bold border border-indigo-200">
               <ShieldCheck className="w-3 h-3 text-indigo-600" />
               <span>Level {student.level}</span>
@@ -86,6 +96,11 @@ export default function ProfilSaya({ student, updateStudentData, currentUser, on
                 {isAdmin ? 'ADMIN PENGUJI' : 'AKUN SISWA'}
               </span>
             </div>
+            {student.schoolClass && (
+              <p className="text-xs text-slate-500 font-medium">
+                Kelas: <span className="font-semibold text-slate-700">{student.schoolClass}</span>
+              </p>
+            )}
           </div>
         </div>
 
@@ -240,11 +255,20 @@ export default function ProfilSaya({ student, updateStudentData, currentUser, on
 
           {/* Owned Inventory Catalogue */}
           <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 space-y-3 shadow-sm">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div className="flex items-center gap-2">
                 <Package className="w-4 h-4 text-purple-600" />
                 <h3 className="text-base font-black text-slate-900">Lemari Koleksi Pakaian & Aksesoris</h3>
               </div>
+              {onNavigateToShop && (
+                <button
+                  onClick={onNavigateToShop}
+                  className="px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs flex items-center gap-1.5 border border-indigo-200 transition-colors w-fit cursor-pointer"
+                >
+                  <ShoppingBag className="w-3.5 h-3.5" />
+                  <span>Kamar Pas & Toko</span>
+                </button>
+              )}
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">

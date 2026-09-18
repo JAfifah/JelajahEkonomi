@@ -557,10 +557,8 @@ export default function LeaderboardAdmin({ currentUser }) {
                           {/* Student Info & Avatar Mini */}
                           <td className="py-2.5 px-3">
                             <div className="flex items-center gap-2.5">
-                              <div className="w-8 h-8 rounded-xl bg-sky-100 border border-sky-200 overflow-hidden flex items-center justify-center shrink-0">
-                                <div className="scale-45 origin-center -translate-y-2">
-                                  <AvatarCanvas equipped={student.equipped} size="sm" animated={false} />
-                                </div>
+                              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-b from-amber-50 to-amber-100 border-2 border-amber-400 overflow-hidden flex items-center justify-center shrink-0 shadow-sm">
+                                <AvatarCanvas equipped={student.equipped} size="sm" viewMode="bust" animated={false} isWaving={false} />
                               </div>
                               <div className="min-w-0">
                                 <p className="font-extrabold text-slate-900 text-xs sm:text-sm truncate flex items-center gap-1.5">

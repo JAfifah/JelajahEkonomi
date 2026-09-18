@@ -15,9 +15,11 @@ export default function AvatarCanvas({
   size = 'lg', 
   viewMode = null, 
   animated = true,
-  isWaving = null
+  isWaving = null,
+  className = '',
+  width: customWidth,
+  height: customHeight
 }) {
-  const wavingActive = isWaving !== null ? isWaving : (animated && size !== 'sm');
   // Merge equipped items with preview item if provided
   const activeEquipped = { ...(equipped || {}) };
   if (previewItem) {
@@ -44,26 +46,34 @@ export default function AvatarCanvas({
   const effectiveViewMode = viewMode || (size === 'sm' ? 'half-body' : 'full');
   const isHalfBody = effectiveViewMode === 'half-body' || effectiveViewMode === 'bust';
 
+  // In bust / portrait crop, default waving to false for symmetrical shoulders matching image 2
+  const wavingActive = isWaving !== null ? isWaving : (animated && size !== 'sm' && !isHalfBody);
+
   // Size mapping
   const sizeMap = {
-    sm: { width: 44, height: 44 },
+    sm: isHalfBody ? { width: 44, height: 44 } : { width: 50, height: 88 },
+    profile: isHalfBody ? { width: 92, height: 92 } : { width: 100, height: 175 },
     md: isHalfBody ? { width: 76, height: 76 } : { width: 140, height: 250 },
     lg: isHalfBody ? { width: 120, height: 120 } : { width: 220, height: 390 },
     xl: { width: 300, height: 530 }
   };
 
-  const { width, height } = sizeMap[size] || sizeMap.lg;
+  const defaultDims = sizeMap[size] || sizeMap.lg;
+  const width = customWidth || defaultDims.width;
+  const height = customHeight || defaultDims.height;
+  
+  // Precision portrait bust crop: centered horizontally (x: 48-192), from head/hair top (y: 10) to mid chest (y: 154)
   const viewBox = isHalfBody
-    ? '25 0 190 190'
+    ? '48 10 144 144'
     : '0 0 240 420';
 
   return (
-    <div className={`relative inline-flex items-center justify-center ${animated ? 'animate-bounce-subtle' : ''}`}>
+    <div className={`relative inline-flex items-center justify-center ${animated && !isHalfBody ? 'animate-bounce-subtle' : ''} ${className}`}>
       <svg
         width={width}
         height={height}
         viewBox={viewBox}
-        className={`filter drop-shadow-xl ${isHalfBody ? 'overflow-hidden rounded-full' : 'overflow-visible'} transition-all duration-300`}
+        className={`filter drop-shadow-sm ${isHalfBody ? 'overflow-hidden' : 'overflow-visible'} transition-all duration-300`}
       >
         <defs>
           <linearGradient id="skinGradient" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -217,10 +227,10 @@ export default function AvatarCanvas({
         <g style={animated ? { animation: 'avatarIdleBreath 2.6s ease-in-out infinite' } : {}}>
           
           {/* --- BACK ACCESSORIES (e.g. Backpack / Cape) --- */}
-          {renderBackAccessory(activeEquipped.accessory, activeEquipped.top)}
+          {renderBackAccessory(activeEquipped.accessory || activeEquipped.accessories, activeEquipped.top || activeEquipped.tops)}
 
           {/* --- BACK HAIR (e.g. for flowing long hair behind torso) --- */}
-          {renderBackHair(activeEquipped.accessories || activeEquipped.accessory || activeEquipped.hairstyle, hairColor)}
+          {renderBackHair(activeEquipped.hairstyle || activeEquipped.accessories || activeEquipped.accessory, hairColor)}
 
           {/* --- LEGS & BARE FEET BASE --- */}
           {!isHalfBody && (
@@ -398,10 +408,10 @@ export default function AvatarCanvas({
           <path d="M 112 90 Q 120 95 128 90 Q 120 96 112 90 Z" fill="#f43f5e" />
 
           {/* --- HAIRSTYLE / HEAD COVERING --- */}
-          {renderHair(activeEquipped.accessories || activeEquipped.accessory || activeEquipped.hairstyle, hairColor)}
+          {renderHair(activeEquipped.hairstyle || activeEquipped.accessories || activeEquipped.accessory, hairColor)}
 
           {/* --- HEAD ACCESSORIES (CAP, GLASSES, CROWN) --- */}
-          {renderHeadAccessory(activeEquipped.accessories || activeEquipped.accessory)}
+          {renderHeadAccessory(activeEquipped.accessory || activeEquipped.accessories)}
         </g>
       </svg>
 
